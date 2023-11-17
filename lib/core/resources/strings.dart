@@ -97,7 +97,11 @@ class Strings {
       "we will send yu a notification when it's ready";
 
   // Login Screen
+  static const String login = "Log in";
   static const String password = "Password";
   static const String emailHint = "Enter your email";
   static const String passwordHint = "Enter your password";
+  static const String loginTitle = "Log in to your Prestige\nAccount";
+  static const String forgetPassword = "Forgot your password?";
+  static const String or = "or";
 }
