@@ -71,7 +71,7 @@ class EditProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller: EditProfileCubit.get(context).firstName,
                   title: Strings.firstName,
                   textInputType: TextInputType.name,
@@ -79,7 +79,7 @@ class EditProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller: EditProfileCubit.get(context).lastName,
                   title: Strings.lastName,
                   textInputType: TextInputType.name,
@@ -87,7 +87,7 @@ class EditProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller: EditProfileCubit.get(context).phoneNumber,
                   title: Strings.phoneNumber,
                   textInputType: TextInputType.phone,
@@ -96,7 +96,7 @@ class EditProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller: EditProfileCubit.get(context).email,
                   title: Strings.email,
                   textInputType: TextInputType.emailAddress,

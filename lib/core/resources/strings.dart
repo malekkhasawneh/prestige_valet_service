@@ -73,6 +73,7 @@ class Strings {
   static const String billingAddress = 'Billing Address';
   static const String cardNumber = 'Card Number';
   static const String expirationDate = 'Expiration Date';
+  static const String cvv = 'CVV';
   static const String addCard = 'Add Card';
 
   //Valet History Screen
@@ -94,4 +95,9 @@ class Strings {
   static const String carRequestTitle = "Your Car Will Be Ready\nShortly";
   static const String carRequestNotification =
       "we will send yu a notification when it's ready";
+
+  // Login Screen
+  static const String password = "Password";
+  static const String emailHint = "Enter your email";
+  static const String passwordHint = "Enter your password";
 }

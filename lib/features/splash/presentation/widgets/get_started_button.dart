@@ -31,6 +31,7 @@ class GetStartedButtonWidget extends StatelessWidget {
           style: TextStyle(
             fontFamily: Fonts.sourceSansPro,
             fontSize: 13,
+            color: ColorManager.whiteColor,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -19,4 +19,6 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
   final TextEditingController cardNumberController = TextEditingController();
   final TextEditingController expirationDateController =
       TextEditingController();
+  final TextEditingController cvvController =
+  TextEditingController();
 }

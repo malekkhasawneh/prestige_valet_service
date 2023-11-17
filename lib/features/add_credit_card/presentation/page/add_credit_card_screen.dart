@@ -53,7 +53,7 @@ class AddCreditCardScreen extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller:
                       AddCreditCardCubit.get(context).cardHolderNameController,
                   title: Strings.cardHolderName,
@@ -62,7 +62,7 @@ class AddCreditCardScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller:
                       AddCreditCardCubit.get(context).billingAddressController,
                   title: Strings.billingAddress,
@@ -71,7 +71,7 @@ class AddCreditCardScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFiledWidget(
+                TextFieldWidget(
                   controller:
                       AddCreditCardCubit.get(context).cardNumberController,
                   title: Strings.cardNumber,
@@ -80,11 +80,28 @@ class AddCreditCardScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFiledWidget(
-                  controller:
-                      AddCreditCardCubit.get(context).expirationDateController,
-                  title: Strings.expirationDate,
-                  textInputType:TextInputType.number,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.5,
+                      child: TextFieldWidget(
+                        controller:
+                            AddCreditCardCubit.get(context).expirationDateController,
+                        title: Strings.expirationDate,
+                        textInputType:TextInputType.number,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.5,
+                      child: TextFieldWidget(
+                        controller:
+                        AddCreditCardCubit.get(context).cvvController,
+                        title: Strings.cvv,
+                        textInputType:TextInputType.number,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 50,

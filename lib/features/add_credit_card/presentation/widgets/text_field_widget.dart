@@ -4,19 +4,27 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
 
-class TextFiledWidget extends StatelessWidget {
-  const TextFiledWidget({
+class TextFieldWidget extends StatelessWidget {
+  const TextFieldWidget({
     super.key,
     required this.title,
+    this.hintText = '',
     required this.controller,
     required this.textInputType,
     this.addPrefixIcon = false,
+    this.addSuffixIcon = false,
+    this.isPassword = false,
+    this.suffixIcon = const SizedBox(),
   });
 
   final String title;
+  final String hintText;
   final TextEditingController controller;
   final TextInputType textInputType;
   final bool addPrefixIcon;
+  final bool addSuffixIcon;
+  final bool isPassword;
+  final Widget suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +61,30 @@ class TextFiledWidget extends StatelessWidget {
               ),
               child: Center(
                 child: TextFormField(
+                  obscureText: isPassword,
                   controller: controller,
                   maxLength: 5,
                   keyboardType: textInputType,
                   decoration: InputDecoration(
                       prefixIcon: addPrefixIcon
                           ? const Text('+962 - ')
-                          : const SizedBox(width: 7,),
+                          : const SizedBox(
+                              width: 7,
+                            ),
                       prefixIconConstraints:
                           const BoxConstraints(minHeight: 10),
+                      suffixIcon: suffixIcon,
+                      suffixIconConstraints:
+                          const BoxConstraints(minHeight: 10),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.only(left: 7),
-                      counterText: ''),
+                      contentPadding: EdgeInsets.only(
+                          left: 7, bottom: 6, top: addSuffixIcon ? 9 : 0),
+                      counterText: '',
+                      hintText: hintText,
+                      hintStyle: const TextStyle(
+                        fontFamily: Fonts.sourceSansPro,
+                        fontSize: 12,
+                      )),
                   cursorColor: ColorManager.primaryColor,
                 ),
               ),
