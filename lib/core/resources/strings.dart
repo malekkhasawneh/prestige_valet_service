@@ -112,4 +112,20 @@ class Strings {
   static const String signUpPhoneNumber = "Phone Number*";
   static const String signUpEmailAddress = "Email Address*";
   static const String signUpPassword = "Password*";
+  static const String verifyYourAccount = "Verify Your Account";
+  static const String enterVerificationCode = "Enter Verification Code";
+  static const String resendCode = "Resend Code";
+
+  // Forget Password Screen
+  static const String forgetPasswordTitle = "Forgot Your Password?";
+  static const String updateYourPasswordTitle = "Update Your Password";
+  static const String enterEmailAddress = "Enter Email Address";
+  static const String enterEmailHint = "email.email@mail.com";
+  static const String sendVerificationCode = "Send Verification Code";
+  static const String doNotHaveAccount = "Don't have an account?Register now";
+  static const String enterPassword = "Enter New Password";
+  static const String enterPasswordHint = "Enter your password";
+  static const String confirmPassword = "Confirm New Password";
+  static const String confirmPasswordHint = "Confirm your password";
+  static const String save = "Save";
 }
