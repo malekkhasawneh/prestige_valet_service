@@ -41,6 +41,10 @@ flutter:
     - images/welcome_logo.png
     - images/default_user_image.jpg
     - images/splash_logo.png
+    - images/Apple_Logo.png
+    - images/Gmail_Logo.png
+    - images/Facebook_Logo.png
+    - images/Twitter_Logo.png
 
   fonts:
     - family: SourceSansPro

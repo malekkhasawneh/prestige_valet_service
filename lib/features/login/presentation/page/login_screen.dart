@@ -6,6 +6,8 @@ import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/login_button_widget.dart';
+import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -91,6 +93,16 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey.withOpacity(0.9),
                       fontSize: 11,
+                    ),
+                  ),
+                ),
+                const SocialLoginRow(),
+                const Center(
+                  child: Text(
+                    Strings.doNotHaveAccount,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

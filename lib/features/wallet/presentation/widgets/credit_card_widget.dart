@@ -73,7 +73,7 @@ class CreditCardWidget extends StatelessWidget {
             child: Icon(
               Icons.credit_card,
               color: ColorManager.primaryColor,
-              size: 17,
+              size: 19,
             ),
           ),
         ],

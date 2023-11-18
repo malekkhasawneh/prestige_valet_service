@@ -3,5 +3,10 @@ class Images{
   static const String splashLogo = '${images}splash_logo.png';
   static const String welcomeLogo = '${images}welcome_logo.png';
   static const String defaultUserImage = '${images}default_user_image.jpg';
+  static const String twitterLogo = '${images}Twitter_Logo.png';
+  static const String facebookLogo = '${images}Facebook_Logo.png';
+  static const String gmailLogo = '${images}Gmail_Logo.png';
+  static const String appleLogo = '${images}Apple_Logo.png';
+
 
 }

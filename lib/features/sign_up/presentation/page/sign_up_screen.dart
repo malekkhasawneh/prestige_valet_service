@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
+import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/widgets/sign_up_button_widget.dart';
 
@@ -112,6 +113,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                SocialLoginRow()
               ],
             ),
           ),

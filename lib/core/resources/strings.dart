@@ -122,7 +122,7 @@ class Strings {
   static const String enterEmailAddress = "Enter Email Address";
   static const String enterEmailHint = "email.email@mail.com";
   static const String sendVerificationCode = "Send Verification Code";
-  static const String doNotHaveAccount = "Don't have an account?Register now";
+  static const String doNotHaveAccount = "Don't have an account? Register now";
   static const String enterPassword = "Enter New Password";
   static const String enterPasswordHint = "Enter your password";
   static const String confirmPassword = "Confirm New Password";
