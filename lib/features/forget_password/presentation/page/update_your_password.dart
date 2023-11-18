@@ -21,8 +21,8 @@ class UpdateYourPasswordScreen extends StatelessWidget {
       children: [
         const SizedBox(height: 50,),
         TextFieldWidget(
-          title: Strings.email,
-          hintText: Strings.emailHint,
+          title: Strings.enterPassword,
+          hintText: Strings.enterPasswordHint,
           controller: ForgetPasswordCubit.get(context).passwordController,
           textInputType: TextInputType.emailAddress,
           isPassword: true,
@@ -31,8 +31,8 @@ class UpdateYourPasswordScreen extends StatelessWidget {
           height: 20,
         ),
         TextFieldWidget(
-          title: Strings.password,
-          hintText: Strings.passwordHint,
+          title: Strings.confirmPassword,
+          hintText: Strings.confirmPasswordHint,
           controller: ForgetPasswordCubit.get(context).confirmPasswordController,
           textInputType: TextInputType.visiblePassword,
           isPassword: true,

@@ -48,13 +48,23 @@ class CreditCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          const Positioned(
+           Positioned(
             top: 5,
-            right: -6,
-            child: Icon(
-              Icons.edit,
-              color: ColorManager.primaryColor,
-              size: 18,
+            right: 0,
+            child: Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                color: ColorManager.blackColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.edit,
+                  color: ColorManager.whiteColor,
+                  size: 12,
+                ),
+              ),
             ),
           ),
           const Positioned(
