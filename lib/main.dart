@@ -12,6 +12,7 @@ import 'package:prestige_valet_app/features/login/presentation/page/login_screen
 import 'package:prestige_valet_app/features/payment_gateway/presentation/cubit/payment_gateway_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:prestige_valet_app/features/sign_up/presentation/page/sign_up_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart' as di;
 
@@ -48,7 +49,7 @@ class PrestigeValetApp extends StatelessWidget {
           scaffoldBackgroundColor: ColorManager.whiteColor,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home:const LoginScreen(),
+        home:const SignUpScreen(),
       ),
     );
   }

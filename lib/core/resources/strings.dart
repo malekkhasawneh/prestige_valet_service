@@ -104,4 +104,12 @@ class Strings {
   static const String loginTitle = "Log in to your Prestige\nAccount";
   static const String forgetPassword = "Forgot your password?";
   static const String or = "or";
+
+  // Sign Up Screen
+  static const String signUp = "Sign Up";
+  static const String signUpFirstName = "First Name*";
+  static const String signUpLastName = "Last Name*";
+  static const String signUpPhoneNumber = "Phone Number*";
+  static const String signUpEmailAddress = "Email Address*";
+  static const String signUpPassword = "Password*";
 }
