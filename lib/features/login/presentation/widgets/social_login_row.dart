@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 
 class SocialLoginRow extends StatelessWidget {
@@ -16,10 +19,20 @@ class SocialLoginRow extends StatelessWidget {
           width: screenWidth * 0.15,
           height: screenHeight * 0.15,
         ),
-        Image.asset(
-          Images.gmailLogo,
-          width: screenWidth * 0.15,
-          height: screenHeight * 0.15,
+        GestureDetector(onTap: ()async{
+          final googleSignIn = GoogleSignIn();
+          await googleSignIn.signIn().then((value) {
+            log('================================== ${value!.email}');
+            log('================================== ${value.displayName}');
+            log('================================== ${value.id}');
+            log('================================== ${value.photoUrl}');
+          });
+        },
+          child: Image.asset(
+            Images.gmailLogo,
+            width: screenWidth * 0.15,
+            height: screenHeight * 0.15,
+          ),
         ),
         Image.asset(
           Images.facebookLogo,

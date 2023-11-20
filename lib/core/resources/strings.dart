@@ -128,4 +128,8 @@ class Strings {
   static const String confirmPassword = "Confirm New Password";
   static const String confirmPasswordHint = "Confirm your password";
   static const String save = "Save";
+
+  // Scan Qr code screen
+  static const String scanQrCode = "Scan QR code";
+
 }

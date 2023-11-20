@@ -13,6 +13,8 @@ import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit
 import 'package:prestige_valet_app/features/login/presentation/page/login_screen.dart';
 import 'package:prestige_valet_app/features/payment_gateway/presentation/cubit/payment_gateway_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
+import 'package:prestige_valet_app/features/scan_qr_code/cubit/scan_qr_cubit.dart';
+import 'package:prestige_valet_app/features/scan_qr_code/presentation/page/scan_qr_code_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/page/sign_up_screen.dart';
@@ -47,6 +49,7 @@ class PrestigeValetApp extends StatelessWidget {
         BlocProvider<LoginCubit>(create: (_) => LoginCubit()),
         BlocProvider<SignUpCubit>(create: (_) => SignUpCubit()),
         BlocProvider<ForgetPasswordCubit>(create: (_) => ForgetPasswordCubit()),
+        BlocProvider<ScanQrCubit>(create: (_) => ScanQrCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -55,7 +58,7 @@ class PrestigeValetApp extends StatelessWidget {
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const ForgetPasswordScreen(),
+        home: const SignUpScreen(),
       ),
     );
   }

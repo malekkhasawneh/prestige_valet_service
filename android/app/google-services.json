@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "752419261145",
+    "project_id": "prestige-valet-service",
+    "storage_bucket": "prestige-valet-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752419261145:android:5809786fcf07576fe24cc8",
+        "android_client_info": {
+          "package_name": "com.prvisoft.prestige_valet_sevice.prestige_valet_service"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC27kQq44Sfx2cLTainOBWdpd0QKa_RDtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
