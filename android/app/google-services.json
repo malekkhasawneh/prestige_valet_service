@@ -12,7 +12,20 @@
           "package_name": "com.prvisoft.prestige_valet_sevice.prestige_valet_service"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "752419261145-rcvoo5r3kq3l5immg5ott39p3j4hrhpj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prvisoft.prestige_valet_sevice.prestige_valet_service",
+            "certificate_hash": "b1d662c3038b0cbb0d88acd5ae5cc497258a36f1"
+          }
+        },
+        {
+          "client_id": "752419261145-qjsq0r4njmo3gte6p2cbvbing95tgeq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC27kQq44Sfx2cLTainOBWdpd0QKa_RDtQ"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752419261145-gnlpqga8u95rc8dblu5edv44gj3qhcmo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "752419261145-2akirpl6p3nsv490ee4t761t6eb676r6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.prvisoft.prestigevaletsevice.prestigeValetService"
+              }
+            }
+          ]
         }
       }
     }

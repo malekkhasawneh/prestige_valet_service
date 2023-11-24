@@ -115,6 +115,7 @@ class Strings {
   static const String verifyYourAccount = "Verify Your Account";
   static const String enterVerificationCode = "Enter Verification Code";
   static const String resendCode = "Resend Code";
+  static const String enterOtp = 'Enter OTP';
 
   // Forget Password Screen
   static const String forgetPasswordTitle = "Forgot Your Password?";

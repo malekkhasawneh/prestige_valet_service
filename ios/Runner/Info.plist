@@ -45,7 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	    <key>NSCameraUsageDescription</key>
-        <string>Camera permission is required for QR code scanning</string>
+	<key>NSCameraUsageDescription</key>
+    <string>Camera permission is required for QR code scanning</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<string>com.googleusercontent.apps.752419261145-2akirpl6p3nsv490ee4t761t6eb676r6</string>
+    		</array>
+    	</dict>
+    </array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+       <key>NSAllowsArbitraryLoads</key><true/>
+    </dict>
 </dict>
 </plist>
