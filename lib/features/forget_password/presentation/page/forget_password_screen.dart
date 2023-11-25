@@ -82,7 +82,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SocialLoginRow(),
+             SocialLoginRow(),
             const Text(
               Strings.doNotHaveAccount,
               style: TextStyle(

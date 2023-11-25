@@ -54,6 +54,7 @@
     		<string>Editor</string>
     		<key>CFBundleURLSchemes</key>
     		<array>
+    		    <string>prestigeValetService</string>
     			<string>com.googleusercontent.apps.752419261145-2akirpl6p3nsv490ee4t761t6eb676r6</string>
     		</array>
     	</dict>

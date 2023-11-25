@@ -96,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SocialLoginRow(),
+                 SocialLoginRow(),
                 const Center(
                   child: Text(
                     Strings.doNotHaveAccount,

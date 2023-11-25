@@ -113,7 +113,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-             const SocialLoginRow()
+              SocialLoginRow()
               ],
             ),
           ),

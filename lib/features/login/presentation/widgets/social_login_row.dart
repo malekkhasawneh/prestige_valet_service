@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
+import 'package:twitter_login/twitter_login.dart';
+
 class SocialLoginRow extends StatelessWidget {
-  const SocialLoginRow({super.key});
+  SocialLoginRow({super.key});
 
   Future<UserCredential> signInWithGoogle() async {
     try {
@@ -43,6 +45,27 @@ class SocialLoginRow extends StatelessWidget {
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
+  Future<UserCredential> signInWithTwitter() async {
+    // Create a TwitterLogin instance
+    final twitterLogin = TwitterLogin(
+        apiKey: '2wB67cUC5uGGxHazhe1UToIlV',
+        apiSecretKey: '3UoLoJoqNvPqumQWfp6NUsgBFWxrviUD9KlZgo68AbQMso30b7',
+        redirectURI: 'prestige-valet-service://');
+
+    // Trigger the sign-in flow
+    final authResult = await twitterLogin.loginV2();
+
+    // Create a credential from the access token
+    final twitterAuthCredential = TwitterAuthProvider.credential(
+      accessToken: authResult.authToken!,
+      secret: authResult.authTokenSecret!,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance
+        .signInWithCredential(twitterAuthCredential);
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -57,13 +80,6 @@ class SocialLoginRow extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () async {
-            await signInWithFacebook().then((value) {
-              log('================================================= displayName ${value.user!.displayName}');
-              log('================================================= email ${value.user!.email}');
-              log('================================================= photoURL ${value.user!.photoURL}');
-              log('================================================= phoneNumber ${value.user!.phoneNumber}');
-
-            });
           },
           child: Image.asset(
             Images.gmailLogo,

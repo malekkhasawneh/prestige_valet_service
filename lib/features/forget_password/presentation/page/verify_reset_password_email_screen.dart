@@ -56,7 +56,7 @@ class VerifyResetPasswordEmailScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SocialLoginRow(),
+             SocialLoginRow(),
             const Text(
               Strings.doNotHaveAccount,
               style: TextStyle(

@@ -30,6 +30,7 @@ dependencies:
   firebase_core: ^2.23.0
   firebase_auth: ^4.14.1
   flutter_facebook_auth: ^6.0.3
+  twitter_login: ^4.4.2
 
 
 dev_dependencies:

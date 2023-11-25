@@ -1,34 +1,48 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:prestige_valet_app/core/resources/network_constants.dart';
 
-class NetworkUtils {
-  NetworkUtils._privateConstructor();
+class DioHelper {
+  static final DioHelper _instance = DioHelper._internal();
+  static final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: NetworkConstants.baseUrl,
+      receiveTimeout: const Duration(
+        seconds: 7,
+      ),
+    ),
+  );
 
-  static final NetworkUtils _instance = NetworkUtils._privateConstructor();
-  final Dio _dio = Dio();
-
-  Dio get dio => _dio;
-  static const String baseUrl = 'https://api.example.com';
-
-  factory NetworkUtils() {
+  factory DioHelper() {
     return _instance;
   }
 
-  Future<Map<String, dynamic>> getData(String path) async {
+  DioHelper._internal();
+
+  static Future<Map<String, dynamic>> get(
+    String endpoint,
+  ) async {
     try {
-      final response = await _dio.get('$baseUrl/$path');
+      final response = await _dio.get(endpoint);
       return response.data;
     } catch (e) {
-      throw Exception('Failed to fetch data: $e');
+      throw _handleError(e);
     }
   }
 
-  Future<Map<String, dynamic>> postData(
-      String path, Map<String, dynamic> data) async {
+  static Future<Map<String, dynamic>> post(String endpoint,
+      {Map<String, dynamic> data = const {}}) async {
     try {
-      final response = await _dio.post('$baseUrl/$path', data: data);
+      final response = await _dio.post(endpoint, data: data);
       return response.data;
     } catch (e) {
-      throw Exception('Failed to post data: $e');
+      throw _handleError(e);
     }
+  }
+
+  static dynamic _handleError(error) {
+    log('Dio Error: $error');
+    return error;
   }
 }
