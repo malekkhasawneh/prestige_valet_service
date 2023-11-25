@@ -5,13 +5,13 @@ import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/repository/sign_up_repository.dart';
 
-class SignUpUseCase extends UseCase<RegistrationModel, SignUpUseCaseParams> {
+class SignUpUseCase extends UseCase<UserModel, SignUpUseCaseParams> {
   final SignUpRepository repository;
 
   SignUpUseCase({required this.repository});
 
   @override
-  Future<Either<Failures, RegistrationModel>> call(
+  Future<Either<Failures, UserModel>> call(
       SignUpUseCaseParams params) async {
     return await repository.signUp(
       email: params.email,

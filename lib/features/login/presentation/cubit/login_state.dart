@@ -15,6 +15,30 @@ class LoginLoading extends LoginState {
 }
 
 class LoginLoaded extends LoginState {
+  final UserModel userModel;
+
+  const LoginLoaded({required this.userModel});
+
+  @override
+  List<Object> get props => [userModel];
+}
+
+class LoginError extends LoginState {
+  final String error;
+
+  const LoginError({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}
+
+// Set And Get Value States
+class SetValueLoading extends LoginState {
+  @override
+  List<Object> get props => [];
+}
+
+class SetValueLoaded extends LoginState {
   @override
   List<Object> get props => [];
 }

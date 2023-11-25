@@ -1,19 +1,19 @@
-class RegistrationModel {
+class UserModel {
   String token;
   String message;
   User user;
 
-  RegistrationModel({
+  UserModel({
     required this.token,
     required this.message,
     required this.user,
   });
 
-  factory RegistrationModel.fromJson(Map<String, dynamic> json) => RegistrationModel(
-    token: json["token"],
-    message: json["message"],
-    user: User.fromJson(json["user"]),
-  );
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        token: json["token"],
+        message: json["message"],
+        user: User.fromJson(json["user"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "token": token,
@@ -46,16 +46,16 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    userId: json["userId"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    phone: json["phone"],
-    profileImg: json["profileImg"],
-    socialProfile: json["socialProfile"],
-    role: json["role"],
-    email: json["email"],
-  );
+        id: json["id"] ?? -1,
+        userId: json["userId"] ?? '',
+        firstName: json["firstName"] ?? '',
+        lastName: json["lastName"] ?? '',
+        phone: json["phone"] ?? '',
+        profileImg: json["profileImg"] ?? '',
+        socialProfile: json["socialProfile"] ?? false,
+        role: json["role"] ?? '',
+        email: json["email"] ?? '',
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,

@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/login_button_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
+import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -16,7 +20,19 @@ class LoginScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: BlocBuilder<LoginCubit, LoginState>(
+      body: BlocConsumer<LoginCubit, LoginState>(
+        listener: (context, state) {
+          if (state is LoginLoaded) {
+            SignUpCubit.get(context)
+                .setUserModel(
+                    userModel: jsonEncode(
+              state.userModel.toJson(),
+            ))
+                .then((value) {
+              Navigator.pushNamed(context, Routes.bottomNvBarScreen);
+            });
+          }
+        },
         builder: (context, state) {
           return SingleChildScrollView(
             child: Column(
@@ -42,6 +58,7 @@ class LoginScreen extends StatelessWidget {
                   hintText: Strings.emailHint,
                   controller: LoginCubit.get(context).emailController,
                   textInputType: TextInputType.emailAddress,
+                  mustCheck: LoginCubit.get(context).mustCheck,
                 ),
                 const SizedBox(
                   height: 20,
@@ -57,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                     highlightColor: ColorManager.transparent,
                     onPressed: () {
                       LoginCubit.get(context).setShowPassword =
-                      !LoginCubit.get(context).showPassword;
+                          !LoginCubit.get(context).showPassword;
                     },
                     icon: Icon(
                       LoginCubit.get(context).showPassword
@@ -67,6 +84,7 @@ class LoginScreen extends StatelessWidget {
                       size: 20,
                     ),
                   ),
+                  mustCheck: LoginCubit.get(context).mustCheck,
                 ),
                 const SizedBox(
                   height: 50,
@@ -96,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                 SocialLoginRow(),
+                SocialLoginRow(),
                 const Center(
                   child: Text(
                     Strings.doNotHaveAccount,

@@ -46,10 +46,12 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.5,
                       child: TextFieldWidget(
-                        controller: SignUpCubit.get(context).firstNameController,
+                        controller:
+                            SignUpCubit.get(context).firstNameController,
                         title: '',
                         hintText: Strings.signUpFirstName,
                         textInputType: TextInputType.name,
+                        mustCheck: SignUpCubit.get(context).mustCheck,
                       ),
                     ),
                     SizedBox(
@@ -59,6 +61,7 @@ class SignUpScreen extends StatelessWidget {
                         title: '',
                         hintText: Strings.signUpLastName,
                         textInputType: TextInputType.name,
+                        mustCheck: SignUpCubit.get(context).mustCheck,
                       ),
                     ),
                   ],
@@ -68,6 +71,7 @@ class SignUpScreen extends StatelessWidget {
                   title: '',
                   hintText: Strings.signUpPhoneNumber,
                   textInputType: TextInputType.name,
+                  mustCheck: SignUpCubit.get(context).mustCheck,
                 ),
                 TextFieldWidget(
                   controller: SignUpCubit.get(context).emailController,
@@ -75,6 +79,7 @@ class SignUpScreen extends StatelessWidget {
                   hintText: Strings.signUpEmailAddress,
                   textInputType: TextInputType.emailAddress,
                   readOnly: SignUpCubit.get(context).hideNormalAuthField,
+                  mustCheck: SignUpCubit.get(context).mustCheck,
                 ),
                 !SignUpCubit.get(context).hideNormalAuthField
                     ? TextFieldWidget(
@@ -98,6 +103,7 @@ class SignUpScreen extends StatelessWidget {
                             size: 20,
                           ),
                         ),
+                        mustCheck: SignUpCubit.get(context).mustCheck,
                       )
                     : const SizedBox(),
                 const SizedBox(

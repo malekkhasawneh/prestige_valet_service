@@ -16,7 +16,8 @@ class TextFieldWidget extends StatelessWidget {
     this.addSuffixIcon = false,
     this.isPassword = false,
     this.suffixIcon = const SizedBox(),
-    this.readOnly =false,
+    this.readOnly = false,
+    this.mustCheck = false,
   });
 
   final String title;
@@ -27,7 +28,9 @@ class TextFieldWidget extends StatelessWidget {
   final bool addSuffixIcon;
   final bool isPassword;
   final Widget suffixIcon;
-final bool readOnly;
+  final bool readOnly;
+  final bool mustCheck;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -56,8 +59,8 @@ final bool readOnly;
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: controller.text.isEmpty &&
-                          SignUpCubit.get(context).mustCheck
+                  color: controller.text.isEmpty &&mustCheck
+
                       ? Colors.red
                       : Colors.grey.withOpacity(0.3),
                   width: 1.0,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 
 class LoginButtonWidget extends StatelessWidget {
   const LoginButtonWidget({super.key});
@@ -16,7 +17,12 @@ class LoginButtonWidget extends StatelessWidget {
         height: screenHeight * 0.065,
         constraints: const BoxConstraints(maxHeight: 50),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            LoginCubit.get(context).setMustCheck = true;
+            if (!LoginCubit.get(context).checkIfThereAreEmptyValue()) {
+              LoginCubit.get(context).login();
+            }
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorManager.blackColor,
             shape: RoundedRectangleBorder(
