@@ -20,6 +20,7 @@ class SignUpUseCase extends UseCase<RegistrationModel, SignUpUseCaseParams> {
       firstName: params.firstName,
       lastName: params.lastName,
       socialProfile: params.socialProfile,
+      imageUrl: params.imageUrl,
     );
   }
 }
@@ -31,12 +32,14 @@ class SignUpUseCaseParams extends Equatable {
   final String firstName;
   final String lastName;
   final bool socialProfile;
+  final String imageUrl;
 
   const SignUpUseCaseParams(
       {required this.email,
       required this.phone,
       required this.password,
       required this.firstName,
+      required this.imageUrl,
       required this.lastName,
       required this.socialProfile});
 

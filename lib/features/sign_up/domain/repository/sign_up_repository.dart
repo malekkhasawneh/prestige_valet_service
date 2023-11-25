@@ -10,5 +10,7 @@ abstract class SignUpRepository {
     required String firstName,
     required String lastName,
     required bool socialProfile,
+    required String imageUrl,
+
   });
 }

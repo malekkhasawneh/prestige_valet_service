@@ -23,7 +23,8 @@ class SignUpRepositoryImpl implements SignUpRepository {
       required String password,
       required String firstName,
       required String lastName,
-      required bool socialProfile}) async {
+        required String imageUrl,
+      required bool socialProfile,}) async {
     if (await networkInfo.checkConnection()) {
       try {
         final response = await signUpRemoteDataSource.signUp(
@@ -32,7 +33,7 @@ class SignUpRepositoryImpl implements SignUpRepository {
             password: password,
             firstName: firstName,
             lastName: lastName,
-            socialProfile: socialProfile);
+            socialProfile: socialProfile,imageUrl: imageUrl);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

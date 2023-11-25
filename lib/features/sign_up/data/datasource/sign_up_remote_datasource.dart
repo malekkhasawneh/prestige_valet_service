@@ -11,6 +11,7 @@ abstract class SignUpRemoteDataSource {
     required String firstName,
     required String lastName,
     required bool socialProfile,
+    required String imageUrl,
   });
 }
 
@@ -23,6 +24,7 @@ class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
     required String firstName,
     required String lastName,
     required bool socialProfile,
+    required String imageUrl,
   }) async {
     try {
       Map<String, dynamic> response =
@@ -33,6 +35,7 @@ class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
         "firstName": firstName,
         "lastName": lastName,
         "socialProfile": socialProfile,
+        "imageUrl": imageUrl,
       });
       return RegistrationModel.fromJson(response);
     } on Exception {

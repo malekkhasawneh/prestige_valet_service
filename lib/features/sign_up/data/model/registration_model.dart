@@ -3,6 +3,7 @@ class RegistrationModel {
   final int id;
   final String message;
   final String role;
+  final String imageUrl;
   final bool socialProfile;
 
   RegistrationModel(
@@ -10,6 +11,7 @@ class RegistrationModel {
       required this.id,
       required this.message,
       required this.role,
+      required this.imageUrl,
       required this.socialProfile});
 
   factory RegistrationModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class RegistrationModel {
       id: json['id'],
       message: json['message'],
       role: json['role'],
+      imageUrl: json['imageUrl'],
       socialProfile: json['socialProfile'],
     );
   }

@@ -29,6 +29,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     _showPassword = value;
     emit(SetValueLoaded());
   }
+
   bool _mustCheck = false;
 
   bool get mustCheck => _mustCheck;
@@ -39,26 +40,30 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(SetValueLoaded());
   }
 
-  Future<void> signUp({bool socialProfile = false}) async {
+  Future<void> signUp(
+      {bool socialProfile = false, String imageUrl = ""}) async {
     emit(SignUpLoading());
     try {
-      final response = await signUpUseCase(SignUpUseCaseParams(
+      final response = await signUpUseCase(
+        SignUpUseCaseParams(
           email: emailController.text,
           phone: phoneController.text,
           password: passwordController.text,
           firstName: firstNameController.text,
           lastName: lastNameController.text,
-          socialProfile: socialProfile));
+          socialProfile: socialProfile,
+          imageUrl: imageUrl,
+        ),
+      );
       response.fold((failure) {
         log('=============================== failure ${failure.failure}');
         emit(SignUpError(failure: failure.toString()));
-      },
-          (success) {
-            log('======================================== response ${success.token}');
-            log('======================================== response ${success.id}');
-            log('======================================== response ${success.role}');
-            emit(SetValueLoaded());
-          });
+      }, (success) {
+        log('======================================== response ${success.token}');
+        log('======================================== response ${success.id}');
+        log('======================================== response ${success.role}');
+        emit(SetValueLoaded());
+      });
     } catch (failure) {
       emit(SignUpError(failure: failure.toString()));
     }
