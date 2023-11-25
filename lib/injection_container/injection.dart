@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
+import 'package:prestige_valet_app/injection_container/home_injection.dart';
 import 'package:prestige_valet_app/injection_container/login_injection.dart';
 import 'package:prestige_valet_app/injection_container/payment_gateway_injection.dart';
 import 'package:prestige_valet_app/injection_container/sign_up_injection.dart';
@@ -14,6 +15,7 @@ Future<void> init() async {
   paymentGatewayInjection();
   signUpInjection();
   loginInjection();
+  homeInjection();
 
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(

@@ -23,8 +23,9 @@ class Strings {
   //Home Screen
   static const String carParkedHiString =
       'Hi Shaker, Your Car Is\nParked Safely';
-  static const String mainScreenHiString =
-      'Hi Shaker, Let the\ndoorman scan the QR\ncode in order to park';
+
+  static String mainScreenHiString({required String userName}) =>
+      'Hi $userName, Let the\ndoorman scan the QR\ncode in order to park';
   static const String uniqueId = 'Unique Identifier';
   static const String showYourHistory = 'Show Your History';
   static const String requestCar = 'Request Car';

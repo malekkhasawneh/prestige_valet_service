@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_usecase.dart';
+import 'package:prestige_valet_app/features/login/domain/usecase/login_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 
 part 'login_state.dart';
@@ -11,9 +13,11 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
   static LoginCubit get(BuildContext context) => BlocProvider.of(context);
 
-  LoginCubit({required this.loginUseCase}) : super(LoginInitial());
+  LoginCubit({required this.loginUseCase, required this.loginWithGoogleUseCase})
+      : super(LoginInitial());
 
   final LoginUseCase loginUseCase;
+  final LoginWithGoogleUseCase loginWithGoogleUseCase;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -40,19 +44,34 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login() async {
     emit(LoginLoading());
+    log('================================== email ${emailController.text}');
+    log('================================== password ${passwordController.text}');
     try {
       final response = await loginUseCase(LoginUseCaseParams(
           email: emailController.text, password: passwordController.text));
-      response.fold(
-          (failure) {
-            log('====================================== Error ${failure.failure}');
-            emit(LoginError(error: failure.failure));
-          },
+      response.fold((failure) {
+        emit(LoginError(error: failure.failure));
+      },
           (success) => emit(LoginLoaded(
                 userModel: success,
               )));
     } catch (error) {
-      log('====================================== Error ${error.toString()}');
+      emit(LoginError(error: error.toString()));
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    emit(LoginLoading());
+    try {
+      final response = await loginWithGoogleUseCase(NoParams());
+      response.fold((failure) {
+        emit(LoginError(error: failure.failure));
+      }, (success) async {
+        emailController.text = success.user!.email ?? '';
+        passwordController.text = '';
+        await login();
+      });
+    } catch (error) {
       emit(LoginError(error: error.toString()));
     }
   }

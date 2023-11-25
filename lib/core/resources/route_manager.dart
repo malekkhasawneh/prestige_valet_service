@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/page/add_credit_card_screen.dart';
-import 'package:prestige_valet_app/features/botton_navigation_bar/presentation/page/bottom_nav_bar_screen.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/page/bottom_nav_bar_screen.dart';
 import 'package:prestige_valet_app/features/edit_profile/page/edit_profile_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';

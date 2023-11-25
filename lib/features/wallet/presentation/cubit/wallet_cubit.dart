@@ -13,5 +13,5 @@ class WalletCubit extends Cubit<WalletState> {
       (screenHeight * 0.7) - 56;
 
   double headerBoxHeight(BuildContext context, double screenHeight) =>
-      screenHeight * 0.3;
+      (screenHeight * 0.3)-2;
 }

@@ -5,7 +5,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
-import 'package:prestige_valet_app/features/botton_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -46,7 +46,7 @@ class PrestigeValetApp extends StatelessWidget {
           create: (_) => di.sl(),
         ),
         BlocProvider<BottomNavBarCubit>(create: (_) => BottomNavBarCubit()),
-        BlocProvider<HomeCubit>(create: (_) => HomeCubit()),
+        BlocProvider<HomeCubit>(create: (_) => di.sl<HomeCubit>()),
         BlocProvider<WalletCubit>(create: (_) => WalletCubit()),
         BlocProvider<ProfileCubit>(create: (_) => ProfileCubit()),
         BlocProvider<AddCreditCardCubit>(create: (_) => AddCreditCardCubit()),

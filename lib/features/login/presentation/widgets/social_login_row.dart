@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
+import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 
 class SocialLoginRow extends StatelessWidget {
@@ -19,7 +20,7 @@ class SocialLoginRow extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            SignUpCubit.get(context).signInWithGoogle();
+           LoginCubit.get(context).loginWithGoogle();
           },
           child: Image.asset(
             Images.gmailLogo,

@@ -18,9 +18,10 @@ class QrCodeWidget extends StatelessWidget {
         Navigator.pushNamed(context, Routes.carParkedHomeScreen);
       },
       child: QrImageView(
-        data: 'This QR code has an embedded image as well',
+        data: HomeCubit.get(context).userModel.user.userId,
         version: QrVersions.auto,
-        size: HomeCubit.get(context).bodyBoxHeight(context, screenHeight) * 0.45,
+        size:
+            HomeCubit.get(context).bodyBoxHeight(context, screenHeight) * 0.47,
         gapless: false,
       ),
     );

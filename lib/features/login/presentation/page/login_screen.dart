@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
               state.userModel.toJson(),
             ))
                 .then((value) {
-              Navigator.pushNamed(context, Routes.bottomNvBarScreen);
+              Navigator.pushReplacementNamed(context, Routes.bottomNvBarScreen);
             });
           }
         },

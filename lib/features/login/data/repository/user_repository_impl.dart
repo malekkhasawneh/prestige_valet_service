@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/errors/failures.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
@@ -29,6 +30,20 @@ class LoginRepositoryImpl implements LoginRepository {
       }
     } else {
       return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, UserCredential>> loginWithGoogle() async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.loginWithGoogle();
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(ServerFailure(failure: Constants.internetFailure));
     }
   }
 }

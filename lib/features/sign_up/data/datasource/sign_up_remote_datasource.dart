@@ -45,7 +45,7 @@ class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
       throw ServerException();
     }
   }
-
+  @override
   Future<UserCredential> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
