@@ -53,7 +53,7 @@ class PrestigeValetApp extends StatelessWidget {
         BlocProvider<EditProfileCubit>(create: (_) => EditProfileCubit()),
         BlocProvider<PickUpCubit>(create: (_) => PickUpCubit()),
         BlocProvider<LoginCubit>(create: (_) => LoginCubit()),
-        BlocProvider<SignUpCubit>(create: (_) => SignUpCubit()),
+        BlocProvider<SignUpCubit>(create: (_) => di.sl<SignUpCubit>()),
         BlocProvider<ForgetPasswordCubit>(create: (_) => ForgetPasswordCubit()),
         BlocProvider<ScanQrCubit>(create: (_) => ScanQrCubit()),
       ],

@@ -49,7 +49,7 @@ class SignUpScreen extends StatelessWidget {
                         controller: SignUpCubit.get(context).firstNameController,
                         title: '',
                         hintText: Strings.signUpFirstName,
-                        textInputType: TextInputType.number,
+                        textInputType: TextInputType.name,
                       ),
                     ),
                     SizedBox(
@@ -58,7 +58,7 @@ class SignUpScreen extends StatelessWidget {
                         controller: SignUpCubit.get(context).lastNameController,
                         title: '',
                         hintText: Strings.signUpLastName,
-                        textInputType: TextInputType.number,
+                        textInputType: TextInputType.name,
                       ),
                     ),
                   ],
@@ -73,7 +73,7 @@ class SignUpScreen extends StatelessWidget {
                   controller: SignUpCubit.get(context).emailController,
                   title: '',
                   hintText: Strings.signUpEmailAddress,
-                  textInputType: TextInputType.text,
+                  textInputType: TextInputType.emailAddress,
                 ),
                 TextFieldWidget(
                   controller: SignUpCubit.get(context).passwordController,

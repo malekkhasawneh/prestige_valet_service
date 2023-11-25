@@ -79,8 +79,7 @@ class SocialLoginRow extends StatelessWidget {
           height: screenHeight * 0.15,
         ),
         GestureDetector(
-          onTap: () async {
-          },
+          onTap: () {},
           child: Image.asset(
             Images.gmailLogo,
             width: screenWidth * 0.15,
