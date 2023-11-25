@@ -19,10 +19,16 @@ class SignUpLoaded extends SignUpState {
   List<Object> get props => [];
 }
 
+class SignUpMissingData extends SignUpState {
+  @override
+  List<Object> get props => [];
+}
+
 class SignUpError extends SignUpState {
   final String failure;
 
- const SignUpError({required this.failure});
+  const SignUpError({required this.failure});
+
   @override
   List<Object> get props => [failure];
 }

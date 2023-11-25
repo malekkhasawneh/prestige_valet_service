@@ -16,6 +16,7 @@ class TextFieldWidget extends StatelessWidget {
     this.addSuffixIcon = false,
     this.isPassword = false,
     this.suffixIcon = const SizedBox(),
+    this.readOnly =false,
   });
 
   final String title;
@@ -26,7 +27,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool addSuffixIcon;
   final bool isPassword;
   final Widget suffixIcon;
-
+final bool readOnly;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -65,6 +66,7 @@ class TextFieldWidget extends StatelessWidget {
               ),
               child: Center(
                 child: TextFormField(
+                  readOnly: readOnly,
                   obscureText: isPassword,
                   controller: controller,
                   keyboardType: textInputType,

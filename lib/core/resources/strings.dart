@@ -1,24 +1,12 @@
-import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
-import 'package:prestige_valet_app/core/resources/arabic_strings.dart';
-import 'package:prestige_valet_app/core/resources/cache_keys.dart';
 import 'package:prestige_valet_app/core/resources/english_strings.dart';
 
 class Strings {
-  static bool isEnglish = SharedPreferencesHelper.getBool(
-    CacheKeys.isEnglishLanguage,
-    defaultValue: true,
-  );
-
   static String noInternetConnection() {
-    return isEnglish
-        ? EnglishStrings.noInternetConnection
-        : ArabicStrings.noInternetConnection;
+    return EnglishStrings.noInternetConnection;
   }
 
   static String processFailed() {
-    return isEnglish
-        ? EnglishStrings.processFailed
-        : ArabicStrings.processFailed;
+    return EnglishStrings.processFailed;
   }
 
   //Welcome Screen

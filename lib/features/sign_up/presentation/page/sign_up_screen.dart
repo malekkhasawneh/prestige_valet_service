@@ -74,46 +74,53 @@ class SignUpScreen extends StatelessWidget {
                   title: '',
                   hintText: Strings.signUpEmailAddress,
                   textInputType: TextInputType.emailAddress,
+                  readOnly: SignUpCubit.get(context).hideNormalAuthField,
                 ),
-                TextFieldWidget(
-                  controller: SignUpCubit.get(context).passwordController,
-                  title: '',
-                  hintText: Strings.signUpPassword,
-                  textInputType: TextInputType.visiblePassword,
-                  isPassword: !SignUpCubit.get(context).showPassword,
-                  addSuffixIcon: true,
-                  suffixIcon: IconButton(
-                    highlightColor: ColorManager.transparent,
-                    onPressed: () {
-                      SignUpCubit.get(context).setShowPassword =
-                          !SignUpCubit.get(context).showPassword;
-                    },
-                    icon: Icon(
-                      SignUpCubit.get(context).showPassword
-                          ? Icons.visibility_off
-                          : Icons.remove_red_eye,
-                      color: ColorManager.primaryColor,
-                      size: 20,
-                    ),
-                  ),
-                ),
+                !SignUpCubit.get(context).hideNormalAuthField
+                    ? TextFieldWidget(
+                        controller: SignUpCubit.get(context).passwordController,
+                        title: '',
+                        hintText: Strings.signUpPassword,
+                        textInputType: TextInputType.visiblePassword,
+                        isPassword: !SignUpCubit.get(context).showPassword,
+                        addSuffixIcon: true,
+                        suffixIcon: IconButton(
+                          highlightColor: ColorManager.transparent,
+                          onPressed: () {
+                            SignUpCubit.get(context).setShowPassword =
+                                !SignUpCubit.get(context).showPassword;
+                          },
+                          icon: Icon(
+                            SignUpCubit.get(context).showPassword
+                                ? Icons.visibility_off
+                                : Icons.remove_red_eye,
+                            color: ColorManager.primaryColor,
+                            size: 20,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
                 const SizedBox(
                   height: 25,
                 ),
                 const SignUpButtonWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Text(
-                    Strings.or,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.withOpacity(0.9),
-                    ),
-                  ),
-                ),
-              SocialLoginRow()
+                !SignUpCubit.get(context).hideNormalAuthField
+                    ? Column(children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Text(
+                            Strings.or,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.withOpacity(0.9),
+                            ),
+                          ),
+                        ),
+                        SocialLoginRow()
+                      ])
+                    : const SizedBox(),
               ],
             ),
           ),

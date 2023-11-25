@@ -12,7 +12,7 @@ dependencies:
   connectivity_plus: ^4.0.2
   internet_connection_checker: ^1.0.0+1
   dio: ^5.3.2
-  shared_preferences: ^2.2.1
+  flutter_secure_storage: ^9.0.0
   barcode_scan2: ^4.2.4
   #domain
   equatable: ^2.0.5
@@ -31,6 +31,7 @@ dependencies:
   firebase_auth: ^4.14.1
   flutter_facebook_auth: ^6.0.3
   twitter_login: ^4.4.2
+
 
 
 dev_dependencies:

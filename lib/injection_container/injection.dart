@@ -19,7 +19,6 @@ Future<void> init() async {
         internetConnectionChecker: sl(),
       ));
   //! External
-  SharedPreferencesHelper.init();
   sl.registerLazySingleton(() => Dio());
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => InternetConnectionChecker());

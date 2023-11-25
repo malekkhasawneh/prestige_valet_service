@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 
 class SignUpButtonWidget extends StatelessWidget {
@@ -19,8 +20,13 @@ class SignUpButtonWidget extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () async {
             SignUpCubit.get(context).setMustCheck = true;
-
-            await SignUpCubit.get(context).signUp();
+            if ((!SignUpCubit.get(context).checkIfThereAreAnyMissingData() &&
+                    !SignUpCubit.get(context).hideNormalAuthField) ||
+                (!SignUpCubit.get(context)
+                        .checkIfThereAreAnyMissingDataForSocial() &&
+                    SignUpCubit.get(context).hideNormalAuthField)) {
+              await SignUpCubit.get(context).signUp();
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorManager.primaryColor,
