@@ -16,6 +16,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
       final String response =
           await CacheHelper.getValue(key: CacheConstants.userModel);
       UserModel userModel = UserModel.fromJson(jsonDecode(response));
+      await CacheHelper.setValue(key: CacheConstants.appToken, value: userModel.token);
       return userModel;
     } on Exception {
       throw CacheException();

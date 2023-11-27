@@ -8,3 +8,21 @@ class WalletInitial extends WalletState {
   @override
   List<Object> get props => [];
 }
+class WalletLoading extends WalletState {
+  @override
+  List<Object> get props => [];
+}
+class WalletLoaded extends WalletState {
+  final List<WalletModel> model;
+
+ const WalletLoaded({required this.model});
+  @override
+  List<Object> get props => [model];
+}
+class WalletError extends WalletState {
+  final String failure;
+
+ const WalletError({required this.failure});
+  @override
+  List<Object> get props => [failure];
+}

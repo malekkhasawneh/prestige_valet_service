@@ -44,8 +44,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login() async {
     emit(LoginLoading());
-    log('================================== email ${emailController.text}');
-    log('================================== password ${passwordController.text}');
     try {
       final response = await loginUseCase(LoginUseCaseParams(
           email: emailController.text, password: passwordController.text));

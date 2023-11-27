@@ -5,7 +5,7 @@ import 'package:prestige_valet_app/core/resources/network_constants.dart';
 
 class DioHelper {
   static final DioHelper _instance = DioHelper._internal();
-  static final Dio _dio = Dio(
+  static Dio _dio = Dio(
     BaseOptions(
       baseUrl: NetworkConstants.baseUrl,
       receiveTimeout: const Duration(
@@ -20,12 +20,27 @@ class DioHelper {
 
   DioHelper._internal();
 
-  static Future<Map<String, dynamic>> get(
-    String endpoint,
-  ) async {
+  static Future<void> addTokenHeader() async {
+    _dio = Dio(
+      BaseOptions(
+          baseUrl: NetworkConstants.baseUrl,
+          receiveTimeout: const Duration(
+            seconds: 7,
+          ),
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDQyMTcsImV4cCI6MTcwNjI4ODIxN30.Y_ZEILuqJ-CMZjHB2Gt-9NZK5R1cCIPfKwTBH4-ihys',
+            'Content-Type': 'application/json',
+          }),
+    );
+  }
+
+  static Future<Response> get(String endpoint) async {
     try {
-      final response = await _dio.get(endpoint);
-      return response.data;
+      final response = await _dio.get(
+        endpoint,
+      );
+      return response;
     } catch (e) {
       throw _handleError(e);
     }

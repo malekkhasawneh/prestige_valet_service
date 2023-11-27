@@ -4,4 +4,5 @@ class Constants{
   static const serverFailure = 'Unable to connect to server';
   static const internetFailure = 'Check your connection';
   static const cacheFailure = 'Unable to access to cache';
+  static const changePasswordSuccess = 'Password changed successfully';
 }

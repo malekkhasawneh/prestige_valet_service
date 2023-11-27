@@ -4,7 +4,14 @@ import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 
 class CreditCardWidget extends StatelessWidget {
-  const CreditCardWidget({super.key});
+  const CreditCardWidget({
+    super.key,
+    required this.name,
+    required this.cardNumber,
+  });
+
+  final String name;
+  final String cardNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +28,10 @@ class CreditCardWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Column(
               children: [
-                const Column(
+                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       Strings.creditCardOverView,
                       style: TextStyle(
                         fontFamily: Fonts.sourceSansPro,
@@ -32,8 +39,8 @@ class CreditCardWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Shaker Amayreh',
-                      style: TextStyle(
+                      name,
+                      style: const TextStyle(
                         fontFamily: Fonts.sourceSansPro,
                         fontSize: 17,
                       ),
@@ -44,7 +51,7 @@ class CreditCardWidget extends StatelessWidget {
                 const SizedBox(
                   height: 35,
                 ),
-                Text(Strings.creditCardNumber('0322')),
+                Text(Strings.creditCardNumber(cardNumber)),
               ],
             ),
           ),
