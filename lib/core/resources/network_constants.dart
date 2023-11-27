@@ -5,4 +5,6 @@ class NetworkConstants {
   static const String loginEndPoint = 'auth/authenticate';
   static const String changePasswordEndPoint = 'auth/changePassword';
   static const String getCards = 'wallet';
+  static const String editProfile = 'auth/user/profile';
+  static const String addUserImage = 'auth/user/image';
 }

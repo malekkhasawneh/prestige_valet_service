@@ -6,7 +6,7 @@ import 'package:prestige_valet_app/core/resources/network_constants.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 
 abstract class SignUpRemoteDataSource {
-  Future<UserModel> signUp({
+  Future<SignUpModel> signUp({
     required String email,
     required String phone,
     required String password,
@@ -20,7 +20,7 @@ abstract class SignUpRemoteDataSource {
 
 class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
   @override
-  Future<UserModel> signUp({
+  Future<SignUpModel> signUp({
     required String email,
     required String phone,
     required String password,
@@ -40,7 +40,7 @@ class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
         "socialProfile": socialProfile,
         "imageUrl": imageUrl,
       });
-      return UserModel.fromJson(response);
+      return SignUpModel.fromJson(response);
     } on Exception {
       throw ServerException();
     }

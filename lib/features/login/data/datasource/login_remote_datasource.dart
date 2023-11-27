@@ -6,13 +6,13 @@ import 'package:prestige_valet_app/core/resources/network_constants.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 
 abstract class LoginRemoteDataSource {
-  Future<UserModel> login({required String email, required String password});
+  Future<SignUpModel> login({required String email, required String password});
   Future<UserCredential> loginWithGoogle();
 }
 
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   @override
-  Future<UserModel> login(
+  Future<SignUpModel> login(
       {required String email, required String password}) async {
     try {
       Map<String, dynamic> response =
@@ -20,7 +20,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
         "email": email,
         "password": password,
       });
-      UserModel userModel = UserModel.fromJson(response);
+      SignUpModel userModel = SignUpModel.fromJson(response);
       return userModel;
     } on Exception {
       throw ServerException();

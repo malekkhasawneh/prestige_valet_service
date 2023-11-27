@@ -21,7 +21,7 @@ class SignUpRepositoryImpl implements SignUpRepository {
   });
 
   @override
-  Future<Either<Failures, UserModel>> signUp({
+  Future<Either<Failures, SignUpModel>> signUp({
     required String email,
     required String phone,
     required String password,

@@ -15,7 +15,7 @@ class LoginLoading extends LoginState {
 }
 
 class LoginLoaded extends LoginState {
-  final UserModel userModel;
+  final SignUpModel userModel;
 
   const LoginLoaded({required this.userModel});
 

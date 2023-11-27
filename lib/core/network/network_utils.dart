@@ -1,6 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
 
 class DioHelper {
@@ -29,7 +32,7 @@ class DioHelper {
           ),
           headers: {
             'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDQyMTcsImV4cCI6MTcwNjI4ODIxN30.Y_ZEILuqJ-CMZjHB2Gt-9NZK5R1cCIPfKwTBH4-ihys',
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDk4MzcsImV4cCI6MTcwNjI5MzgzN30.Vc4-ZA6MtlD03a5iEHEOKQb-3dlcin8thHE5YfqPiis',
             'Content-Type': 'application/json',
           }),
     );
@@ -53,6 +56,44 @@ class DioHelper {
       return response.data;
     } catch (e) {
       throw _handleError(e);
+    }
+  }
+
+  static Future<Map<String, dynamic>> patch(String endpoint,
+      {Map<String, dynamic> data = const {}}) async {
+    try {
+      final response = await _dio.patch(endpoint, data: data);
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  static Map<String, dynamic> headers = {
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDk4MzcsImV4cCI6MTcwNjI5MzgzN30.Vc4-ZA6MtlD03a5iEHEOKQb-3dlcin8thHE5YfqPiis',
+    'Content-Type': 'application/json',
+  };
+
+  static Future<bool> uploadImage(
+      File imageFile, BuildContext context, int userId) async {
+    final url =
+        Uri.parse(NetworkConstants.baseUrl + NetworkConstants.addUserImage);
+    var request = http.MultipartRequest('POST', url);
+    request.fields['userId'] = userId.toString();
+    var pic = await http.MultipartFile.fromPath('image', imageFile.path);
+    request.files.add(pic);
+    headers.forEach((key, value) {
+      request.headers[key] = value;
+    });
+    var response = await request.send();
+    if (response.statusCode == 202) {
+      log('========================================= true');
+      return true;
+    } else {
+      log('========================================= false');
+
+      return false;
     }
   }
 

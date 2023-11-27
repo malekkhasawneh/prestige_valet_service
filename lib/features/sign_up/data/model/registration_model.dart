@@ -1,15 +1,15 @@
-class UserModel {
+class SignUpModel {
   String token;
   String message;
   User user;
 
-  UserModel({
+  SignUpModel({
     required this.token,
     required this.message,
     required this.user,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+  factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
         token: json["token"],
         message: json["message"],
         user: User.fromJson(json["user"]),

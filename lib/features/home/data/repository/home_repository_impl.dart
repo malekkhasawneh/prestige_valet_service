@@ -12,7 +12,7 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Either<Failures, UserModel>> getUserData() async {
+  Future<Either<Failures, SignUpModel>> getUserData() async {
     try {
       final response = await localDataSource.getUserData();
       return Right(response);

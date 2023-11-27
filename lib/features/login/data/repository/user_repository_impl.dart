@@ -18,7 +18,7 @@ class LoginRepositoryImpl implements LoginRepository {
   });
 
   @override
-  Future<Either<Failures, UserModel>> login(
+  Future<Either<Failures, SignUpModel>> login(
       {required String email, required String password}) async {
     if (await networkInfo.checkConnection()) {
       try {

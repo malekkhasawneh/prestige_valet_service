@@ -24,7 +24,7 @@ class HomeCubit extends Cubit<HomeState> {
   double headerBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.3) - 2;
 
-  late UserModel userModel;
+  late SignUpModel userModel;
 
   Future<void> getUserData() async {
     emit(HomeLoading());
