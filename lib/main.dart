@@ -6,16 +6,19 @@ import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
-import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/page/bottom_nav_bar_screen.dart';
 import 'package:prestige_valet_app/features/edit_profile/presentation/cubit/edit_profile_cubit.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
+import 'package:prestige_valet_app/features/login/presentation/page/login_screen.dart';
 import 'package:prestige_valet_app/features/payment_gateway/presentation/cubit/payment_gateway_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
+import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/scan_qr_code/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
+import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart' as di;
 
@@ -49,15 +52,17 @@ class PrestigeValetApp extends StatelessWidget {
         BlocProvider<HomeCubit>(create: (_) => di.sl<HomeCubit>()),
         BlocProvider<WalletCubit>(create: (_) => di.sl<WalletCubit>()),
         BlocProvider<ProfileCubit>(create: (_) => ProfileCubit()),
-        BlocProvider<AddCreditCardCubit>(create: (_) => AddCreditCardCubit()),
+        BlocProvider<AddCreditCardCubit>(
+            create: (_) => di.sl<AddCreditCardCubit>()),
         BlocProvider<EditProfileCubit>(
             create: (_) => di.sl<EditProfileCubit>()),
-        BlocProvider<PickUpCubit>(create: (_) => PickUpCubit()),
+        BlocProvider<PickUpCubit>(create: (_) => di.sl<PickUpCubit>()),
         BlocProvider<LoginCubit>(create: (_) => di.sl<LoginCubit>()),
         BlocProvider<SignUpCubit>(create: (_) => di.sl<SignUpCubit>()),
         BlocProvider<ForgetPasswordCubit>(
             create: (_) => di.sl<ForgetPasswordCubit>()),
         BlocProvider<ScanQrCubit>(create: (_) => ScanQrCubit()),
+        BlocProvider<SplashCubit>(create: (_) => di.sl<SplashCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -66,7 +71,7 @@ class PrestigeValetApp extends StatelessWidget {
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const BottomNavBarScreen(),
+        home: const PickUpScreen(),
       ),
     );
   }

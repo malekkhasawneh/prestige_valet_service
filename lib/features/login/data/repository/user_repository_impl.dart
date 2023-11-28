@@ -4,16 +4,19 @@ import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/errors/failures.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
+import 'package:prestige_valet_app/features/login/data/datasource/login_local_datasource.dart';
 import 'package:prestige_valet_app/features/login/data/datasource/login_remote_datasource.dart';
 import 'package:prestige_valet_app/features/login/domain/repository/login_repository.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   final LoginRemoteDataSource remoteDataSource;
+  final LoginLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
 
   LoginRepositoryImpl({
     required this.remoteDataSource,
+    required this.localDataSource,
     required this.networkInfo,
   });
 
@@ -44,6 +47,16 @@ class LoginRepositoryImpl implements LoginRepository {
       }
     } else {
       return const Left(ServerFailure(failure: Constants.internetFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, void>> setLoginFlag() async {
+    try {
+      final response = await localDataSource.setLoginFlag();
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(failure: Constants.cacheFailure));
     }
   }
 }

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
+import 'package:prestige_valet_app/features/pick_up/data/model/gates_model.dart';
 
 class CardItemWidget extends StatelessWidget {
-  const CardItemWidget({super.key, required this.gate});
+  const CardItemWidget({super.key, required this.gate, required this.onTap});
 
-  final Map<String, dynamic> gate;
+  final Gates gate;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {
-        PickUpCubit.get(context).setSelectedGate = gate['id'];
-      },
+      onTap: onTap,
       child: Container(
         width: screenWidth * 0.3,
         height: screenHeight * 0.13,
@@ -21,13 +20,13 @@ class CardItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             15,
           ),
-          color: PickUpCubit.get(context).getSelectedGate == gate['id']
+          color: gate.isSelected
               ? Colors.pinkAccent
               : Colors.grey.withOpacity(0.1),
         ),
         child: Center(
           child: Text(
-            gate['gate'],
+            gate.name,
           ),
         ),
       ),

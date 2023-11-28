@@ -11,18 +11,18 @@ class CacheHelper {
   CacheHelper._internal();
 
   static Future<void> setValue(
-      {required String key, required dynamic value}) async {
+      {required String key, required String value}) async {
     await secureStorage.write(
       key: key,
       value: value,
     );
   }
 
-  static Future<String> getValue({required String key}) async {
+  static Future<String> getValue({required String key,String nullHandler = ''}) async {
     return await secureStorage.read(
           key: key,
         ) ??
-        '';
+        nullHandler;
   }
 
   static Future<void> clear() async {

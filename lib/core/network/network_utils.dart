@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
+import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
 
 class DioHelper {
@@ -32,7 +34,7 @@ class DioHelper {
           ),
           headers: {
             'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDk4MzcsImV4cCI6MTcwNjI5MzgzN30.Vc4-ZA6MtlD03a5iEHEOKQb-3dlcin8thHE5YfqPiis',
+                'Bearer ${await CacheHelper.getValue(key: CacheConstants.appToken)}',
             'Content-Type': 'application/json',
           }),
     );

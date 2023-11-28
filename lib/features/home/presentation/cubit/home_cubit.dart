@@ -33,6 +33,8 @@ class HomeCubit extends Cubit<HomeState> {
       response.fold((failure) => emit(HomeError(failure: failure.toString())),
           (userModel) {
         this.userModel = userModel;
+        log('============================================== token ${userModel.token}');
+
             emit(HomeLoaded());
           });
     } catch (failure) {

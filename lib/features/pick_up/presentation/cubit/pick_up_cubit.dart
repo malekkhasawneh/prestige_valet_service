@@ -1,13 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/usecase/usecase.dart';
+import 'package:prestige_valet_app/features/pick_up/data/model/gates_model.dart';
+import 'package:prestige_valet_app/features/pick_up/domain/usecase/get_gates_usecase.dart';
 
 part 'pick_up_state.dart';
 
 class PickUpCubit extends Cubit<PickUpState> {
   static PickUpCubit get(BuildContext context) => BlocProvider.of(context);
 
-  PickUpCubit() : super(PickUpInitial());
+  PickUpCubit({
+    required this.getGatesUseCase,
+  }) : super(PickUpInitial());
+
+  final GetGatesUseCase getGatesUseCase;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -15,20 +22,20 @@ class PickUpCubit extends Cubit<PickUpState> {
   double headerBoxHeight(BuildContext context, double screenHeight) =>
       screenHeight * 0.3;
 
-  int _selectedGate = 1;
 
-  int get getSelectedGate => _selectedGate;
-
-  set setSelectedGate(int value) {
+  Future<void> getGates() async {
     emit(PickUpLoading());
-    _selectedGate = value;
-    emit(PickUpLoaded());
+    try {
+      final response = await getGatesUseCase(NoParams());
+      response.fold(
+          (failure) => emit(PickUpError(
+                failure: failure.failure,
+              )),
+          (gates) => emit(PickUpLoaded(
+                gatesModel: gates,
+              )));
+    } catch (failure) {
+      emit(PickUpError(failure: failure.toString()));
+    }
   }
-
-  List<Map<String, dynamic>> gates = [
-    {'id': 1, 'gate': 'Gate1'},
-    {'id': 2, 'gate': 'Gate2'},
-    {'id': 3, 'gate': 'Gate3'},
-    {'id': 4, 'gate': 'Gate4'},
-  ];
 }

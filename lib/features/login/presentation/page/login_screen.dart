@@ -28,7 +28,9 @@ class LoginScreen extends StatelessWidget {
                     userModel: jsonEncode(
               state.userModel.toJson(),
             ))
-                .then((value) {
+                .then((_) async {
+              await LoginCubit.get(context).setLoginFlag();
+              // ignore: use_build_context_synchronously
               Navigator.pushReplacementNamed(context, Routes.bottomNvBarScreen);
             });
           }

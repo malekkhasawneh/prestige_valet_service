@@ -7,8 +7,19 @@ import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_c
 import 'package:prestige_valet_app/features/pick_up/presentation/widgets/card_item_widget.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/widgets/confirm_button_widget.dart';
 
-class PickUpScreen extends StatelessWidget {
+class PickUpScreen extends StatefulWidget {
   const PickUpScreen({super.key});
+
+  @override
+  State<PickUpScreen> createState() => _PickUpScreenState();
+}
+
+class _PickUpScreenState extends State<PickUpScreen> {
+  @override
+  void initState() {
+    PickUpCubit.get(context).getGates();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,38 +28,39 @@ class PickUpScreen extends StatelessWidget {
     return BlocBuilder<PickUpCubit, PickUpState>(
       builder: (context, state) {
         return Scaffold(
-          body:  Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: PickUpCubit.get(context)
-                      .headerBoxHeight(context, screenHeight),
-                  width: screenWidth,
-                  color: ColorManager.primaryColor,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: screenWidth * 0.05,
-                      top: PickUpCubit.get(context)
-                              .headerBoxHeight(context, screenHeight) *
-                          0.35,
-                    ),
-                    child: const Text(
-                      Strings.pickUpTitle,
-                      style: TextStyle(
-                          fontFamily: Fonts.sourceSansPro,
-                          fontSize: 26,
-                          color: ColorManager.whiteColor,
-                          fontWeight: FontWeight.bold),
-                    ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: PickUpCubit.get(context)
+                    .headerBoxHeight(context, screenHeight),
+                width: screenWidth,
+                color: ColorManager.primaryColor,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: screenWidth * 0.05,
+                    top: PickUpCubit.get(context)
+                            .headerBoxHeight(context, screenHeight) *
+                        0.35,
+                  ),
+                  child: const Text(
+                    Strings.pickUpTitle,
+                    style: TextStyle(
+                        fontFamily: Fonts.sourceSansPro,
+                        fontSize: 26,
+                        color: ColorManager.whiteColor,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  height: PickUpCubit.get(context)
-                      .bodyBoxHeight(context, screenHeight),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                height: PickUpCubit.get(context)
+                    .bodyBoxHeight(context, screenHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (state is PickUpLoaded) ...[
                       Expanded(
                         flex: 1,
                         child: GridView.builder(
@@ -58,19 +70,34 @@ class PickUpScreen extends StatelessWidget {
                                     crossAxisSpacing: 25.0,
                                     mainAxisSpacing: 25.0,
                                     childAspectRatio: 1.3),
-                            itemCount: PickUpCubit.get(context).gates.length,
+                            itemCount: state.gatesModel.gates.length,
                             itemBuilder: (context, index) {
                               return CardItemWidget(
-                                gate: PickUpCubit.get(context).gates[index],
+                                onTap: () {
+                                  for (var gate in state.gatesModel.gates) {
+                                    gate.isSelected = false;
+                                  }
+                                  state.gatesModel.gates[index].isSelected =
+                                      !state.gatesModel.gates[index].isSelected;
+                                  setState(() {});
+                                },
+                                gate: state.gatesModel.gates[index],
                               );
                             }),
                       ),
-                      const ConfirmButtonWidget()
+                    ] else ...[
+                      const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorManager.primaryColor,
+                        ),
+                      )
                     ],
-                  ),
+                    const ConfirmButtonWidget()
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
         );
       },
     );

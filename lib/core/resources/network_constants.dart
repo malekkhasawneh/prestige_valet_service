@@ -7,4 +7,7 @@ class NetworkConstants {
   static const String getCards = 'wallet';
   static const String editProfile = 'auth/user/profile';
   static const String addUserImage = 'auth/user/image';
+
+  static String addCardEndPoint(int userId) => 'wallet?userId=$userId';
+  static const String getGatesEndPoint = 'location/gates';
 }

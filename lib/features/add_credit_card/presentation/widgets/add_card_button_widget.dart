@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
 class AddCardButtonWidget extends StatelessWidget {
   const AddCardButtonWidget({super.key});
@@ -13,7 +15,12 @@ class AddCardButtonWidget extends StatelessWidget {
       width: screenWidth * 0.9,
       height: 45,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          if (!AddCreditCardCubit.get(context).checkIfThereAreEmptyField()) {
+            AddCreditCardCubit.get(context)
+                .addNewCard(userId: 52);
+          }
+        },
         style: ElevatedButton.styleFrom(
             backgroundColor: ColorManager.primaryColor,
             shape: RoundedRectangleBorder(
