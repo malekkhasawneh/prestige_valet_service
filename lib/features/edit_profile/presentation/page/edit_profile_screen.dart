@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -85,12 +87,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.network(
-                      'http://82.208.22.118/prestige/api/v1/auth/user/image/User-Profile-NO-52.jpg',
+                      HomeCubit.get(context).userModel.user.profileImg,
                       width: 85,
                       height: 85,
-                      headers: const {
+                      headers: {
                         'Authorization':
-                            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDk4MzcsImV4cCI6MTcwNjI5MzgzN30.Vc4-ZA6MtlD03a5iEHEOKQb-3dlcin8thHE5YfqPiis',
+                        'Bearer ${HomeCubit.get(context).userModel.token}',
                         'Content-Type': 'application/json',
                       },
                       errorBuilder: (_, __, ___) {
@@ -115,7 +117,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           File(image!.path),
                           context,
                           // ignore: use_build_context_synchronously
-                          HomeCubit.get(context).userModel.user.id);
+                          HomeCubit.get(context).userModel.user.id).then((value) {
+                            if(value){
+                              // ignore: invalid_use_of_visible_for_testing_member
+                              EditProfileCubit.get(context).emit(EditProfileLoading());
+                            }
+                      });
                     },
                     child: const Text(
                       Strings.changeProfilePic,

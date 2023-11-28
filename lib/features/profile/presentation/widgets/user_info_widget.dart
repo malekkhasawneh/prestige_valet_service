@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 
 class UserInfoWidget extends StatelessWidget {
@@ -20,7 +21,12 @@ class UserInfoWidget extends StatelessWidget {
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: Image.network(
-            'src',
+            HomeCubit.get(context).userModel.user.profileImg,
+            headers: {
+              'Authorization':
+              'Bearer ${HomeCubit.get(context).userModel.token}',
+              'Content-Type': 'application/json',
+            },
             width: ProfileCubit.get(context).isTablet(screenWidth)
                 ? screenWidth * 0.13
                 : screenWidth * 0.17,

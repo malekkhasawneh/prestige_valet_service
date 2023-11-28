@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
 class DioHelper {
   static final DioHelper _instance = DioHelper._internal();
@@ -71,9 +72,18 @@ class DioHelper {
     }
   }
 
+  static Future<Map<String, dynamic>> put(String endpoint,
+      {Map<String, dynamic> data = const {}}) async {
+    try {
+      final response = await _dio.put(endpoint, data: data);
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   static Map<String, dynamic> headers = {
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWxla21hbW9vbjM0MUBnbWFpbC5jb20iLCJpYXQiOjE3MDExMDk4MzcsImV4cCI6MTcwNjI5MzgzN30.Vc4-ZA6MtlD03a5iEHEOKQb-3dlcin8thHE5YfqPiis',
+    'Authorization': 'Bearer token',
     'Content-Type': 'application/json',
   };
 
@@ -86,7 +96,9 @@ class DioHelper {
     var pic = await http.MultipartFile.fromPath('image', imageFile.path);
     request.files.add(pic);
     headers.forEach((key, value) {
-      request.headers[key] = value;
+      request.headers[key] = value == 'Bearer token'
+          ? 'Bearer ${HomeCubit.get(context).userModel.token}'
+          : value;
     });
     var response = await request.send();
     if (response.statusCode == 202) {

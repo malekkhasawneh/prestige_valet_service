@@ -5,7 +5,9 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
+import 'package:prestige_valet_app/features/add_credit_card/presentation/page/add_credit_card_screen.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/page/bottom_nav_bar_screen.dart';
 import 'package:prestige_valet_app/features/edit_profile/presentation/cubit/edit_profile_cubit.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -20,6 +22,7 @@ import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_c
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
+import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart' as di;
 
 void main() async {
@@ -71,7 +74,7 @@ class PrestigeValetApp extends StatelessWidget {
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const PickUpScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
