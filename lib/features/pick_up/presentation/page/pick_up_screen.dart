@@ -28,73 +28,82 @@ class _PickUpScreenState extends State<PickUpScreen> {
     return BlocBuilder<PickUpCubit, PickUpState>(
       builder: (context, state) {
         return Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          body: Stack(
+            alignment: Alignment.center,
             children: [
-              Container(
-                height: PickUpCubit.get(context)
-                    .headerBoxHeight(context, screenHeight),
-                width: screenWidth,
-                color: ColorManager.primaryColor,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: screenWidth * 0.05,
-                    top: PickUpCubit.get(context)
-                            .headerBoxHeight(context, screenHeight) *
-                        0.35,
-                  ),
-                  child: const Text(
-                    Strings.pickUpTitle,
-                    style: TextStyle(
-                        fontFamily: Fonts.sourceSansPro,
-                        fontSize: 26,
-                        color: ColorManager.whiteColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                height: PickUpCubit.get(context)
-                    .bodyBoxHeight(context, screenHeight),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (state is PickUpLoaded) ...[
-                      Expanded(
-                        flex: 1,
-                        child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 25.0,
-                                    mainAxisSpacing: 25.0,
-                                    childAspectRatio: 1.3),
-                            itemCount: state.gatesModel.gates.length,
-                            itemBuilder: (context, index) {
-                              return CardItemWidget(
-                                onTap: () {
-                                  for (var gate in state.gatesModel.gates) {
-                                    gate.isSelected = false;
-                                  }
-                                  state.gatesModel.gates[index].isSelected =
-                                      !state.gatesModel.gates[index].isSelected;
-                                  setState(() {});
-                                },
-                                gate: state.gatesModel.gates[index],
-                              );
-                            }),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: PickUpCubit.get(context)
+                        .headerBoxHeight(context, screenHeight),
+                    width: screenWidth,
+                    color: ColorManager.primaryColor,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: screenWidth * 0.05,
+                        top: PickUpCubit.get(context)
+                                .headerBoxHeight(context, screenHeight) *
+                            0.35,
                       ),
-                    ] else ...[
-                      const Center(
-                        child: CircularProgressIndicator(
-                          color: ColorManager.primaryColor,
-                        ),
-                      )
-                    ],
-                    const ConfirmButtonWidget()
-                  ],
-                ),
+                      child: const Text(
+                        Strings.pickUpTitle,
+                        style: TextStyle(
+                            fontFamily: Fonts.sourceSansPro,
+                            fontSize: 26,
+                            color: ColorManager.whiteColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    height: PickUpCubit.get(context)
+                        .bodyBoxHeight(context, screenHeight),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (state is PickUpLoaded) ...[
+                          Expanded(
+                            flex: 1,
+                            child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 25.0,
+                                        mainAxisSpacing: 25.0,
+                                        childAspectRatio: 1.3),
+                                itemCount: state.gatesModel.gates.length,
+                                itemBuilder: (context, index) {
+                                  return CardItemWidget(
+                                    onTap: () {
+                                      for (var gate in state.gatesModel.gates) {
+                                        gate.isSelected = false;
+                                      }
+                                      state.gatesModel.gates[index].isSelected =
+                                          !state.gatesModel.gates[index]
+                                              .isSelected;
+                                      setState(() {});
+                                    },
+                                    gate: state.gatesModel.gates[index],
+                                  );
+                                }),
+                          ),
+                        ] else ...[
+                          const Center(
+                            child: CircularProgressIndicator(
+                              color: ColorManager.primaryColor,
+                            ),
+                          )
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const Positioned(
+                bottom: 20,
+                child: ConfirmButtonWidget(),
               ),
             ],
           ),
