@@ -17,8 +17,9 @@ class AddCardButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           if (!AddCreditCardCubit.get(context).checkIfThereAreEmptyField()) {
-            AddCreditCardCubit.get(context)
-                .addNewCard(userId: 52);
+            AddCreditCardCubit.get(context).addNewCard(
+              userId: HomeCubit.get(context).userModel.user.id,
+            );
           }
         },
         style: ElevatedButton.styleFrom(

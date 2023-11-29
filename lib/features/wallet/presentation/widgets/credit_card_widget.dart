@@ -56,13 +56,13 @@ class CreditCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.addCreditCardScreen);
-            },
-            child: Positioned(
-              top: 5,
-              right: 0,
+           Positioned(
+            top: 5,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.addCreditCardScreen);
+              },
               child: Container(
                 width: 18,
                 height: 18,

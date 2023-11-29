@@ -52,6 +52,7 @@ class Strings {
       'Hi Shaker, This is your\n saved payment methods';
   static const String addPaymentMethod = 'Add a new payment method';
   static const String creditCardOverView = 'Credit card overview';
+  static const String thereAreNoData = 'There are no data';
 
   static String creditCardNumber(String lastFourDigits) =>
       '**** **** **** $lastFourDigits';

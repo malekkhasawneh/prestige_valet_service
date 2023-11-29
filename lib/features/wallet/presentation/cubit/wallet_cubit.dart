@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +27,10 @@ class WalletCubit extends Cubit<WalletState> {
       final response =
           await getCardsUseCase(GetCardsUseCaseParams(userId: userId));
       response.fold((failure) => emit(WalletError(failure: failure.failure)),
-          (success) => emit(WalletLoaded(model: success)));
+          (success) {
+        log('=================================== ooo ${success.length}');
+            emit(WalletLoaded(model: success));
+          });
     } catch (failure) {
       emit(WalletError(failure: failure.toString()));
     }

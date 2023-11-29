@@ -24,7 +24,15 @@ class SplashLoaded extends SplashState {
 class SplashError extends SplashState {
   final String failure;
 
- const SplashError({required this.failure});
+  const SplashError({required this.failure});
+
   @override
   List<Object> get props => [failure];
+}
+
+class SplashSetValue extends SplashState {
+  const SplashSetValue();
+
+  @override
+  List<Object> get props => [];
 }

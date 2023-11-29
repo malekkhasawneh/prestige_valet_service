@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
 class GetStartedButtonWidget extends StatelessWidget {
   const GetStartedButtonWidget({super.key});
@@ -17,7 +18,8 @@ class GetStartedButtonWidget extends StatelessWidget {
       constraints: const BoxConstraints(maxHeight: 50),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.bottomNvBarScreen);
+          SplashCubit.get(context).setIsFirstTimeOpenTheApp();
+          Navigator.pushReplacementNamed(context, Routes.signUpScreen);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: ColorManager.blackColor,

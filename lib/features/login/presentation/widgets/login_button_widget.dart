@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
@@ -11,36 +12,47 @@ class LoginButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return Center(
-      child: Container(
-        width: screenWidth * 0.85,
-        height: screenHeight * 0.065,
-        constraints: const BoxConstraints(maxHeight: 50),
-        child: ElevatedButton(
-          onPressed: () {
-            LoginCubit.get(context).setMustCheck = true;
-            if (!LoginCubit.get(context).checkIfThereAreEmptyValue()) {
-              LoginCubit.get(context).login();
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorManager.blackColor,
-            shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(25), // Adjust the radius as needed
+    return BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+      return Center(
+        child: Container(
+          width: screenWidth * 0.85,
+          height: screenHeight * 0.065,
+          constraints: const BoxConstraints(maxHeight: 50),
+          child: ElevatedButton(
+            onPressed: (state is LoginLoading)
+                ? () {}
+                : () {
+                    LoginCubit.get(context).setMustCheck = true;
+                    if (!LoginCubit.get(context).checkIfThereAreEmptyValue()) {
+                      LoginCubit.get(context).login();
+                    }
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorManager.blackColor,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(25), // Adjust the radius as needed
+              ),
             ),
-          ),
-          child: const Text(
-            Strings.login,
-            style: TextStyle(
-              fontFamily: Fonts.sourceSansPro,
-              fontSize: 13,
-              color: ColorManager.whiteColor,
-              fontWeight: FontWeight.bold,
-            ),
+            child: (state is LoginLoading)
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: ColorManager.whiteColor,
+                    ))
+                : const Text(
+                    Strings.login,
+                    style: TextStyle(
+                      fontFamily: Fonts.sourceSansPro,
+                      fontSize: 13,
+                      color: ColorManager.whiteColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

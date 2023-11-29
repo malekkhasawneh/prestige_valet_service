@@ -65,15 +65,25 @@ class _WalletScreenState extends State<WalletScreen> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.13, vertical: 0),
-                      child: ListView.builder(
-                        itemCount: state.model.length,
-                        itemBuilder: (context, index) {
-                          return CreditCardWidget(
-                            name: state.model[index].cardHolderName.trim(),
-                            cardNumber: state.model[index].cardNumber,
-                          );
-                        },
-                      ),
+                      child: state.model.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: state.model.length,
+                              itemBuilder: (context, index) {
+                                return CreditCardWidget(
+                                  name:
+                                      state.model[index].cardHolderName.trim(),
+                                  cardNumber: state.model[index].cardNumber,
+                                );
+                              },
+                            )
+                          : SizedBox(
+                              height: WalletCubit.get(context)
+                                  .bodyBoxHeight(context, screenHeight),
+                              child: const Center(
+                                  child: Text(
+                                Strings.thereAreNoData,
+                              )),
+                            ),
                     ),
                   ),
                 ] else ...[

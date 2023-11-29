@@ -9,13 +9,34 @@ class SplashRepositoryImpl implements SplashRepository{
   final SplashLocalDataSource localDataSource;
 
   SplashRepositoryImpl({required this.localDataSource});
+
   @override
-  Future<Either<Failures, bool>> checkIsUserLogin() async{
-   try{
-     final response = await localDataSource.checkIsUserLogin();
-     return Right(response);
-   }on CacheException{
-     return const Left(CacheFailure(failure: Constants.cacheFailure));
-   }
+  Future<Either<Failures, bool>> checkIsUserLogin() async {
+    try {
+      final response = await localDataSource.checkIsUserLogin();
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(failure: Constants.cacheFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, bool>> isFirstTimeOpenTheApp() async {
+    try {
+      final response = await localDataSource.isFirstTimeOpenTheApp();
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(failure: Constants.cacheFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, void>> setIsFirstTimeOpenTheApp() async {
+    try {
+      final response = await localDataSource.setIsFirstTimeOpenTheApp();
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(failure: Constants.cacheFailure));
+    }
   }
 }

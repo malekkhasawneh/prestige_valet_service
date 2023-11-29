@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -14,7 +15,21 @@ class AddCreditCardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AddCreditCardCubit, AddCreditCardState>(
         listener: (context, state) {
-      if (state is AddCreditCardLoaded) {}
+      if (state is AddCreditCardLoaded) {
+        AwesomeDialog(
+          context: context,
+          animType: AnimType.topSlide,
+          dialogType: DialogType.success,
+          body: Center(
+            child: Text(
+              '${state.addCardModel.message}\n ',
+              style: const TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          btnOkOnPress: () {},
+        ).show();
+      }
     }, builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
@@ -70,15 +85,6 @@ class AddCreditCardScreen extends StatelessWidget {
                     height: 20,
                   ),
                   TextFieldWidget(
-                    controller: AddCreditCardCubit.get(context)
-                        .billingAddressController,
-                    title: Strings.billingAddress,
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFieldWidget(
                     controller:
                         AddCreditCardCubit.get(context).cardNumberController,
                     title: Strings.cardNumber,
@@ -89,30 +95,13 @@ class AddCreditCardScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: TextFieldWidget(
-                          controller: AddCreditCardCubit.get(context)
-                              .expirationDateController,
-                          title: Strings.expirationDate,
-                          textInputType: TextInputType.number,
-                          mustCheck: AddCreditCardCubit.get(context)
-                              .checkIfThereAreEmptyField(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: TextFieldWidget(
-                          controller:
-                              AddCreditCardCubit.get(context).cvvController,
-                          title: Strings.cvv,
-                          textInputType: TextInputType.number,
-                        ),
-                      ),
-                    ],
+                  TextFieldWidget(
+                    controller: AddCreditCardCubit.get(context)
+                        .expirationDateController,
+                    title: Strings.expirationDate,
+                    textInputType: TextInputType.number,
+                    mustCheck: AddCreditCardCubit.get(context)
+                        .checkIfThereAreEmptyField(),
                   ),
                   const SizedBox(
                     height: 50,

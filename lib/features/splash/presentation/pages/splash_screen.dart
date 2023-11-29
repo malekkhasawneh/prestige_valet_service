@@ -14,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    SplashCubit.get(context).getIsFirstTimeOpenTheApp();
     SplashCubit.get(context).checkIfUserLogin();
     super.initState();
   }
@@ -23,20 +24,29 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<SplashCubit,SplashState>(
       listener: (context, state) {
         if (state is SplashLoaded) {
-          if (state.isLogin) {
+          if (SplashCubit.get(context).isFirstTime) {
             Future.delayed(const Duration(seconds: 3)).then(
               (_) => Navigator.pushNamed(
                 context,
-                Routes.bottomNvBarScreen,
+                Routes.welcomeScreen,
               ),
             );
           } else {
-            Future.delayed(const Duration(seconds: 3)).then(
-              (_) => Navigator.pushNamed(
-                context,
-                Routes.loginScreen,
-              ),
-            );
+            if (state.isLogin) {
+              Future.delayed(const Duration(seconds: 3)).then(
+                (_) => Navigator.pushNamed(
+                  context,
+                  Routes.bottomNvBarScreen,
+                ),
+              );
+            } else {
+              Future.delayed(const Duration(seconds: 3)).then(
+                (_) => Navigator.pushNamed(
+                  context,
+                  Routes.loginScreen,
+                ),
+              );
+            }
           }
         }
       },

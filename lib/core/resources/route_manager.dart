@@ -10,6 +10,7 @@ import 'package:prestige_valet_app/features/proccess_screens/car_ready_screen.da
 import 'package:prestige_valet_app/features/proccess_screens/parcked_sucessfully_screen.dart';
 import 'package:prestige_valet_app/features/proccess_screens/success_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
+import 'package:prestige_valet_app/features/sign_up/presentation/page/sign_up_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/welcome_screen.dart';
 import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
@@ -17,6 +18,7 @@ import 'package:prestige_valet_app/features/valet_history/page/valet_history_scr
 class Routes {
   static const String splashScreen = "/";
   static const String welcomeScreen = "/welcomeScreen";
+  static const String signUpScreen = "/signUpScreen";
   static const String loginScreen = "/loginScreen";
   static const String carParkedHomeScreen = "/carParkedHomeScreen";
   static const String mainHomeScreen = "/mainHomeScreen";
@@ -41,6 +43,10 @@ class RouteGenerator {
       case Routes.welcomeScreen:
         return MaterialPageRoute(
           builder: (_) => const WelcomeScreen(),
+        );
+      case Routes.signUpScreen:
+        return MaterialPageRoute(
+          builder: (_) => const SignUpScreen(),
         );
       case Routes.loginScreen:
         return MaterialPageRoute(
