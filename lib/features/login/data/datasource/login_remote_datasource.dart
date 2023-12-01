@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
@@ -17,12 +18,12 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   Future<SignUpModel> login(
       {required String email, required String password}) async {
     try {
-      Map<String, dynamic> response =
+      Response response =
           await DioHelper.post(NetworkConstants.loginEndPoint, data: {
         "email": email,
         "password": password,
       });
-      SignUpModel userModel = SignUpModel.fromJson(response);
+      SignUpModel userModel = SignUpModel.fromJson(response.data);
       await CacheHelper.setValue(
           key: CacheConstants.appToken, value: userModel.token);
       return userModel;

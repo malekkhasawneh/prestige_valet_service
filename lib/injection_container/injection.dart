@@ -14,6 +14,8 @@ import 'package:prestige_valet_app/injection_container/sign_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/splash_injection.dart';
 import 'package:prestige_valet_app/injection_container/wallet_injection.dart';
 
+import 'profile_injection.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -28,6 +30,7 @@ Future<void> init() async {
   addCardInjection();
   splashInjection();
   pickUpInjection();
+  profileInjection();
 
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(

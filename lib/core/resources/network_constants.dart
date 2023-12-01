@@ -13,4 +13,6 @@ class NetworkConstants {
   static String editCardEndPoint(int userId, int walletId) =>
       'wallet?walletId=$walletId&userId=$userId';
   static const String getGatesEndPoint = 'location/gates';
+  static String logoutEndPoint(int userId) => 'auth/logout/$userId';
+
 }

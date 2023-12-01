@@ -57,11 +57,11 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> post(String endpoint,
+  static Future<Response> post(String endpoint,
       {Map<String, dynamic> data = const {}}) async {
     try {
       final response = await _dio.post(endpoint, data: data);
-      return response.data;
+      return response;
     } catch (e) {
       throw _handleError(e);
     }
@@ -77,7 +77,7 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> put(String endpoint,
+  static Future<Response> put(String endpoint,
       {Map<String, dynamic> data = const {}}) async {
     try {
       final response = await _dio.put(endpoint, data: data);

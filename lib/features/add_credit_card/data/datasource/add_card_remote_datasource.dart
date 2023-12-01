@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
@@ -26,7 +27,7 @@ class AddCardRemoteDataSourceImpl implements AddCardRemoteDataSource {
       required bool isFromEdit}) async {
     try {
       await DioHelper.addTokenHeader();
-      Map<String, dynamic> response = !isFromEdit
+      Response response = !isFromEdit
           ? await DioHelper.post(NetworkConstants.addCardEndPoint(userId),
               data: {
                   "cardNumber": cardNumber,
@@ -42,7 +43,7 @@ class AddCardRemoteDataSourceImpl implements AddCardRemoteDataSource {
                   "expiryMonth": month,
                   "expiryYear": year,
                 });
-      AddCardModel addCardModel = AddCardModel.fromJson(response);
+      AddCardModel addCardModel = AddCardModel.fromJson(response.data);
       return addCardModel;
     } on Exception {
       throw ServerException();
