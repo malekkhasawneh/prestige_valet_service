@@ -7,15 +7,31 @@ import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/add_card_button_widget.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 
-class AddCreditCardScreen extends StatelessWidget {
-  const AddCreditCardScreen({super.key});
+class AddCreditCardScreen extends StatefulWidget {
+  const AddCreditCardScreen({super.key, this.isFromEdit = false});
 
+  final bool isFromEdit;
+
+  @override
+  State<AddCreditCardScreen> createState() => _AddCreditCardScreenState();
+}
+
+class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
+  @override
+  void initState() {
+    AddCreditCardCubit.get(context).resetValues(widget.isFromEdit);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddCreditCardCubit, AddCreditCardState>(
         listener: (context, state) {
       if (state is AddCreditCardLoaded) {
+        WalletCubit.get(context)
+            .getCards(userId: HomeCubit.get(context).userModel.user.id);
         AwesomeDialog(
           context: context,
           animType: AnimType.topSlide,
@@ -27,8 +43,8 @@ class AddCreditCardScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          btnOkOnPress: () {},
-        ).show();
+              btnOkOnPress: () {},
+            ).show();
       }
     }, builder: (context, state) {
       return Scaffold(
@@ -106,7 +122,9 @@ class AddCreditCardScreen extends StatelessWidget {
                   const SizedBox(
                     height: 50,
                   ),
-                  const AddCardButtonWidget(),
+                  AddCardButtonWidget(
+                    isFromEdit: widget.isFromEdit,
+                  ),
                 ],
               ),
             ),

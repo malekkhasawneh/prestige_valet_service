@@ -48,9 +48,9 @@ class _WalletScreenState extends State<WalletScreen> {
                               .headerBoxHeight(context, screenHeight) *
                           0.35,
                     ),
-                    child: const Text(
-                      Strings.walletHiString,
-                      style: TextStyle(
+                    child:  Text(
+                      Strings.carParkedHiString(HomeCubit.get(context).userModel.user.firstName),
+                      style: const TextStyle(
                           fontFamily: Fonts.sourceSansPro,
                           fontSize: 26,
                           color: ColorManager.whiteColor,
@@ -70,9 +70,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               itemCount: state.model.length,
                               itemBuilder: (context, index) {
                                 return CreditCardWidget(
-                                  name:
-                                      state.model[index].cardHolderName.trim(),
-                                  cardNumber: state.model[index].cardNumber,
+                                  walletModel: state.model[index],
                                 );
                               },
                             )

@@ -34,9 +34,9 @@ class CarParkedHomeScreen extends StatelessWidget {
                         .headerBoxHeight(context, screenHeight) *
                         0.35,
                   ),
-                  child: const Text(
-                    Strings.carParkedHiString,
-                    style: TextStyle(
+                  child:  Text(
+                    Strings.carParkedHiString(HomeCubit.get(context).userModel.user.firstName),
+                    style: const TextStyle(
                         fontFamily: Fonts.sourceSansPro,
                         fontSize: 26,
                         color: ColorManager.whiteColor,

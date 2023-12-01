@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
-import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
+import 'package:prestige_valet_app/features/add_credit_card/presentation/page/add_credit_card_screen.dart';
+import 'package:prestige_valet_app/features/wallet/data/model/wallet_model.dart';
 
 class CreditCardWidget extends StatelessWidget {
   const CreditCardWidget({
     super.key,
-    required this.name,
-    required this.cardNumber,
+    required this.walletModel,
   });
 
-  final String name;
-  final String cardNumber;
+  final WalletModel walletModel;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +28,7 @@ class CreditCardWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +41,7 @@ class CreditCardWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      name,
+                      walletModel.cardHolderName,
                       style: const TextStyle(
                         fontFamily: Fonts.sourceSansPro,
                         fontSize: 17,
@@ -52,7 +53,7 @@ class CreditCardWidget extends StatelessWidget {
                 const SizedBox(
                   height: 35,
                 ),
-                Text(Strings.creditCardNumber(cardNumber)),
+                Text(Strings.creditCardNumber(walletModel.cardNumber)),
               ],
             ),
           ),
@@ -61,7 +62,19 @@ class CreditCardWidget extends StatelessWidget {
             right: 0,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, Routes.addCreditCardScreen);
+                AddCreditCardCubit.get(context).cardHolderNameController.text =
+                    walletModel.cardHolderName;
+                AddCreditCardCubit.get(context).cardNumberController.text =
+                    walletModel.cardNumber;
+                AddCreditCardCubit.get(context).expirationDateController.text =
+                    '${walletModel.expiryMonth}/${walletModel.expiryYear}';
+                AddCreditCardCubit.get(context).walletId = walletModel.id;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AddCreditCardScreen(isFromEdit: true,),
+                  ),
+                );
               },
               child: Container(
                 width: 18,

@@ -26,6 +26,11 @@ class DioHelper {
 
   DioHelper._internal();
 
+  static Map<String, String> headers(token) => {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      };
+
   static Future<void> addTokenHeader() async {
     _dio = Dio(
       BaseOptions(
@@ -82,11 +87,6 @@ class DioHelper {
     }
   }
 
-  static Map<String, dynamic> headers = {
-    'Authorization': 'Bearer token',
-    'Content-Type': 'application/json',
-  };
-
   static Future<bool> uploadImage(
       File imageFile, BuildContext context, int userId) async {
     final url =
@@ -95,18 +95,16 @@ class DioHelper {
     request.fields['userId'] = userId.toString();
     var pic = await http.MultipartFile.fromPath('image', imageFile.path);
     request.files.add(pic);
-    headers.forEach((key, value) {
+    headers(await CacheHelper.getValue(key: CacheConstants.appToken))
+        .forEach((key, value) {
       request.headers[key] = value == 'Bearer token'
           ? 'Bearer ${HomeCubit.get(context).userModel.token}'
           : value;
     });
     var response = await request.send();
     if (response.statusCode == 202) {
-      log('========================================= true');
       return true;
     } else {
-      log('========================================= false');
-
       return false;
     }
   }

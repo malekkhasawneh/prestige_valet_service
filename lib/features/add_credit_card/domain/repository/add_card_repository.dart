@@ -5,8 +5,9 @@ import 'package:prestige_valet_app/features/add_credit_card/data/model/add_card_
 abstract class AddCardRepository {
   Future<Either<Failures, AddCardModel>> addNewCard(
       {required int userId,
+      required int walletId,
       required String holderName,
       required String cardNumber,
       required String month,
-      required String year});
+      required String year,required bool isFromEdit});
 }

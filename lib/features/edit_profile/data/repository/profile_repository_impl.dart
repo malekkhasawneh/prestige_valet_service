@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/errors/failures.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
@@ -29,6 +32,23 @@ class ProfileRepositoryImpl implements ProfileRepository {
             lastName: lastName,
             phone: phone,
             email: email);
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, bool>> uploadUserImage(
+      File imageFile, BuildContext context, int userId) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response =
+            // ignore: use_build_context_synchronously
+            await remoteDataSource.uploadUserImage(imageFile, context, userId);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

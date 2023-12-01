@@ -21,8 +21,8 @@ class Strings {
   static const String profile = 'Profile';
 
   //Home Screen
-  static const String carParkedHiString =
-      'Hi Shaker, Your Car Is\nParked Safely';
+  static  String carParkedHiString(String userName) =>
+      'Hi $userName, Your Car Is\nParked Safely';
 
   static String mainScreenHiString({required String userName}) =>
       'Hi $userName, Let the\ndoorman scan the QR\ncode in order to park';
@@ -48,8 +48,8 @@ class Strings {
   static const String logout = 'Log Out';
 
   //Wallet Screen
-  static const String walletHiString =
-      'Hi Shaker, This is your\n saved payment methods';
+  static String walletHiString (String userName)=>
+      'Hi $userName, This is your\n saved payment methods';
   static const String addPaymentMethod = 'Add a new payment method';
   static const String creditCardOverView = 'Credit card overview';
   static const String thereAreNoData = 'There are no data';
@@ -67,8 +67,8 @@ class Strings {
   static const String addCard = 'Add Card';
 
   //Valet History Screen
-  static const String valetHistoryHiString =
-      "Hi Shaker, This is your\n valet history";
+  static String valetHistoryHiString (String userName)=>
+      "Hi $userName, This is your\n valet history";
 
   //Edit Profile Screen
   static const String changeProfilePic = 'Change Profile Picture';

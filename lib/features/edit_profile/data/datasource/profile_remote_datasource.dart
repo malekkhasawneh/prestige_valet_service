@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
@@ -11,6 +14,9 @@ abstract class ProfileRemoteDataSource {
     required String phone,
     required String email,
   });
+
+  Future<bool> uploadUserImage(
+      File imageFile, BuildContext context, int userId);
 }
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -34,6 +40,18 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
           });
       User userModel = User.fromJson(response);
       return userModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> uploadUserImage(
+      File imageFile, BuildContext context, int userId) async {
+    try {
+      await DioHelper.addTokenHeader();
+      // ignore: use_build_context_synchronously
+      return await DioHelper.uploadImage(imageFile, context, userId);
     } on Exception {
       throw ServerException();
     }

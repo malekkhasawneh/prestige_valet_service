@@ -32,6 +32,8 @@ dependencies:
   flutter_facebook_auth: ^6.0.3
   twitter_login: ^4.4.2
   awesome_dialog: ^3.1.0
+  cached_network_image: ^3.3.0
+  shimmer: ^3.0.0
 
 
 

@@ -15,27 +15,34 @@ class AddNewCardUseCase extends UseCase<AddCardModel, AddNewCardUseCaseParams> {
       AddNewCardUseCaseParams params) async {
     return await repository.addNewCard(
         userId: params.userId,
+        walletId: params.walletId,
         holderName: params.holderName,
         cardNumber: params.cardNumber,
         month: params.month,
-        year: params.year);
+        year: params.year,
+        isFromEdit: params.isFromEdit);
   }
 }
 
 class AddNewCardUseCaseParams extends Equatable {
   final int userId;
+  final int walletId;
   final String holderName;
   final String cardNumber;
   final String month;
   final String year;
+  final bool isFromEdit;
 
   const AddNewCardUseCaseParams(
       {required this.userId,
+      required this.walletId,
+      required this.isFromEdit,
       required this.holderName,
       required this.cardNumber,
       required this.month,
       required this.year});
 
   @override
-  List<Object?> get props => [userId, holderName, cardNumber, month, year];
+  List<Object?> get props =>
+      [userId, holderName, cardNumber, month, year, walletId,isFromEdit];
 }

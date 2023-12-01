@@ -25,20 +25,24 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
   final TextEditingController expirationDateController =
       TextEditingController();
   final TextEditingController cvvController = TextEditingController();
+  int walletId = 0;
 
-  Future<void> addNewCard({required int userId}) async {
+  Future<void> addNewCard(
+      {required int userId, required bool isFromEdit}) async {
     try {
       final response = await addNewCardUseCase(AddNewCardUseCaseParams(
           userId: userId,
+          walletId: walletId,
+          isFromEdit: isFromEdit,
           holderName: cardHolderNameController.text,
           cardNumber: cardNumberController.text,
-          month: expirationDateController.text.substring(0, 1),
-          year: expirationDateController.text.substring(2, 3)));
-      response.fold(
-          (failure) => emit(AddCreditCardError(failure: failure.failure)),
-          (success) {
-            emit(AddCreditCardLoaded(addCardModel: success));
-          });
+          month: expirationDateController.text.substring(0, 2),
+          year: expirationDateController.text.substring(2, 4)));
+      response
+          .fold((failure) => emit(AddCreditCardError(failure: failure.failure)),
+              (success) {
+        emit(AddCreditCardLoaded(addCardModel: success));
+      });
     } catch (error) {
       emit(AddCreditCardError(failure: error.toString()));
     }
@@ -49,4 +53,12 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
         cardHolderNameController.text.isEmpty ||
         expirationDateController.text.isEmpty;
   }
+
+  void resetValues(bool isFromEdit) {
+    if(!isFromEdit){
+    cardNumberController.clear();
+    cardHolderNameController.clear();
+    expirationDateController.clear();
+    walletId = 0;
+  }}
 }

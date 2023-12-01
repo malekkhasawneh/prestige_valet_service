@@ -6,7 +6,9 @@ import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/a
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
 class AddCardButtonWidget extends StatelessWidget {
-  const AddCardButtonWidget({super.key});
+  const AddCardButtonWidget({super.key, required this.isFromEdit});
+
+  final bool isFromEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class AddCardButtonWidget extends StatelessWidget {
         onPressed: () {
           if (!AddCreditCardCubit.get(context).checkIfThereAreEmptyField()) {
             AddCreditCardCubit.get(context).addNewCard(
+              isFromEdit: isFromEdit,
               userId: HomeCubit.get(context).userModel.user.id,
             );
           }

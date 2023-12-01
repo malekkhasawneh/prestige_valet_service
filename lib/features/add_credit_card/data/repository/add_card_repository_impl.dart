@@ -17,18 +17,22 @@ class AddCardRepositoryImpl implements AddCardRepository {
   @override
   Future<Either<Failures, AddCardModel>> addNewCard(
       {required int userId,
-      required  String holderName,
-      required  String cardNumber,
-      required  String month,
-      required  String year            }) async {
+      required String holderName,
+      required String cardNumber,
+      required String month,
+      required String year,
+      required int walletId,
+      required bool isFromEdit}) async {
     if (await networkInfo.checkConnection()) {
       try {
         final response = await remoteDataSource.addNewCard(
             userId: userId,
+            walletId: walletId,
             holderName: holderName,
             cardNumber: cardNumber,
             month: month,
-            year: year);
+            year: year,
+            isFromEdit: isFromEdit);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

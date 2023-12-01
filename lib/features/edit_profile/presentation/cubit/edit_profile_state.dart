@@ -30,3 +30,11 @@ class EditProfileError extends EditProfileState {
   @override
   List<Object> get props => [failure];
 }
+class UploadUserImageLoading extends EditProfileState {
+  @override
+  List<Object> get props => [];
+}
+class UploadUserImage extends EditProfileState {
+  @override
+  List<Object> get props => [];
+}
