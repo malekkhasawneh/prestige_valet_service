@@ -55,7 +55,7 @@ class Strings {
   static const String thereAreNoData = 'There are no data';
 
   static String creditCardNumber(String lastFourDigits) =>
-      '**** **** **** $lastFourDigits';
+      '**** **** **** ${lastFourDigits.length < 10 ? 1234 : lastFourDigits.substring(10)}';
 
   //Add Credit Card Screen
   static const String addCreditCard = 'Add Credit Card';
