@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:twitter_login/twitter_login.dart';
@@ -10,9 +13,9 @@ class SocialLoginRow extends StatelessWidget {
   Future<UserCredential> signInWithTwitter() async {
     // Create a TwitterLogin instance
     final twitterLogin = TwitterLogin(
-        apiKey: '2wB67cUC5uGGxHazhe1UToIlV',
-        apiSecretKey: '3UoLoJoqNvPqumQWfp6NUsgBFWxrviUD9KlZgo68AbQMso30b7',
-        redirectURI: 'https://prestige-valet-service.firebaseapp.com/__/auth/handler');
+        apiKey: dotenv.env[Constants.twitterApiKey]!,
+        apiSecretKey: dotenv.env[Constants.twitterApiSecretKey]!,
+        redirectURI: dotenv.env[Constants.twitterRedirectUrl]!);
 
     // Trigger the sign-in flow
     final authResult = await twitterLogin.login();
@@ -27,7 +30,16 @@ class SocialLoginRow extends StatelessWidget {
     return await FirebaseAuth.instance
         .signInWithCredential(twitterAuthCredential);
   }
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
 
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -37,8 +49,8 @@ class SocialLoginRow extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () async {
-            await signInWithTwitter().then((value){
-              log('=============================================== Here ${value.user!.displayName}');
+            await signInWithFacebook().then((value){
+              log('=============================================== Here ${value.user!.email}');
             });
           },
           child: Image.asset(

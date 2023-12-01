@@ -34,6 +34,7 @@ dependencies:
   awesome_dialog: ^3.1.0
   cached_network_image: ^3.3.0
   shimmer: ^3.0.0
+  flutter_dotenv: ^5.1.0
 
 
 
@@ -47,6 +48,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - images/
     - images/welcome_logo.png
     - images/default_user_image.jpg

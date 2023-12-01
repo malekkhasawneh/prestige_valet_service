@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
@@ -22,12 +24,13 @@ import 'package:prestige_valet_app/injection_container/injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: Constants.envFileName);
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyC27kQq44Sfx2cLTainOBWdpd0QKa_RDtQ",
-      appId: "1:752419261145:android:5809786fcf07576fe24cc8",
-      messagingSenderId: "752419261145",
-      projectId: "prestige-valet-service",
+    options: FirebaseOptions(
+      apiKey: dotenv.env[Constants.androidFirebaseApiKey]!,
+      appId: dotenv.env[Constants.androidAppId]!,
+      messagingSenderId: dotenv.env[Constants.androidMessagingSenderId]!,
+      projectId: dotenv.env[Constants.androidProjectId]!,
     ),
   );
   await di.init();
