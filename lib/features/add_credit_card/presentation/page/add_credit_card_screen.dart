@@ -94,8 +94,7 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                         .cardHolderNameController,
                     title: Strings.cardHolderName,
                     textInputType: TextInputType.name,
-                    mustCheck: AddCreditCardCubit.get(context)
-                        .checkIfThereAreEmptyField(),
+                    mustCheck: AddCreditCardCubit.get(context).mustCheck,
                   ),
                   const SizedBox(
                     height: 20,
@@ -105,8 +104,8 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                         AddCreditCardCubit.get(context).cardNumberController,
                     title: Strings.cardNumber,
                     textInputType: TextInputType.number,
-                    mustCheck: AddCreditCardCubit.get(context)
-                        .checkIfThereAreEmptyField(),
+                    mustCheck: AddCreditCardCubit.get(context).mustCheck,
+                    maxLength: 14,
                   ),
                   const SizedBox(
                     height: 20,
@@ -116,14 +115,25 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                         .expirationDateController,
                     title: Strings.expirationDate,
                     textInputType: TextInputType.number,
-                    mustCheck: AddCreditCardCubit.get(context)
-                        .checkIfThereAreEmptyField(),
+                    mustCheck: AddCreditCardCubit.get(context).mustCheck,
+                    maxLength: 5,
                   ),
                   const SizedBox(
                     height: 50,
                   ),
                   AddCardButtonWidget(
                     isFromEdit: widget.isFromEdit,
+                    onPressed: () {
+                      AddCreditCardCubit.get(context)
+                          .checkIfThereAreEmptyField();
+                      if (!AddCreditCardCubit.get(context).mustCheck) {
+                        AddCreditCardCubit.get(context).addNewCard(
+                          isFromEdit: widget.isFromEdit,
+                          userId: HomeCubit.get(context).userModel.user.id,
+                        );
+                      }
+                      setState(() {});
+                    },
                   ),
                 ],
               ),

@@ -18,6 +18,7 @@ class TextFieldWidget extends StatelessWidget {
     this.suffixIcon = const SizedBox(),
     this.readOnly = false,
     this.mustCheck = false,
+    this.maxLength = 1000,
   });
 
   final String title;
@@ -30,75 +31,72 @@ class TextFieldWidget extends StatelessWidget {
   final Widget suffixIcon;
   final bool readOnly;
   final bool mustCheck;
-
+final int maxLength;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<AddCreditCardCubit, AddCreditCardState>(
-        builder: (context, state) {
-      return Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.05,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontFamily: Fonts.sourceSansPro,
-                  fontSize: 15,
-                ),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.05,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontFamily: Fonts.sourceSansPro,
+                fontSize: 15,
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: controller.text.isEmpty &&mustCheck
-
-                      ? Colors.red
-                      : Colors.grey.withOpacity(0.3),
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(25),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: controller.text.isEmpty && mustCheck
+                    ? Colors.red
+                    : Colors.grey.withOpacity(0.3),
+                width: 1.0,
               ),
-              child: Center(
-                child: TextFormField(
-                  readOnly: readOnly,
-                  obscureText: isPassword,
-                  controller: controller,
-                  keyboardType: textInputType,
-                  decoration: InputDecoration(
-                    prefixIcon: addPrefixIcon
-                        ? const Text('+962 - ')
-                        : const SizedBox(
-                            width: 7,
-                          ),
-                    prefixIconConstraints: const BoxConstraints(minHeight: 10),
-                    suffixIcon: suffixIcon,
-                    suffixIconConstraints: const BoxConstraints(minHeight: 10),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(
-                        left: 7, bottom: 6, top: addSuffixIcon ? 9 : 0),
-                    counterText: '',
-                    hintText: hintText,
-                    hintStyle: const TextStyle(
-                      fontFamily: Fonts.sourceSansPro,
-                      fontSize: 12,
-                    ),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Center(
+              child: TextFormField(
+                readOnly: readOnly,
+                obscureText: isPassword,
+                controller: controller,
+                keyboardType: textInputType,
+                decoration: InputDecoration(
+                  prefixIcon: addPrefixIcon
+                      ? const Text('+962 - ')
+                      : const SizedBox(
+                    width: 7,
                   ),
-                  cursorColor: ColorManager.primaryColor,
+                  prefixIconConstraints: const BoxConstraints(minHeight: 10),
+                  suffixIcon: suffixIcon,
+                  suffixIconConstraints: const BoxConstraints(minHeight: 10),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(
+                      left: 7, bottom: 6, top: addSuffixIcon ? 9 : 0),
+                  counterText: '',
+                  hintText: hintText,
+                  hintStyle: const TextStyle(
+                    fontFamily: Fonts.sourceSansPro,
+                    fontSize: 12,
+                  ),
                 ),
+                cursorColor: ColorManager.primaryColor,
+                maxLength: maxLength,
               ),
             ),
-          ],
-        ),
-      );
-    });
+          ),
+        ],
+      ),
+    );
   }
 }

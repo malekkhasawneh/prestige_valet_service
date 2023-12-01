@@ -16,7 +16,11 @@ class SaveChangesWidget extends StatelessWidget {
       height: 45,
       child: ElevatedButton(
         onPressed: () {
-          EditProfileCubit.get(context).editProfile(userId: HomeCubit.get(context).userModel.user.id);
+          EditProfileCubit.get(context).checkIfThereAreEmptyValue();
+          if (!EditProfileCubit.get(context).mustCheck) {
+            EditProfileCubit.get(context)
+                .editProfile(userId: HomeCubit.get(context).userModel.user.id);
+          }
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: ColorManager.primaryColor,

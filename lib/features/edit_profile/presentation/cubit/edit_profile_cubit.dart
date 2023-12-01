@@ -22,7 +22,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final TextEditingController lastName = TextEditingController();
   final TextEditingController phoneNumber = TextEditingController();
   final TextEditingController email = TextEditingController();
-
+  bool mustCheck = false;
   File file = File('');
 
   Future<void> editProfile({required int userId}) async {
@@ -62,5 +62,17 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     } catch (failure) {
       emit(EditProfileError(failure: failure.toString()));
     }
+  }
+
+  void checkIfThereAreEmptyValue() {
+    if (firstName.text.isEmpty ||
+        lastName.text.isEmpty ||
+        phoneNumber.text.isEmpty ||
+        email.text.isEmpty) {
+      mustCheck = true;
+    } else {
+      mustCheck = false;
+    }
+    emit(EditProfileLoading());
   }
 }

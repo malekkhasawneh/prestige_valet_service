@@ -35,6 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         HomeCubit.get(context).userModel.user.email;
     EditProfileCubit.get(context).phoneNumber.text =
         HomeCubit.get(context).userModel.user.phone;
+    EditProfileCubit.get(context).mustCheck = false;
     super.initState();
   }
 
@@ -158,34 +159,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       controller: EditProfileCubit.get(context).firstName,
                       title: Strings.firstName,
                       textInputType: TextInputType.name,
+                      mustCheck: EditProfileCubit.get(context).mustCheck,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     TextFieldWidget(
-                      controller: EditProfileCubit.get(context).lastName,
-                      title: Strings.lastName,
-                      textInputType: TextInputType.name,
-                    ),
+                        controller: EditProfileCubit.get(context).lastName,
+                        title: Strings.lastName,
+                        textInputType: TextInputType.name,
+                        mustCheck: EditProfileCubit.get(context).mustCheck),
                     const SizedBox(
                       height: 20,
                     ),
                     TextFieldWidget(
-                      controller: EditProfileCubit.get(context).phoneNumber,
-                      title: Strings.phoneNumber,
-                      textInputType: TextInputType.phone,
-                      addPrefixIcon: true,
-                    ),
+                        controller: EditProfileCubit.get(context).phoneNumber,
+                        title: Strings.phoneNumber,
+                        textInputType: TextInputType.phone,
+                        addPrefixIcon: true,
+                        mustCheck: EditProfileCubit.get(context).mustCheck),
                     const SizedBox(
                       height: 20,
                     ),
                     TextFieldWidget(
-                      controller: EditProfileCubit.get(context).email,
-                      title: Strings.email,
-                      textInputType: TextInputType.emailAddress,
-                      readOnly:
-                          HomeCubit.get(context).userModel.user.socialProfile,
-                    ),
+                        controller: EditProfileCubit.get(context).email,
+                        title: Strings.email,
+                        textInputType: TextInputType.emailAddress,
+                        readOnly:
+                            HomeCubit.get(context).userModel.user.socialProfile,
+                        mustCheck: EditProfileCubit.get(context).mustCheck),
                     const SizedBox(
                       height: 50,
                     ),

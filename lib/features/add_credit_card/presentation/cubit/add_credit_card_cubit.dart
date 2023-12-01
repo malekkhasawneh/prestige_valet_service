@@ -27,6 +27,8 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
   final TextEditingController cvvController = TextEditingController();
   int walletId = 0;
 
+  bool mustCheck = false;
+
   Future<void> addNewCard(
       {required int userId, required bool isFromEdit}) async {
     try {
@@ -48,17 +50,24 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
     }
   }
 
-  bool checkIfThereAreEmptyField() {
-    return cardNumberController.text.isEmpty ||
+  void checkIfThereAreEmptyField() {
+    if (cardNumberController.text.isEmpty ||
         cardHolderNameController.text.isEmpty ||
-        expirationDateController.text.isEmpty;
+        expirationDateController.text.isEmpty) {
+      mustCheck = true;
+    } else {
+      mustCheck = false;
+    }
+    emit(AddCreditCardLoading());
   }
 
   void resetValues(bool isFromEdit) {
-    if(!isFromEdit){
-    cardNumberController.clear();
-    cardHolderNameController.clear();
-    expirationDateController.clear();
-    walletId = 0;
-  }}
+    if (!isFromEdit) {
+      cardNumberController.clear();
+      cardHolderNameController.clear();
+      expirationDateController.clear();
+      walletId = 0;
+    }
+    mustCheck = false;
+  }
 }
