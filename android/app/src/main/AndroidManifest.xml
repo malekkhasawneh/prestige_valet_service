@@ -70,6 +70,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
+        <service android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id"/>
     </application>
 </manifest>

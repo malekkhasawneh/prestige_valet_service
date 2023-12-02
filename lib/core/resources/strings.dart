@@ -29,6 +29,7 @@ class Strings {
   static const String uniqueId = 'Unique Identifier';
   static const String showYourHistory = 'Show Your History';
   static const String requestCar = 'Request Car';
+  static const String washCar = 'Wash Car';
 
   //Process Screens
   static const String parkedSuccessfully =

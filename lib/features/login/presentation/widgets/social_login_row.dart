@@ -11,33 +11,21 @@ class SocialLoginRow extends StatelessWidget {
   const SocialLoginRow({super.key});
 
   Future<UserCredential> signInWithTwitter() async {
-    // Create a TwitterLogin instance
     final twitterLogin = TwitterLogin(
         apiKey: dotenv.env[Constants.twitterApiKey]!,
         apiSecretKey: dotenv.env[Constants.twitterApiSecretKey]!,
         redirectURI: dotenv.env[Constants.twitterRedirectUrl]!);
-
-    // Trigger the sign-in flow
     final authResult = await twitterLogin.login();
-
-    // Create a credential from the access token
     final twitterAuthCredential = TwitterAuthProvider.credential(
       accessToken: authResult.authToken!,
       secret: authResult.authTokenSecret!,
     );
-
-    // Once signed in, return the UserCredential
     return await FirebaseAuth.instance
         .signInWithCredential(twitterAuthCredential);
   }
   Future<UserCredential> signInWithFacebook() async {
-    // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
-
-    // Create a credential from the access token
     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-
-    // Once signed in, return the UserCredential
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
   @override
