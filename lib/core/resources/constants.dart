@@ -1,4 +1,7 @@
 class Constants{
+
+  static const userRole = 'USER';
+  static const valetRole = 'VALET';
   static const encryptionKey = '5ClNua5WgenQBtf9lEQv5mJEftisfkq23GM5XKmmVPw=';
   static const encryptionIv = 'R_i64s1KpBmimQ2UaQ04JQ==';
   static const serverFailure = 'Unable to connect to server';

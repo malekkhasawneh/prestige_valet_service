@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/discount_card_widget.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/logout_button_widget.dart';
@@ -20,6 +21,7 @@ class ProfileScreen extends StatelessWidget {
     return BlocConsumer<ProfileCubit, ProfileState>(listener: (context, state) {
       if (state is ProfileLoaded) {
         if (state.logout) {
+          BottomNavBarCubit.get(context).setIndex = 0;
           Navigator.pushReplacementNamed(context, Routes.loginScreen);
         }
       }

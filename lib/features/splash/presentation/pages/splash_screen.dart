@@ -16,6 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SplashCubit.get(context).getIsFirstTimeOpenTheApp();
     SplashCubit.get(context).checkIfUserLogin();
+    SplashCubit.get(context).checkIsUser();
     super.initState();
   }
 

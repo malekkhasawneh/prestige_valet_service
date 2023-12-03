@@ -1,6 +1,7 @@
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/cache_constants.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 
 abstract class SplashLocalDataSource {
   Future<bool> checkIsUserLogin();
@@ -8,6 +9,8 @@ abstract class SplashLocalDataSource {
   Future<bool> isFirstTimeOpenTheApp();
 
   Future<void> setIsFirstTimeOpenTheApp();
+
+  Future<bool> isUser();
 }
 
 class SplashLocalDataSourceImpl implements SplashLocalDataSource {
@@ -38,6 +41,16 @@ class SplashLocalDataSourceImpl implements SplashLocalDataSource {
     try {
       await CacheHelper.setValue(
           key: CacheConstants.isFirstTimeOpenTheApp, value: '0');
+    } on Exception {
+      throw CacheException();
+    }
+  }
+
+  @override
+  Future<bool> isUser() async {
+    try {
+      return await CacheHelper.getValue(key: CacheConstants.userRole) ==
+          Constants.userRole;
     } on Exception {
       throw CacheException();
     }

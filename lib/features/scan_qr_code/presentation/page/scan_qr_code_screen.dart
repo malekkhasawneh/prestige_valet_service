@@ -5,12 +5,23 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/scan_qr_code/cubit/scan_qr_cubit.dart';
 
-class ScanQrCodeScreen extends StatelessWidget {
+class ScanQrCodeScreen extends StatefulWidget {
   const ScanQrCodeScreen({super.key});
 
+  @override
+  State<ScanQrCodeScreen> createState() => _ScanQrCodeScreenState();
+}
+
+class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
+  @override
+  void initState() {
+    HomeCubit.get(context).getUserData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;

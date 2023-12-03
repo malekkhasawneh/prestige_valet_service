@@ -22,7 +22,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
         child: Scaffold(
           body: Center(
             child: BottomNavBarCubit.get(context)
-                .widgetOptions[BottomNavBarCubit.get(context).getSelectedIndex],
+                .widgetOptions(context)[BottomNavBarCubit.get(context).getSelectedIndex],
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[

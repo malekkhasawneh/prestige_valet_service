@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
+import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
 class LoginButtonWidget extends StatelessWidget {
   const LoginButtonWidget({super.key});
@@ -24,6 +25,7 @@ class LoginButtonWidget extends StatelessWidget {
                 : () {
                     LoginCubit.get(context).setMustCheck = true;
                     if (!LoginCubit.get(context).checkIfThereAreEmptyValue()) {
+                      SplashCubit.get(context).checkIsUser();
                       LoginCubit.get(context).login();
                     }
                   },

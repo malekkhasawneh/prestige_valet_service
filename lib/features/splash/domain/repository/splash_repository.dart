@@ -7,4 +7,5 @@ abstract class SplashRepository {
   Future<Either<Failures, bool>> isFirstTimeOpenTheApp();
 
   Future<Either<Failures, void>> setIsFirstTimeOpenTheApp();
+  Future<Either<Failures,bool>> isUser();
 }

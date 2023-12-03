@@ -26,6 +26,8 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       SignUpModel userModel = SignUpModel.fromJson(response.data);
       await CacheHelper.setValue(
           key: CacheConstants.appToken, value: userModel.token);
+      await CacheHelper.setValue(
+          key: CacheConstants.userRole, value: userModel.user.role);
       return userModel;
     } on Exception {
       throw ServerException();
