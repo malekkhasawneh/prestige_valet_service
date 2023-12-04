@@ -18,7 +18,8 @@ class QrCodeWidget extends StatelessWidget {
         Navigator.pushNamed(context, Routes.carParkedHomeScreen);
       },
       child: QrImageView(
-        data: HomeCubit.get(context).userModel.user.userId,
+        data:
+            '${HomeCubit.get(context).userModel.user.userId},${HomeCubit.get(context).userModel.user.id}',
         version: QrVersions.auto,
         size:
             HomeCubit.get(context).bodyBoxHeight(context, screenHeight) * 0.47,

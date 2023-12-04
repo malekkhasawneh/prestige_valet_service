@@ -13,6 +13,18 @@ class ScanQrLoading extends ScanQrState {
   List<Object> get props => [];
 }
 class ScanQrLoaded extends ScanQrState {
+  final ParkedCarsModel parkedCarsModel;
+
+ const ScanQrLoaded({required this.parkedCarsModel});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [parkedCarsModel];
+}
+
+class ScanQrError extends ScanQrState {
+  final String failure;
+
+  const ScanQrError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
 }

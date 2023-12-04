@@ -12,6 +12,7 @@ import 'package:prestige_valet_app/injection_container/payment_gateway_injection
 import 'package:prestige_valet_app/injection_container/pick_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/sign_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/splash_injection.dart';
+import 'package:prestige_valet_app/injection_container/valet_injection.dart';
 import 'package:prestige_valet_app/injection_container/wallet_injection.dart';
 
 import 'profile_injection.dart';
@@ -31,6 +32,7 @@ Future<void> init() async {
   splashInjection();
   pickUpInjection();
   profileInjection();
+  valetInjection();
 
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(

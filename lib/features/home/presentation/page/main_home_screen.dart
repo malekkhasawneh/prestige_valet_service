@@ -18,6 +18,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     HomeCubit.get(context).getUserData();
+    HomeCubit.get(context).initFcmListeners(context);
     super.initState();
   }
 

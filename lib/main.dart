@@ -12,15 +12,14 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/c
 import 'package:prestige_valet_app/features/edit_profile/presentation/cubit/edit_profile_cubit.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
-import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/payment_gateway/presentation/cubit/payment_gateway_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:prestige_valet_app/features/scan_qr_code/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
+import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart' as di;
 
@@ -65,7 +64,7 @@ class PrestigeValetApp extends StatelessWidget {
         BlocProvider<SignUpCubit>(create: (_) => di.sl<SignUpCubit>()),
         BlocProvider<ForgetPasswordCubit>(
             create: (_) => di.sl<ForgetPasswordCubit>()),
-        BlocProvider<ScanQrCubit>(create: (_) => ScanQrCubit()),
+        BlocProvider<ScanQrCubit>(create: (_) => di.sl<ScanQrCubit>()),
         BlocProvider<SplashCubit>(create: (_) => di.sl<SplashCubit>()),
       ],
       child: MaterialApp(

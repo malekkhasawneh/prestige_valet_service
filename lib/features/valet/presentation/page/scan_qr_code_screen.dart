@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -7,7 +9,7 @@ import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:prestige_valet_app/features/scan_qr_code/cubit/scan_qr_cubit.dart';
+import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 
 class ScanQrCodeScreen extends StatefulWidget {
   const ScanQrCodeScreen({super.key});
@@ -22,11 +24,16 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
     HomeCubit.get(context).getUserData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return BlocBuilder<ScanQrCubit, ScanQrState>(builder: (context, state) {
+    return BlocConsumer<ScanQrCubit, ScanQrState>(listener: (context, state) {
+      if (state is ScanQrLoaded) {
+        log('=========================================== status = ${state.parkedCarsModel.parkingStatus}');
+      }
+    }, builder: (context, state) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -48,7 +55,8 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                     )),
                 child: ElevatedButton(
                   onPressed: () {
-                    ScanQrCubit.get(context).scanQrCode();
+                    ScanQrCubit.get(context).parkCar(
+                        valetId: HomeCubit.get(context).userModel.user.id);
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

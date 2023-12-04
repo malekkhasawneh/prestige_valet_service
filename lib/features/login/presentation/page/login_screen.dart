@@ -11,6 +11,7 @@ import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit
 import 'package:prestige_valet_app/features/login/presentation/widgets/login_button_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
+import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -29,6 +30,7 @@ class LoginScreen extends StatelessWidget {
               state.userModel.toJson(),
             ))
                 .then((_) async {
+              SplashCubit.get(context).checkIsUser();
               await LoginCubit.get(context).setLoginFlag();
               // ignore: use_build_context_synchronously
               Navigator.pushReplacementNamed(context, Routes.bottomNvBarScreen);
