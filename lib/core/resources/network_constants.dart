@@ -16,4 +16,7 @@ class NetworkConstants {
 
   static String logoutEndPoint(int userId) => 'auth/logout/$userId';
   static const String parkCar = 'valet/Parking';
+  static const String addNotificationToken = 'notification';
+  static String getNotificationToken(int userId) => 'notification/$userId';
+  static String updateNotificationToken(int notificationId)=> 'notification?notificationId=$notificationId';
 }
