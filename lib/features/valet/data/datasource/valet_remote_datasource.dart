@@ -9,6 +9,10 @@ import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.d
 
 abstract class ValetRemoteDataSource {
   Future<ParkedCarsModel> parkCar({required int valetId});
+
+  Future<ParkedCarsModel> changeStatusToParked({required int parkingId});
+
+  Future<ParkedCarsModel> carDelivered({required int parkingId});
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
@@ -30,6 +34,32 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
       } else {
         throw ServerException();
       }
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ParkedCarsModel> changeStatusToParked({required int parkingId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      Map<String, dynamic> response = await DioHelper.patch(
+          NetworkConstants.changeParkingStatus(parkingId: parkingId));
+      ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
+      return parkedCarsModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ParkedCarsModel> carDelivered({required int parkingId}) async{
+    try {
+      await DioHelper.addTokenHeader();
+      Map<String, dynamic> response = await DioHelper.patch(
+          NetworkConstants.carDelivered(parkingId: parkingId));
+      ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
+      return parkedCarsModel;
     } on Exception {
       throw ServerException();
     }

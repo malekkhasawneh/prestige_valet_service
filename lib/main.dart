@@ -51,7 +51,8 @@ class PrestigeValetApp extends StatelessWidget {
         BlocProvider<PaymentGatewayCubit>(
           create: (_) => di.sl(),
         ),
-        BlocProvider<BottomNavBarCubit>(create: (_) => BottomNavBarCubit()),
+        BlocProvider<BottomNavBarCubit>(
+            create: (_) => di.sl<BottomNavBarCubit>()),
         BlocProvider<HomeCubit>(create: (_) => di.sl<HomeCubit>()),
         BlocProvider<WalletCubit>(create: (_) => di.sl<WalletCubit>()),
         BlocProvider<ProfileCubit>(create: (_) => di.sl<ProfileCubit>()),

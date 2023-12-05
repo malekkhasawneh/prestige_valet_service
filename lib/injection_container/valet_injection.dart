@@ -1,6 +1,8 @@
 import 'package:prestige_valet_app/features/valet/data/datasource/valet_remote_datasource.dart';
 import 'package:prestige_valet_app/features/valet/data/repository/valet_repository_impl.dart';
 import 'package:prestige_valet_app/features/valet/domain/repository/valet_repository.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart';
@@ -8,11 +10,16 @@ import 'package:prestige_valet_app/injection_container/injection.dart';
 Future<void> valetInjection() async {
   // Cubit
   sl.registerFactory(
-    () => ScanQrCubit(parkCarUseCase: sl()),
+    () => ScanQrCubit(
+        parkCarUseCase: sl(),
+        changeParkStatusUseCase: sl(),
+        carDeliveredUseCase: sl()),
   );
 
   // Use cases
   sl.registerLazySingleton(() => ParkCarUseCase(repository: sl()));
+  sl.registerLazySingleton(() => ChangeParkStatusUseCase(repository: sl()));
+  sl.registerLazySingleton(() => CarDeliveredUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<ValetRepository>(

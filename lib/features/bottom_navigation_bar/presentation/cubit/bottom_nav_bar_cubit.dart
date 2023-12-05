@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/add_notification_token_usecase.dart';
@@ -36,6 +37,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     emit(SetAndGetValueLoaded());
   }
 
+  String userNotificationToken = '';
+
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
         SplashCubit.get(context).isUser
             ? const MainHomeScreen()
@@ -44,5 +47,61 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         const ProfileScreen(),
       ];
 
+  Future<void> addNotificationToken({required int userId}) async {
+    emit(BottomNavBarLoading());
+    try {
+      final response = await addNotificationTokenUseCase(
+          AddNotificationTokenUseCaseParams(
+              userId: userId, token: await getTokenForUser()));
+      response.fold(
+          (failure) => emit(BottomNavBarError(failure: failure.failure)),
+          (success) => emit(BottomNavBarLoaded()));
+    } catch (failure) {
+      emit(BottomNavBarError(failure: failure.toString()));
+    }
+  }
 
+  Future<void> getNotificationTokenForUser({required int userId}) async {
+    emit(BottomNavBarLoading());
+    try {
+      final response =
+          await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
+        userId: userId,
+      ));
+      response
+          .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
+              (success) {
+        userNotificationToken = success.content.notificationToken;
+        emit(BottomNavBarLoaded());
+      });
+    } catch (failure) {
+      emit(BottomNavBarError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> updateUserNotificationToken(
+      {required int userId,
+      required int tokenId,
+      required String token}) async {
+    emit(BottomNavBarLoading());
+    try {
+      final response = await updateNotificationTokenUseCase(
+          UpdateNotificationTokenUseCaseParams(
+        userId: userId,
+        tokenId: tokenId,
+        token: token,
+      ));
+      response
+          .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
+              (success) {
+        emit(BottomNavBarLoaded());
+      });
+    } catch (failure) {
+      emit(BottomNavBarError(failure: failure.toString()));
+    }
+  }
+
+  Future<String> getTokenForUser() async {
+    return await FirebaseMessaging.instance.getToken() ?? '';
+  }
 }

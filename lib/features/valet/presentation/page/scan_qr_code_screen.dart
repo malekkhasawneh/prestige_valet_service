@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
@@ -31,7 +30,12 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     return BlocConsumer<ScanQrCubit, ScanQrState>(listener: (context, state) {
       if (state is ScanQrLoaded) {
-        log('=========================================== status = ${state.parkedCarsModel.parkingStatus}');
+        if (state.parkedCarsModel.parkingStatus ==
+            Constants.deliveredToGateKeeper) {
+          ScanQrCubit.get(context)
+              .changeParkedCarStatus(parkingId: state.parkedCarsModel.id);
+        } else if (state.parkedCarsModel.parkingStatus ==
+            Constants.carParked) {}
       }
     }, builder: (context, state) {
       return Scaffold(

@@ -16,5 +16,7 @@ class Constants{
   static const twitterApiKey = 'TWITTER_API_KEY';
   static const twitterApiSecretKey = 'TWITTER_API_SECRET_KEY';
   static const twitterRedirectUrl = 'TWITTER_REDIRECT_URL';
-
+  static const deliveredToGateKeeper = "DELIVERED_TO_GATEKEEPER";
+  static const carParked = "PARKED";
+  static const carDelivered = "DELIVERED_TO_USER";
 }

@@ -18,5 +18,11 @@ class NetworkConstants {
   static const String parkCar = 'valet/Parking';
   static const String addNotificationToken = 'notification';
   static String getNotificationToken(int userId) => 'notification/$userId';
-  static String updateNotificationToken(int notificationId)=> 'notification?notificationId=$notificationId';
+  static String updateNotificationToken(int notificationId) =>
+      'notification?notificationId=$notificationId';
+
+  static String changeParkingStatus({required int parkingId}) =>
+      'valet/Parking/parked?parkingId=$parkingId';
+  static String carDelivered({required int parkingId}) =>
+      'valet/Parking/delivered?parkingId=$parkingId';
 }

@@ -28,4 +28,36 @@ class ValetRepositoryImpl implements ValetRepository {
       return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, ParkedCarsModel>> changeStatusToParked(
+      {required int parkingId}) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response =
+            await remoteDataSource.changeStatusToParked(parkingId: parkingId);
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, ParkedCarsModel>> carDelivered(
+      {required int parkingId}) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response =
+            await remoteDataSource.carDelivered(parkingId: parkingId);
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }

@@ -19,6 +19,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   void initState() {
     HomeCubit.get(context).getUserData();
     HomeCubit.get(context).initFcmListeners(context);
+
     super.initState();
   }
 
@@ -26,18 +27,20 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-      if (state is HomeLoading) {
-        return const SizedBox();
-      } else if (state is HomeLoaded) {
-        return Scaffold(
-          body: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: HomeCubit.get(context)
-                    .headerBoxHeight(context, screenHeight),
+    return BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is HomeLoading) {
+            return const SizedBox();
+          } else if (state is HomeLoaded) {
+            return Scaffold(
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: HomeCubit.get(context)
+                        .headerBoxHeight(context, screenHeight),
                 width: screenWidth,
                 color: ColorManager.primaryColor,
                 child: Padding(
