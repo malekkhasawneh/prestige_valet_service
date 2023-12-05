@@ -14,6 +14,22 @@ class HomeLoading extends HomeState {
   List<Object> get props => [];
 }
 
+class RetrieveCarLoaded extends HomeState {
+  final ParkedCarsModel parkedCarsModel;
+
+  const RetrieveCarLoaded({required this.parkedCarsModel});
+  @override
+  List<Object> get props => [parkedCarsModel];
+}
+
+class WashCarLoaded extends HomeState {
+  final ParkedCarsModel parkedCarsModel;
+
+  const WashCarLoaded({required this.parkedCarsModel});
+  @override
+  List<Object> get props => [parkedCarsModel];
+}
+
 class HomeLoaded extends HomeState {
   @override
   List<Object> get props => [];

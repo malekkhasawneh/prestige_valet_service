@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/add_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/get_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/update_notification_token_usecase.dart';
+import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
@@ -41,7 +42,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
         SplashCubit.get(context).isUser
-            ? const MainHomeScreen()
+            ? const CarParkedHomeScreen()
             : const ScanQrCodeScreen(),
         const WalletScreen(),
         const ProfileScreen(),

@@ -7,6 +7,7 @@ class ParkedCarsModel {
   User user;
   User valet;
   String parkingStatus;
+  bool washCar;
 
   ParkedCarsModel({
     required this.createdOn,
@@ -17,29 +18,33 @@ class ParkedCarsModel {
     required this.user,
     required this.valet,
     required this.parkingStatus,
+    required this.washCar,
   });
 
   factory ParkedCarsModel.fromJson(Map<String, dynamic> json) => ParkedCarsModel(
     createdOn: DateTime.parse(json["createdOn"]),
-    createdBy: json["createdBy"],
-    updatedOn: DateTime.parse(json["updatedOn"]),
-    updatedBy: json["updatedBy"],
-    id: json["id"],
-    user: User.fromJson(json["user"]),
-    valet: User.fromJson(json["valet"]),
-    parkingStatus: json["parkingStatus"],
-  );
+        createdBy: json["createdBy"],
+        updatedOn: DateTime.parse(json["updatedOn"]),
+        updatedBy: json["updatedBy"],
+        id: json["id"],
+        user: User.fromJson(json["user"]),
+        valet: User.fromJson(json["valet"]),
+        parkingStatus: json["parkingStatus"],
+        washCar: json['carWash'],
+      );
 
-  Map<String, dynamic> toJson() => {
-    "createdOn": createdOn.toIso8601String(),
-    "createdBy": createdBy,
-    "updatedOn": updatedOn.toIso8601String(),
-    "updatedBy": updatedBy,
-    "id": id,
-    "user": user.toJson(),
-    "valet": valet.toJson(),
-    "parkingStatus": parkingStatus,
-  };
+  Map<String, dynamic> toJson() =>
+      {
+        "createdOn": createdOn.toIso8601String(),
+        "createdBy": createdBy,
+        "updatedOn": updatedOn.toIso8601String(),
+        "updatedBy": updatedBy,
+        "id": id,
+        "user": user.toJson(),
+        "valet": valet.toJson(),
+        "parkingStatus": parkingStatus,
+        "carWash": washCar,
+      };
 }
 
 class User {

@@ -21,7 +21,9 @@ class RequestCarWidget extends StatelessWidget {
             width: screenWidth * 0.45,
             height: 43,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                HomeCubit.get(context).retrieveCar(parkingId: 52);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.blackColor,
                 shape: RoundedRectangleBorder(
@@ -43,7 +45,9 @@ class RequestCarWidget extends StatelessWidget {
             width: screenWidth * 0.45,
             height: 43,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                HomeCubit.get(context).washCar(parkingId: 52, washFlag: true);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.blackColor,
                 shape: RoundedRectangleBorder(

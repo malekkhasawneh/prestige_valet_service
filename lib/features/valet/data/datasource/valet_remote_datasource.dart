@@ -25,7 +25,8 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
         Response response = await DioHelper.post(NetworkConstants.parkCar,
             data: {
               "userId": int.parse(result.rawContent.split(',').last),
-              "valetId": valetId
+              "valetId": valetId,
+              "carWash": false,
             });
         ParkedCarsModel parkedCarsModel =
             ParkedCarsModel.fromJson(response.data);

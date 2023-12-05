@@ -17,12 +17,21 @@ class NetworkConstants {
   static String logoutEndPoint(int userId) => 'auth/logout/$userId';
   static const String parkCar = 'valet/Parking';
   static const String addNotificationToken = 'notification';
+
   static String getNotificationToken(int userId) => 'notification/$userId';
+
   static String updateNotificationToken(int notificationId) =>
       'notification?notificationId=$notificationId';
 
   static String changeParkingStatus({required int parkingId}) =>
       'valet/Parking/parked?parkingId=$parkingId';
+
   static String carDelivered({required int parkingId}) =>
       'valet/Parking/delivered?parkingId=$parkingId';
+
+  static String retrieveCar({required int parkingId}) =>
+      'Parking/retrieve?parkingId=$parkingId';
+
+  static String washCar({required int parkingId, required bool washFlag}) =>
+      'Parking/washCar/$parkingId?washCar=$washFlag';
 }

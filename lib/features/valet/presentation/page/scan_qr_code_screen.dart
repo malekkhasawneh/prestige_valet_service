@@ -34,8 +34,9 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
             Constants.deliveredToGateKeeper) {
           ScanQrCubit.get(context)
               .changeParkedCarStatus(parkingId: state.parkedCarsModel.id);
-        } else if (state.parkedCarsModel.parkingStatus ==
-            Constants.carParked) {}
+        } else if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
+
+        }
       }
     }, builder: (context, state) {
       return Scaffold(

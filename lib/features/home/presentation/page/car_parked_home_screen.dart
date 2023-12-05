@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -19,6 +21,7 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
   @override
   void initState() {
     HomeCubit.get(context).getUserData();
+    HomeCubit.get(context).initFcmListeners(context);
     super.initState();
   }
 
@@ -26,7 +29,11 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+    return BlocConsumer<HomeCubit, HomeState>(listener: (context, state) {
+      if (state is WashCarLoaded) {
+        log('============================================ yyy ${state.parkedCarsModel.washCar}');
+      }
+    }, builder: (context, state) {
       return Scaffold(
         body: Stack(
           alignment: Alignment.topCenter,
@@ -38,44 +45,44 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
                 Container(
                   height: HomeCubit.get(context)
                       .headerBoxHeight(context, screenHeight),
-                  width: screenWidth,
-                  color: ColorManager.primaryColor,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: screenWidth * 0.05,
-                      top: HomeCubit.get(context)
+                      width: screenWidth,
+                      color: ColorManager.primaryColor,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: screenWidth * 0.05,
+                          top: HomeCubit.get(context)
                               .headerBoxHeight(context, screenHeight) *
-                          0.35,
+                              0.35,
+                        ),
+                        child: Text(
+                          Strings.carParkedHiString(
+                              HomeCubit.get(context).userModel.user.firstName),
+                          style: const TextStyle(
+                              fontFamily: Fonts.sourceSansPro,
+                              fontSize: 26,
+                              color: ColorManager.whiteColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      Strings.carParkedHiString(
-                          HomeCubit.get(context).userModel.user.firstName),
-                      style: const TextStyle(
-                          fontFamily: Fonts.sourceSansPro,
-                          fontSize: 26,
-                          color: ColorManager.whiteColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: HomeCubit.get(context)
-                      .bodyBoxHeight(context, screenHeight),
-                  child: Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      height: HomeCubit.get(context)
+                          .bodyBoxHeight(context, screenHeight),
+                      child: Column(
                         children: [
-                          SizedBox(
-                            height: HomeCubit.get(context)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: HomeCubit.get(context)
                                     .bodyBoxHeight(context, screenHeight) *
-                                0.2,
-                          ),
-                          QrCodeWidget(
-                            screenHeight: screenHeight,
-                          ),
-                          SizedBox(
-                            height: HomeCubit.get(context)
+                                    0.2,
+                              ),
+                              QrCodeWidget(
+                                screenHeight: screenHeight,
+                              ),
+                              SizedBox(
+                                height: HomeCubit.get(context)
                                     .bodyBoxHeight(context, screenHeight) *
                                 0.03,
                           ),
@@ -87,26 +94,31 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
                             ),
                             textAlign: TextAlign.start,
                           ),
-                          const Text(
-                            'x23-657',
-                            style: TextStyle(
+                          Text(
+                            HomeCubit.get(context)
+                                .userModel
+                                .user
+                                .userId
+                                .split('-')
+                                .first,
+                            style: const TextStyle(
                               fontFamily: Fonts.sourceSansPro,
                             ),
                             textAlign: TextAlign.start,
                           ),
                         ],
-                      ),
-                      SizedBox(
-                        height: HomeCubit.get(context)
+                          ),
+                          SizedBox(
+                            height: HomeCubit.get(context)
                                 .bodyBoxHeight(context, screenHeight) *
-                            0.1,
+                                0.1,
+                          ),
+                          const ShowYourHistoryWidget()
+                        ],
                       ),
-                      const ShowYourHistoryWidget()
-                    ],
-                  ),
-                ),
-              ],
-            )),
+                    ),
+                  ],
+                )),
             const RequestCarWidget(),
           ],
         ),
