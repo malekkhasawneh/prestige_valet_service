@@ -1,3 +1,4 @@
+import 'package:prestige_valet_app/features/bottom_navigation_bar/data/datasource/nav_local_datasource.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/data/datasource/nav_remote_datasouce.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/data/repository/nav_repository_impl.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/repository/nav_repository.dart';
@@ -10,10 +11,11 @@ import 'package:prestige_valet_app/injection_container/injection.dart';
 Future<void> bottomNavInjection() async {
   // Cubit
   sl.registerFactory(
-    () => BottomNavBarCubit(
+        () => BottomNavBarCubit(
         getNotificationTokenUseCase: sl(),
         updateNotificationTokenUseCase: sl(),
-        addNotificationTokenUseCase: sl()),
+        addNotificationTokenUseCase: sl(),
+        mustResetNotificationTokenUseCase: sl()),
   );
 
   // Use cases
@@ -24,11 +26,14 @@ Future<void> bottomNavInjection() async {
 
   // Repository
   sl.registerLazySingleton<NavRepository>(
-    () => NavRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()),
+    () => NavRepositoryImpl(
+        remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
   );
 
   // Data sources
-
+  sl.registerLazySingleton<NavLocalDataSource>(
+    () => NavLocalDataSourceImpl(),
+  );
   sl.registerLazySingleton<NavRemoteDataSource>(
     () => NavRemoteDataSourceImpl(),
   );
