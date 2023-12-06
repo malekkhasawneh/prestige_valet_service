@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit,SplashState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is SplashLoaded) {
           if (SplashCubit.get(context).isFirstTime) {
             Future.delayed(const Duration(seconds: 3)).then(
@@ -34,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
             );
           } else {
             if (state.isLogin) {
+              await HomeCubit.get(context).getUserData(context);
               Future.delayed(const Duration(seconds: 3)).then(
                 (_) => Navigator.pushNamed(
                   context,

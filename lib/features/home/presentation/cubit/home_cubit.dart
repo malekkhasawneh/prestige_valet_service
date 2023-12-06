@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +46,7 @@ class HomeCubit extends Cubit<HomeState> {
       response.fold((failure) => emit(HomeError(failure: failure.toString())),
           (userModel) {
         this.userModel = userModel;
+        log('======================================= token ${userModel.token}');
         BottomNavBarCubit.get(context)
             .getNotificationTokenForUser(userId: userModel.user.id);
         emit(HomeLoaded());

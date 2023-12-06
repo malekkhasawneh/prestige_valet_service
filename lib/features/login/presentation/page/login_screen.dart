@@ -7,6 +7,7 @@ import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/login_button_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
@@ -32,6 +33,8 @@ class LoginScreen extends StatelessWidget {
                 .then((_) async {
               SplashCubit.get(context).checkIsUser();
               await LoginCubit.get(context).setLoginFlag();
+              // ignore: use_build_context_synchronously
+              HomeCubit.get(context).getUserData(context);
               // ignore: use_build_context_synchronously
               Navigator.pushReplacementNamed(context, Routes.bottomNvBarScreen);
             });

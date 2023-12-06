@@ -16,11 +16,6 @@ class MainHomeScreen extends StatefulWidget {
 }
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
-  @override
-  void initState() {
-    HomeCubit.get(context).getUserData(context);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

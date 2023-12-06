@@ -5,6 +5,7 @@ import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
 class BottomNavBarScreen extends StatefulWidget {
   const BottomNavBarScreen({super.key});
@@ -42,16 +43,20 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
                 context)[BottomNavBarCubit.get(context).getSelectedIndex],
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
+            items: <BottomNavigationBarItem>[
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: Strings.home,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.wallet),
-                label: Strings.wallet,
+                icon: SplashCubit.get(context).isUser
+                    ? const Icon(Icons.wallet)
+                    : const Icon(Icons.local_parking),
+                label: SplashCubit.get(context).isUser
+                    ? Strings.wallet
+                    : Strings.parking,
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: Strings.profile,
               ),

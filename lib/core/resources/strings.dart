@@ -19,9 +19,10 @@ class Strings {
   static const String home = 'Home';
   static const String wallet = 'Wallet';
   static const String profile = 'Profile';
+  static const String parking = 'Parking';
 
   //Home Screen
-  static  String carParkedHiString(String userName) =>
+  static String carParkedHiString(String userName) =>
       'Hi $userName, Your Car Is\nParked Safely';
 
   static String mainScreenHiString({required String userName}) =>
@@ -123,5 +124,8 @@ class Strings {
 
   // Scan Qr code screen
   static const String scanQrCode = "Scan QR code";
+  static const String gate = "Gate";
 
+  static String parkingHiString(String valetName) =>
+      "Hi $valetName, This is Your\nParking History";
 }

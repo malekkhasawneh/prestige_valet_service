@@ -19,12 +19,6 @@ class CarParkedHomeScreen extends StatefulWidget {
 
 class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
   @override
-  void initState() {
-    HomeCubit.get(context).getUserData(context);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;

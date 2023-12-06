@@ -1,5 +1,5 @@
 class ParkHistoryModel {
-  List<Content> content;
+  List<ParkHistoryContent> content;
 
   ParkHistoryModel({
     required this.content,
@@ -8,22 +8,22 @@ class ParkHistoryModel {
   factory ParkHistoryModel.fromJson(Map<String, dynamic> json) =>
       ParkHistoryModel(
         content:
-            List<Content>.from(json["content"].map((x) => Content.fromJson(x))),
+            List<ParkHistoryContent>.from(json["content"].map((x) => ParkHistoryContent.fromJson(x))),
       );
 }
 
-class Content {
+class ParkHistoryContent {
   DateTime createdOn;
   String createdBy;
   DateTime updatedOn;
   String updatedBy;
   int id;
-  User user;
-  User valet;
+  ParkHistoryContentUser user;
+  ParkHistoryContentUser valet;
   String parkingStatus;
   bool? carWash;
 
-  Content({
+  ParkHistoryContent({
     required this.createdOn,
     required this.createdBy,
     required this.updatedOn,
@@ -35,20 +35,20 @@ class Content {
     required this.carWash,
   });
 
-  factory Content.fromJson(Map<String, dynamic> json) => Content(
+  factory ParkHistoryContent.fromJson(Map<String, dynamic> json) => ParkHistoryContent(
         createdOn: DateTime.parse(json["createdOn"]),
-        createdBy: json["createdBy"],
+        createdBy: json["createdBy"] ?? '',
         updatedOn: DateTime.parse(json["updatedOn"]),
-        updatedBy: json["updatedBy"],
+        updatedBy: json["updatedBy"] ?? '',
         id: json["id"],
-        user: User.fromJson(json["user"]),
-        valet: User.fromJson(json["valet"]),
-        parkingStatus: json["parkingStatus"],
-        carWash: json["carWash"],
+        user: ParkHistoryContentUser.fromJson(json["user"]),
+        valet: ParkHistoryContentUser.fromJson(json["valet"]),
+        parkingStatus: json["parkingStatus"] ?? '',
+        carWash: json["carWash"] ?? false,
       );
 }
 
-class User {
+class ParkHistoryContentUser {
   int id;
   String userUuid;
   String firstName;
@@ -60,7 +60,7 @@ class User {
   String role;
   String email;
 
-  User({
+  ParkHistoryContentUser({
     required this.id,
     required this.userUuid,
     required this.firstName,
@@ -73,19 +73,19 @@ class User {
     required this.email,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory ParkHistoryContentUser.fromJson(Map<String, dynamic> json) => ParkHistoryContentUser(
         id: json["id"],
-        userUuid: json["userUuid"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        phone: json["phone"],
-        profileImg: json["profileImg"],
+        userUuid: json["userUuid"]??'',
+        firstName: json["firstName"]??'',
+        lastName: json["lastName"]??'',
+        phone: json["phone"]??'',
+        profileImg: json["profileImg"]??'',
         socialProfile: json["socialProfile"],
         location: json["location"] == null
             ? null
             : Location.fromJson(json["location"]),
-        role: json["role"],
-        email: json["email"],
+        role: json["role"]??'',
+        email: json["email"]??'',
       );
 }
 
@@ -97,7 +97,7 @@ class Location {
   int id;
   String locationName;
   String cityName;
-  int price;
+  double price;
   String availabilityStatus;
 
   Location({
@@ -114,13 +114,13 @@ class Location {
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         createdOn: DateTime.parse(json["createdOn"]),
-        createdBy: json["createdBy"],
+        createdBy: json["createdBy"]??'',
         updatedOn: DateTime.parse(json["updatedOn"]),
-        updatedBy: json["updatedBy"],
+        updatedBy: json["updatedBy"]??'',
         id: json["id"],
-        locationName: json["locationName"],
-        cityName: json["cityName"],
+        locationName: json["locationName"]??'',
+        cityName: json["cityName"]??'',
         price: json["price"],
-        availabilityStatus: json["availabilityStatus"],
+        availabilityStatus: json["availabilityStatus"]??'',
       );
 }

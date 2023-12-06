@@ -13,6 +13,7 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:prestige_valet_app/features/valet/presentation/page/parking_screen.dart';
 import 'package:prestige_valet_app/features/valet/presentation/page/scan_qr_code_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
@@ -47,11 +48,14 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   int tokenId = -1;
   bool canUpdateToken = true;
 
-  List<Widget> widgetOptions(BuildContext context) => <Widget>[
+  List<Widget> widgetOptions(BuildContext context) =>
+      <Widget>[
         SplashCubit.get(context).isUser
             ? const MainHomeScreen()
             : const ScanQrCodeScreen(),
-        const WalletScreen(),
+        SplashCubit.get(context).isUser
+            ? const WalletScreen()
+            : const ParkingScreen(),
         const ProfileScreen(),
       ];
 
