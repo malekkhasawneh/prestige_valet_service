@@ -13,6 +13,8 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
       await CacheHelper.clear();
       await CacheHelper.setValue(
           key: CacheConstants.isFirstTimeOpenTheApp, value: '0');
+      await CacheHelper.setValue(
+          key: CacheConstants.resetNotificationToken, value: '0');
     } on Exception {
       throw CacheException();
     }

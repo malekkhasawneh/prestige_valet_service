@@ -26,7 +26,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       } else if (state is BottomNavBarLoaded) {
         if (BottomNavBarCubit.get(context).userNotificationToken ==
                 Constants.userLoggedOut &&
-            BottomNavBarCubit.get(context).tokenId == -1) {
+            BottomNavBarCubit.get(context).canUpdateToken) {
           BottomNavBarCubit.get(context).updateUserNotificationToken(
               userId: HomeCubit.get(context).userModel.user.id,
               tokenId: BottomNavBarCubit.get(context).tokenId);

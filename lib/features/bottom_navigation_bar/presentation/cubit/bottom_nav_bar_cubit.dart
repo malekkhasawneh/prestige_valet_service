@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,6 +45,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   String userNotificationToken = '';
   int tokenId = -1;
+  bool canUpdateToken = true;
 
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
         SplashCubit.get(context).isUser
@@ -61,8 +64,10 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {
-        userNotificationToken = success.notificationToken;
+            userNotificationToken = success.notificationToken;
         tokenId = success.id;
+        log('====================================== in add id ${success.id}');
+        log('====================================== in add token ${success.notificationToken}');
         emit(BottomNavBarLoaded());
       });
     } catch (failure) {
@@ -74,7 +79,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     emit(BottomNavBarLoading());
     try {
       final response =
-          await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
+      await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
         userId: userId,
       ));
       response.fold((failure) {
@@ -82,6 +87,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       }, (success) async {
         userNotificationToken = success.content.notificationToken;
         tokenId = success.content.id;
+        log('====================================== in get id ${success.content.id}');
+        log('====================================== in get token ${success.content.notificationToken}');
         if (await mustResetNotificationToken()) {
           addNotificationToken(userId: userId);
         }
@@ -102,15 +109,17 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     try {
       final response = await updateNotificationTokenUseCase(
           UpdateNotificationTokenUseCaseParams(
-        userId: userId,
-        tokenId: tokenId,
-        token: isLogout ? Constants.userLoggedOut : await getTokenForUser(),
-      ));
+            userId: userId,
+            tokenId: tokenId,
+            token: isLogout ? Constants.userLoggedOut : await getTokenForUser(),
+          ));
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {
-        userNotificationToken = success.notificationToken;
+            userNotificationToken = success.notificationToken;
         tokenId = success.id;
+        log('====================================== in update id ${success.id}');
+        log('====================================== in update token ${success.notificationToken}');
         emit(BottomNavBarLoaded());
       });
     } catch (failure) {

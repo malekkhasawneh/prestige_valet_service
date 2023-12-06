@@ -22,6 +22,11 @@ class ScanQrCodeScreen extends StatefulWidget {
 
 class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
   @override
+  void initState() {
+    HomeCubit.get(context).getUserData(context);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
