@@ -63,9 +63,9 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                   fit: BoxFit.fill,
                 ),
         ),
-        title: const Text(
-          'John Doe',
-          style: TextStyle(
+        title: Text(
+          '${HomeCubit.get(context).userModel.user.firstName} ${HomeCubit.get(context).userModel.user.lastName}',
+          style: const TextStyle(
             fontFamily: Fonts.sourceSansPro,
             fontSize: 20,
             color: ColorManager.blackColor,
