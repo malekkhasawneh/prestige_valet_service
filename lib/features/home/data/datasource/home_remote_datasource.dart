@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
+import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 
 abstract class HomeRemoteDataSource {
@@ -8,6 +10,8 @@ abstract class HomeRemoteDataSource {
 
   Future<ParkedCarsModel> washCar(
       {required int parkingId, required bool washFlag});
+
+  Future<ParkHistoryModel> getUserHistory({required int userId});
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -16,7 +20,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     try {
       await DioHelper.addTokenHeader();
       final Map<String, dynamic> response =
-          await DioHelper.patch(NetworkConstants.retrieveCar(
+      await DioHelper.patch(NetworkConstants.retrieveCar(
         parkingId: parkingId,
       ));
       ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
@@ -38,6 +42,22 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       ));
       ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
       return parkedCarsModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ParkHistoryModel> getUserHistory({required int userId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      final Response response =
+          await DioHelper.get(NetworkConstants.getUserHistory(
+        userId: userId,
+      ));
+      ParkHistoryModel parkHistoryModel =
+          ParkHistoryModel.fromJson(response.data);
+      return parkHistoryModel;
     } on Exception {
       throw ServerException();
     }

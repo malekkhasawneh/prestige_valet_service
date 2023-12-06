@@ -12,12 +12,23 @@ class ScanQrLoading extends ScanQrState {
   @override
   List<Object> get props => [];
 }
+
 class ScanQrLoaded extends ScanQrState {
   final ParkedCarsModel parkedCarsModel;
 
- const ScanQrLoaded({required this.parkedCarsModel});
+  const ScanQrLoaded({required this.parkedCarsModel});
+
   @override
   List<Object> get props => [parkedCarsModel];
+}
+
+class GetValetHistoryLoaded extends ScanQrState {
+  final ParkHistoryModel valetHistoryModel;
+
+  const GetValetHistoryLoaded({required this.valetHistoryModel});
+
+  @override
+  List<Object> get props => [valetHistoryModel];
 }
 
 class ScanQrError extends ScanQrState {

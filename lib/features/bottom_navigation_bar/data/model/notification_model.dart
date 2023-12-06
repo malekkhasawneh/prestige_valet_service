@@ -1,13 +1,18 @@
 class NotificationModel {
   NotificationContent content;
+  String message;
 
   NotificationModel({
     required this.content,
+    required this.message,
   });
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
-    content: List<NotificationContent>.from(json["content"].map((x) => NotificationContent.fromJson(x))).first,
-  );
+  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+      NotificationModel(
+          content: List<NotificationContent>.from(
+                  json["content"].map((x) => NotificationContent.fromJson(x)))
+              .first,
+          message: json['message'] ?? '');
 }
 
 class NotificationContent {

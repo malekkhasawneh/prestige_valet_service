@@ -28,6 +28,15 @@ class BottomNavBarError extends BottomNavBarState {
   List<Object> get props => [failure];
 }
 
+class GetUserTokenError extends BottomNavBarState {
+  final String failure;
+
+  const GetUserTokenError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
+}
+
 // Set And Get Value States
 class SetAndGetValueLoading extends BottomNavBarState {
   @override

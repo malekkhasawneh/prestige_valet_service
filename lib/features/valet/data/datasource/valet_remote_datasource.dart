@@ -6,6 +6,7 @@ import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 
 abstract class ValetRemoteDataSource {
   Future<ParkedCarsModel> parkCar({required int valetId});
@@ -13,6 +14,8 @@ abstract class ValetRemoteDataSource {
   Future<ParkedCarsModel> changeStatusToParked({required int parkingId});
 
   Future<ParkedCarsModel> carDelivered({required int parkingId});
+
+  Future<ParkHistoryModel> getValetHistory({required int valetId});
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
@@ -61,6 +64,20 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
           NetworkConstants.carDelivered(parkingId: parkingId));
       ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
       return parkedCarsModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ParkHistoryModel> getValetHistory({required int valetId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      Response response = await DioHelper.get(
+          NetworkConstants.getValetCarHistory(valetId: valetId));
+      ParkHistoryModel valetHistoryModel =
+          ParkHistoryModel.fromJson(response.data);
+      return valetHistoryModel;
     } on Exception {
       throw ServerException();
     }

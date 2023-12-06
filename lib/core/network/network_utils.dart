@@ -81,7 +81,7 @@ class DioHelper {
       {Map<String, dynamic> data = const {}}) async {
     try {
       final response = await _dio.put(endpoint, data: data);
-      return response.data;
+      return response;
     } catch (e) {
       throw _handleError(e);
     }

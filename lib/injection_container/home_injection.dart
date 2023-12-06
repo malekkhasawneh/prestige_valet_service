@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/features/home/data/datasource/home_remote_dat
 import 'package:prestige_valet_app/features/home/data/repository/home_repository_impl.dart';
 import 'package:prestige_valet_app/features/home/domain/repository/home_repository.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/wash_car_usecase.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -14,13 +15,15 @@ Future<void> homeInjection() async {
     () => HomeCubit(
         getUserDataUseCase: sl(),
         retrieveCarUseCase: sl(),
-        washCarUseCase: sl()),
+        washCarUseCase: sl(),
+        getUserHistoryUseCase: sl()),
   );
 
   // Use cases
   sl.registerLazySingleton(() => GetUserDataUseCase(repository: sl()));
   sl.registerLazySingleton(() => RetrieveCarUseCase(repository: sl()));
   sl.registerLazySingleton(() => WashCarUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetUserHistoryUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HomeRepository>(

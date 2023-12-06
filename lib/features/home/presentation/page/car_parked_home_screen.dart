@@ -20,8 +20,7 @@ class CarParkedHomeScreen extends StatefulWidget {
 class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
   @override
   void initState() {
-    HomeCubit.get(context).getUserData();
-    HomeCubit.get(context).initFcmListeners(context);
+    HomeCubit.get(context).getUserData(context);
     super.initState();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
@@ -40,7 +42,7 @@ class NavRemoteDataSourceImpl implements NavRemoteDataSource {
           await DioHelper.get(NetworkConstants.getNotificationToken(userId));
       NotificationModel notificationModel =
           NotificationModel.fromJson(response.data);
-      return notificationModel;
+        return notificationModel;
     } on Exception {
       throw ServerException();
     }

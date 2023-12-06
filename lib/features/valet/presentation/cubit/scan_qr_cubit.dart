@@ -2,8 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
 
 part 'scan_qr_state.dart';
@@ -15,11 +17,13 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     required this.parkCarUseCase,
     required this.changeParkStatusUseCase,
     required this.carDeliveredUseCase,
+    required this.getValetHistoryUseCase,
   }) : super(ScanQrInitial());
 
   final ParkCarUseCase parkCarUseCase;
   final ChangeParkStatusUseCase changeParkStatusUseCase;
   final CarDeliveredUseCase carDeliveredUseCase;
+  final GetValetHistoryUseCase getValetHistoryUseCase;
 
   Future<void> parkCar({required int valetId}) async {
     emit(ScanQrLoading());
@@ -63,9 +67,27 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           CarDeliveredUseCaseParams(parkingId: parkingId));
       response.fold(
             (failure) => emit(ScanQrError(failure: failure.failure)),
-            (success) => emit(
+        (success) => emit(
           ScanQrLoaded(
             parkedCarsModel: success,
+          ),
+        ),
+      );
+    } catch (failure) {
+      emit(ScanQrError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> getValetHistory({required int valetId}) async {
+    emit(ScanQrLoading());
+    try {
+      final response = await getValetHistoryUseCase(
+          GetValetHistoryUseCaseParams(valetId: valetId));
+      response.fold(
+        (failure) => emit(ScanQrError(failure: failure.failure)),
+        (success) => emit(
+          GetValetHistoryLoaded(
+            valetHistoryModel: success,
           ),
         ),
       );

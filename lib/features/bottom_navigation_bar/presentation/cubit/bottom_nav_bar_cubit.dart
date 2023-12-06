@@ -2,10 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
+import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/add_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/get_notification_token_usecase.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/must_reset_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/update_notification_token_usecase.dart';
-import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
@@ -22,12 +24,13 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     required this.getNotificationTokenUseCase,
     required this.updateNotificationTokenUseCase,
     required this.addNotificationTokenUseCase,
+    required this.mustResetNotificationTokenUseCase,
   }) : super(BottomNavBarInitial());
 
   final AddNotificationTokenUseCase addNotificationTokenUseCase;
   final UpdateNotificationTokenUseCase updateNotificationTokenUseCase;
   final GetNotificationTokenUseCase getNotificationTokenUseCase;
-
+  final MustResetNotificationTokenUseCase mustResetNotificationTokenUseCase;
   int _selectedIndex = 0;
 
   int get getSelectedIndex => _selectedIndex;
@@ -39,10 +42,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   }
 
   String userNotificationToken = '';
+  int tokenId = -1;
 
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
         SplashCubit.get(context).isUser
-            ? const CarParkedHomeScreen()
+            ? const MainHomeScreen()
             : const ScanQrCodeScreen(),
         const WalletScreen(),
         const ProfileScreen(),
@@ -54,9 +58,13 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       final response = await addNotificationTokenUseCase(
           AddNotificationTokenUseCaseParams(
               userId: userId, token: await getTokenForUser()));
-      response.fold(
-          (failure) => emit(BottomNavBarError(failure: failure.failure)),
-          (success) => emit(BottomNavBarLoaded()));
+      response
+          .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
+              (success) {
+        userNotificationToken = success.notificationToken;
+        tokenId = success.id;
+        emit(BottomNavBarLoaded());
+      });
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
     }
@@ -69,10 +77,40 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
         userId: userId,
       ));
+      response.fold((failure) {
+        emit(GetUserTokenError(failure: failure.failure));
+      }, (success) async {
+        userNotificationToken = success.content.notificationToken;
+        tokenId = success.content.id;
+        if (await mustResetNotificationToken()) {
+          addNotificationToken(userId: userId);
+        }
+        emit(BottomNavBarLoaded());
+      });
+    } catch (failure) {
+      emit(GetUserTokenError(
+          failure: failure.toString().split(':').last.trim()));
+    }
+  }
+
+  Future<void> updateUserNotificationToken({
+    required int userId,
+    required int tokenId,
+    bool isLogout = false,
+  }) async {
+    emit(BottomNavBarLoading());
+    try {
+      final response = await updateNotificationTokenUseCase(
+          UpdateNotificationTokenUseCaseParams(
+        userId: userId,
+        tokenId: tokenId,
+        token: isLogout ? Constants.userLoggedOut : await getTokenForUser(),
+      ));
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {
-        userNotificationToken = success.content.notificationToken;
+        userNotificationToken = success.notificationToken;
+        tokenId = success.id;
         emit(BottomNavBarLoaded());
       });
     } catch (failure) {
@@ -80,26 +118,20 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     }
   }
 
-  Future<void> updateUserNotificationToken(
-      {required int userId,
-      required int tokenId,
-      required String token}) async {
+  Future<bool> mustResetNotificationToken() async {
+    bool isTrue = false;
     emit(BottomNavBarLoading());
     try {
-      final response = await updateNotificationTokenUseCase(
-          UpdateNotificationTokenUseCaseParams(
-        userId: userId,
-        tokenId: tokenId,
-        token: token,
-      ));
-      response
-          .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
-              (success) {
-        emit(BottomNavBarLoaded());
+      final response = await mustResetNotificationTokenUseCase(NoParams());
+      response.fold((failure) {
+        isTrue = false;
+      }, (success) {
+        isTrue = success;
       });
     } catch (failure) {
-      emit(BottomNavBarError(failure: failure.toString()));
+      isTrue = false;
     }
+    return isTrue;
   }
 
   Future<String> getTokenForUser() async {

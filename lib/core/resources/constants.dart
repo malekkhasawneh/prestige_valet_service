@@ -19,4 +19,6 @@ class Constants{
   static const deliveredToGateKeeper = "DELIVERED_TO_GATEKEEPER";
   static const carParked = "PARKED";
   static const carDelivered = "DELIVERED_TO_USER";
+  static const noElement = "No element";
+  static const userLoggedOut = "user logged out";
 }

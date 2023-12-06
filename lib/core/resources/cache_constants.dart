@@ -4,4 +4,5 @@ class CacheConstants{
   static const String userLoginFlag = 'userLoginFlag';
   static const String isFirstTimeOpenTheApp = 'isFirstTimeOpenTheApp';
   static const String userRole = 'userRole';
+  static const String resetNotificationToken = 'resetNotificationToken';
 }

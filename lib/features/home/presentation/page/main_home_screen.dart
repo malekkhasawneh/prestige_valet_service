@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/qr_code_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/show_your_history_widget.dart';
@@ -17,8 +18,7 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
-    HomeCubit.get(context).getUserData();
-    HomeCubit.get(context).initFcmListeners(context);
+    HomeCubit.get(context).getUserData(context);
     super.initState();
   }
 

@@ -34,4 +34,10 @@ class NetworkConstants {
 
   static String washCar({required int parkingId, required bool washFlag}) =>
       'Parking/washCar/$parkingId?washCar=$washFlag';
+
+  static String getValetCarHistory({required int valetId}) =>
+      'valet/Parking?valetId=$valetId';
+
+  static String getUserHistory({required int userId}) =>
+      'Parking?userId=$userId';
 }
