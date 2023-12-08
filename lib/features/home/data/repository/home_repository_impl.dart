@@ -99,4 +99,21 @@ class HomeRepositoryImpl implements HomeRepository {
       return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, ParkedCarsModel>> cancelCarRetrieving(
+      {required int parkingId}) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.cancelCarRetrieving(
+          parkingId: parkingId,
+        );
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }

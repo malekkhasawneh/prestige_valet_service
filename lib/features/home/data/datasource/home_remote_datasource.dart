@@ -10,6 +10,8 @@ abstract class HomeRemoteDataSource {
   Future<ParkedCarsModel> retrieveCar(
       {required int parkingId, required int gateId});
 
+  Future<ParkedCarsModel> cancelCarRetrieving({required int parkingId});
+
   Future<ParkedCarsModel> washCar(
       {required int parkingId, required bool washFlag});
 
@@ -91,6 +93,20 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       } else {
         return false;
       }
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ParkedCarsModel> cancelCarRetrieving({required int parkingId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      final Map<String, dynamic> response = await DioHelper.patch(
+          NetworkConstants.cancelCarRetrieving(parkingId: parkingId));
+      ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
+      parkedCarsModel.isUserCanceled = true;
+      return parkedCarsModel;
     } on Exception {
       throw ServerException();
     }

@@ -32,6 +32,9 @@ class NetworkConstants {
   static String retrieveCar({required int parkingId, required int gateId}) =>
       'Parking/retrieve?parkingId=$parkingId&gateId=$gateId';
 
+  static String cancelCarRetrieving({required int parkingId}) =>
+      'Parking/retrieve/cancel?parkingId=$parkingId';
+
   static String washCar({required int parkingId, required bool washFlag}) =>
       'Parking/washCar/$parkingId?washCar=$washFlag';
 

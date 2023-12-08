@@ -9,6 +9,8 @@ abstract class HomeRepository {
 
   Future<Either<Failures, ParkedCarsModel>> retrieveCar(
       {required int parkingId,required int gateId});
+  Future<Either<Failures, ParkedCarsModel>> cancelCarRetrieving(
+      {required int parkingId});
 
   Future<Either<Failures, ParkedCarsModel>> washCar(
       {required int parkingId, required bool washFlag});

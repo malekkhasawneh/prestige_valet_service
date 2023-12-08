@@ -41,6 +41,15 @@ class WashCarLoaded extends HomeState {
   List<Object> get props => [parkedCarsModel];
 }
 
+class CancelCarRetrievingLoaded extends HomeState {
+  final ParkedCarsModel parkedCarsModel;
+
+  const CancelCarRetrievingLoaded({required this.parkedCarsModel});
+
+  @override
+  List<Object> get props => [parkedCarsModel];
+}
+
 class HomeLoaded extends HomeState {
   @override
   List<Object> get props => [];

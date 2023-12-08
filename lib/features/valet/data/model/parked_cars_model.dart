@@ -8,6 +8,7 @@ class ParkedCarsModel {
   User valet;
   String parkingStatus;
   bool washCar;
+  bool isUserCanceled = false;
 
   ParkedCarsModel({
     required this.createdOn,
@@ -19,6 +20,7 @@ class ParkedCarsModel {
     required this.valet,
     required this.parkingStatus,
     required this.washCar,
+    this.isUserCanceled = false,
   });
 
   factory ParkedCarsModel.fromJson(Map<String, dynamic> json) => ParkedCarsModel(

@@ -184,7 +184,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           title: message.notification!.title!,
           body: message.notification!.body!);
       if (message.data[Constants.notificationDataType] ==
-          Constants.carParkedNotificationTitle) {
+          Constants.carParkedNotificationAction) {
         Navigator.pushReplacementNamed(
             context, Routes.parkedSuccessfullyScreen);
       }
@@ -198,7 +198,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           title: message.notification!.title!,
           body: message.notification!.body!);
       if (message.data[Constants.notificationDataType] ==
-          Constants.carParkedNotificationTitle) {
+          Constants.carParkedNotificationAction) {
         Navigator.pushReplacementNamed(
             context, Routes.parkedSuccessfullyScreen);
       }

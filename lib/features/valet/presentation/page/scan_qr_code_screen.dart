@@ -34,7 +34,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
             userId: state.parkedCarsModel.user.id,
             title: 'Hello ${state.parkedCarsModel.user.firstName}',
             body: 'Your car is parked safely',
-            notificationType: Constants.carParkedNotificationTitle,
+            notificationType: Constants.carParkedNotificationAction,
           );
         }
       }

@@ -3,13 +3,12 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
-import 'package:prestige_valet_app/features/home/domain/usecase/send_notification_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/wash_car_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
@@ -25,12 +24,14 @@ class HomeCubit extends Cubit<HomeState> {
     required this.retrieveCarUseCase,
     required this.washCarUseCase,
     required this.getUserHistoryUseCase,
+    required this.cancelCarRetrievingUseCase,
   }) : super(HomeInitial());
 
   final GetUserDataUseCase getUserDataUseCase;
   final RetrieveCarUseCase retrieveCarUseCase;
   final WashCarUseCase washCarUseCase;
   final GetUserHistoryUseCase getUserHistoryUseCase;
+  final CancelCarRetrievingUseCase cancelCarRetrievingUseCase;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -97,6 +98,21 @@ class HomeCubit extends Cubit<HomeState> {
         emit(HomeError(failure: failure.toString()));
       }, (success) {
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
+      });
+    } catch (failure) {
+      emit(HomeError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> cancelCarRetrieving({required int parkingId}) async {
+    emit(HomeLoading());
+    try {
+      final response = await cancelCarRetrievingUseCase(
+          CancelCarRetrievingUseCaseParams(parkingId: parkingId));
+      response.fold((failure) {
+        emit(HomeError(failure: failure.toString()));
+      }, (success) {
+        emit(CancelCarRetrievingLoaded(parkedCarsModel: success));
       });
     } catch (failure) {
       emit(HomeError(failure: failure.toString()));

@@ -25,9 +25,12 @@ class Constants {
   static const String noElement = "No element";
   static const String userLoggedOut = "user logged out";
   static const String notificationDataType = "click_action";
-  static const String carParkedNotificationTitle = "CAR PARKED";
-  static const String carInRetrievingNotificationTitle = "CAR IN RETRIEVING";
-  static const String carReadyForPickUp = "CAR READY";
+  static const String carParkedNotificationAction = "CAR PARKED";
+  static const String carInRetrievingNotificationAction = "CAR IN RETRIEVING";
+  static const String carReadyForPickUpNotificationAction = "CAR READY";
+  static const String cancelCarRetrievingNotificationAction = "CANCEL CAR RETRIEVING";
+  static const String carDeliveredNotificationAction = "DELIVERED_TO_USER";
+
   static const String baseNotificationChannelKey = 'send_notification';
   static const String baseNotificationChannelName =
       'notify_user_about_car_status';
