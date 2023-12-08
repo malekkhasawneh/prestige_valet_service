@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/page/add_credit_card_screen.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/page/bottom_nav_bar_screen.dart';
 import 'package:prestige_valet_app/features/edit_profile/presentation/page/edit_profile_screen.dart';
+import 'package:prestige_valet_app/features/forget_password/presentation/page/forget_password_screen.dart';
+import 'package:prestige_valet_app/features/forget_password/presentation/page/update_your_password.dart';
+import 'package:prestige_valet_app/features/forget_password/presentation/page/verify_reset_password_email_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/login/presentation/page/login_screen.dart';
@@ -31,6 +34,10 @@ class Routes {
   static const String valetHistoryScreen = "/valetHistoryScreen";
   static const String editProfileScreen = "/editProfileScreen";
   static const String pickUpScreen = "/pickUpScreen";
+  static const String forgetPasswordScreen = "/forgetPasswordScreen";
+  static const String verifyResetPasswordEmailScreen =
+      '/verifyResetPasswordEmailScreen';
+  static const String updateYourPasswordScreen = '/updateYourPasswordScreen';
 }
 
 class RouteGenerator {
@@ -96,6 +103,20 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => const PickUpScreen(),
         );
+      case Routes.forgetPasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ForgetPasswordScreen(),
+        );
+      case Routes.verifyResetPasswordEmailScreen:
+        return MaterialPageRoute(
+            builder: (_) => const VerifyResetPasswordEmailScreen(),
+            settings: const RouteSettings(
+                name: Routes.verifyResetPasswordEmailScreen));
+      case Routes.updateYourPasswordScreen:
+        return MaterialPageRoute(
+            builder: (_) => const UpdateYourPasswordScreen(),
+            settings:
+                const RouteSettings(name: Routes.updateYourPasswordScreen));
       default:
         return unDefinedRoute();
     }

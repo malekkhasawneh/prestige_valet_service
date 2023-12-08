@@ -42,6 +42,25 @@ class HomeCubit extends Cubit<HomeState> {
 
   late SignUpModel userModel;
   bool isUserCarParked = false;
+  bool _isUserCarInRetrieve = false;
+
+  bool get isUserCarInRetrieve => _isUserCarInRetrieve;
+
+  set setIsUserCarInRetrieve(bool value) {
+    emit(HomeLoading());
+    _isUserCarInRetrieve = value;
+    emit(HomeLoaded());
+  }
+  bool _setGate = false;
+
+  bool get setGate => _setGate;
+
+  set setSetGate(bool value) {
+    emit(HomeLoading());
+    _setGate = value;
+    emit(HomeLoaded());
+  }
+
   late ParkHistoryContent parkedCarModel;
 
   Future<void> getUserData(BuildContext context) async {
@@ -107,7 +126,11 @@ class HomeCubit extends Cubit<HomeState> {
             parkedCarModel = status;
             isUserCarParked = true;
             break loop;
-          }
+          } /*else if (status.parkingStatus == Constants.carInRetrieving) {
+            parkedCarModel = status;
+            _isUserCarInRetrieve = true;
+            break loop;
+          }*/
         }
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
       });

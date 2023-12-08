@@ -27,6 +27,9 @@ class CarRequestScreen extends StatelessWidget {
                     '${state.parkedCarsModel.user.firstName} cancel his car retrieving',
                 notificationType:
                     Constants.cancelCarRetrievingNotificationAction);
+            HomeCubit.get(context).isUserCarParked = true;
+            HomeCubit.get(context).setSetGate = false;
+            HomeCubit.get(context).setIsUserCarInRetrieve = false;
           }
         }
       },

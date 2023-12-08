@@ -9,6 +9,7 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/home/presentation/widget/qr_code_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/request_car_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/show_your_history_widget.dart';
+import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
 
 class CarParkedHomeScreen extends StatefulWidget {
   const CarParkedHomeScreen({super.key});
@@ -30,20 +31,24 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
                 'Hello ${HomeCubit.get(context).parkedCarModel.valet.firstName}',
             body: 'New car parked request',
             notificationType: Constants.carWashNotificationAction);
+      } else if (state is RetrieveCarLoaded) {
+        HomeCubit.get(context).setIsUserCarInRetrieve = true;
       }
     }, builder: (context, state) {
-      return Scaffold(
-        body: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: HomeCubit.get(context)
-                      .headerBoxHeight(context, screenHeight),
-                      width: screenWidth,
+      return HomeCubit.get(context).setGate
+          ? const PickUpScreen()
+          : Scaffold(
+              body: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: HomeCubit.get(context)
+                            .headerBoxHeight(context, screenHeight),
+                        width: screenWidth,
                       color: ColorManager.primaryColor,
                       child: Padding(
                         padding: EdgeInsets.only(

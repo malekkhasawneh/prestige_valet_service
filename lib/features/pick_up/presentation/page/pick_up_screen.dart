@@ -36,7 +36,8 @@ class _PickUpScreenState extends State<PickUpScreen> {
                 children: [
                   Container(
                     height: PickUpCubit.get(context)
-                        .headerBoxHeight(context, screenHeight),
+                            .headerBoxHeight(context, screenHeight) -
+                        2,
                     width: screenWidth,
                     color: ColorManager.primaryColor,
                     child: Padding(
@@ -73,19 +74,15 @@ class _PickUpScreenState extends State<PickUpScreen> {
                                         crossAxisSpacing: 25.0,
                                         mainAxisSpacing: 25.0,
                                         childAspectRatio: 1.3),
-                                itemCount: state.gatesModel.gates.length,
+                                itemCount: state.gatesModel.content.length,
                                 itemBuilder: (context, index) {
                                   return CardItemWidget(
                                     onTap: () {
-                                      for (var gate in state.gatesModel.gates) {
-                                        gate.isSelected = false;
-                                      }
-                                      state.gatesModel.gates[index].isSelected =
-                                          !state.gatesModel.gates[index]
-                                              .isSelected;
-                                      setState(() {});
+                                      PickUpCubit.get(context)
+                                              .setSelectedGateId =
+                                          state.gatesModel.content[index].id;
                                     },
-                                    gate: state.gatesModel.gates[index],
+                                    gate: state.gatesModel.content[index],
                                   );
                                 }),
                           ),

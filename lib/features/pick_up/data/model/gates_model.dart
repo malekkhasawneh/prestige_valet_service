@@ -1,65 +1,118 @@
 class GatesModel {
-  List<Gates> gates;
+  List<GatesContent> content;
 
   GatesModel({
-    required this.gates,
+    required this.content,
   });
 
-  factory GatesModel.fromJson(Map<String, dynamic> json) =>
-      GatesModel(
-        gates: List<Gates>.from(json["content"].map((x) => Gates.fromJson(x))),
+  factory GatesModel.fromJson(Map<String, dynamic> json) => GatesModel(
+        content: List<GatesContent>.from(
+            json["content"].map((x) => GatesContent.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() =>
-      {
-        "content": List<dynamic>.from(gates.map((x) => x.toJson())),
-      };
 }
 
-class Gates {
+class GatesContent {
   DateTime createdOn;
   String createdBy;
   DateTime updatedOn;
   String updatedBy;
   int id;
-  String name;
+  String gateName;
   String description;
-  String mallName;
-  bool isSelected;
+  String status;
+  bool isSelected = false;
 
-  Gates({
+  GatesContent({
     required this.createdOn,
     required this.createdBy,
     required this.updatedOn,
     required this.updatedBy,
     required this.id,
-    required this.name,
+    required this.gateName,
     required this.description,
-    required this.mallName,
+    required this.status,
     this.isSelected = false,
   });
 
-  factory Gates.fromJson(Map<String, dynamic> json) =>
-      Gates(
+  factory GatesContent.fromJson(Map<String, dynamic> json) => GatesContent(
         createdOn: DateTime.parse(json["createdOn"]),
         createdBy: json["createdBy"],
         updatedOn: DateTime.parse(json["updatedOn"]),
         updatedBy: json["updatedBy"],
         id: json["id"],
-        name: json["name"],
+        gateName: json["gateName"],
         description: json["description"],
-        mallName: json["mallName"],
+        status: json["status"],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "createdOn": createdOn.toIso8601String(),
         "createdBy": createdBy,
         "updatedOn": updatedOn.toIso8601String(),
         "updatedBy": updatedBy,
         "id": id,
-        "name": name,
+        "gateName": gateName,
         "description": description,
-        "mallName": mallName,
+        "status": status,
+      };
+}
+
+class Pageable {
+  int pageNumber;
+  int pageSize;
+  Sort sort;
+  int offset;
+  bool paged;
+  bool unpaged;
+
+  Pageable({
+    required this.pageNumber,
+    required this.pageSize,
+    required this.sort,
+    required this.offset,
+    required this.paged,
+    required this.unpaged,
+  });
+
+  factory Pageable.fromJson(Map<String, dynamic> json) => Pageable(
+        pageNumber: json["pageNumber"],
+        pageSize: json["pageSize"],
+        sort: Sort.fromJson(json["sort"]),
+        offset: json["offset"],
+        paged: json["paged"],
+        unpaged: json["unpaged"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "pageNumber": pageNumber,
+        "pageSize": pageSize,
+        "sort": sort.toJson(),
+        "offset": offset,
+        "paged": paged,
+        "unpaged": unpaged,
+      };
+}
+
+class Sort {
+  bool empty;
+  bool sorted;
+  bool unsorted;
+
+  Sort({
+    required this.empty,
+    required this.sorted,
+    required this.unsorted,
+  });
+
+  factory Sort.fromJson(Map<String, dynamic> json) => Sort(
+        empty: json["empty"],
+        sorted: json["sorted"],
+        unsorted: json["unsorted"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "empty": empty,
+        "sorted": sorted,
+        "unsorted": unsorted,
       };
 }

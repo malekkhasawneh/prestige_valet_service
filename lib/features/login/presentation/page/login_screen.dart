@@ -101,11 +101,16 @@ class LoginScreen extends StatelessWidget {
                   height: 10,
                 ),
                 Center(
-                  child: Text(
-                    Strings.forgetPassword,
-                    style: TextStyle(
-                      color: Colors.grey.withOpacity(0.9),
-                      fontSize: 11,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.forgetPasswordScreen);
+                    },
+                    child: Text(
+                      Strings.forgetPassword,
+                      style: TextStyle(
+                        color: Colors.grey.withOpacity(0.9),
+                        fontSize: 11,
+                      ),
                     ),
                   ),
                 ),

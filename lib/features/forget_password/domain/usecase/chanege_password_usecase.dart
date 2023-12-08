@@ -15,17 +15,18 @@ class ChangePasswordUseCase
   Future<Either<Failures, ChangePasswordModel>> call(
       ChangePasswordUseCaseParams params) async {
     return await repository.changePassword(
-        password: params.password, email: params.email);
+        password: params.password, email: params.email, token: '');
   }
 }
 
 class ChangePasswordUseCaseParams extends Equatable {
   final String email;
+  final String token;
   final String password;
 
   const ChangePasswordUseCaseParams(
-      {required this.email, required this.password});
+      {required this.email, required this.password,required this.token});
 
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [email, password,token];
 }

@@ -17,6 +17,7 @@ class PickUpRemoteDataSourceImpl implements PickUpRemoteDataSource {
           await DioHelper.get(NetworkConstants.getGatesEndPoint);
       Map<String, dynamic> json = response.data as Map<String, dynamic>;
       GatesModel gatesModel = GatesModel.fromJson(json);
+      gatesModel.content.first.isSelected = true;
       return gatesModel;
     } on Exception {
       throw ServerException();

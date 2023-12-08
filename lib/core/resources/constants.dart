@@ -22,6 +22,7 @@ class Constants {
   static const String sendNotificationToken = "SEND_NOTIFICATION_TOKEN";
   static const String carParked = "PARKED";
   static const String carDelivered = "DELIVERED_TO_USER";
+  static const String carInRetrieving = "RETRIEVING";
   static const String noElement = "No element";
   static const String userLoggedOut = "user logged out";
   static const String notificationDataType = "click_action";

@@ -16,6 +16,8 @@ import 'package:prestige_valet_app/features/home/domain/usecase/send_notificatio
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
+import 'package:prestige_valet_app/features/pick_up/presentation/page/car_request_screen.dart';
+import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/page/parking_screen.dart';
@@ -58,9 +60,13 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   List<Widget> widgetOptions(BuildContext context) =>
       <Widget>[
         SplashCubit.get(context).isUser
-            ? HomeCubit.get(context).isUserCarParked
+            ? (HomeCubit.get(context).isUserCarParked &&
+                    !HomeCubit.get(context).isUserCarInRetrieve)
                 ? const CarParkedHomeScreen()
-                : const MainHomeScreen()
+                : (!HomeCubit.get(context).isUserCarParked &&
+                        HomeCubit.get(context).isUserCarInRetrieve)
+                    ? const CarRequestScreen()
+                    : const MainHomeScreen()
             : const ScanQrCodeScreen(),
         SplashCubit.get(context).isUser
             ? const WalletScreen()

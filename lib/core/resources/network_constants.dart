@@ -12,7 +12,7 @@ class NetworkConstants {
 
   static String editCardEndPoint(int userId, int walletId) =>
       'wallet?walletId=$walletId&userId=$userId';
-  static const String getGatesEndPoint = 'location/gates';
+  static const String getGatesEndPoint = 'location/1/gates?pageSize=1000';
 
   static String logoutEndPoint(int userId) => 'auth/logout/$userId';
   static const String parkCar = 'valet/Parking';
@@ -44,5 +44,10 @@ class NetworkConstants {
   static String getUserHistory({required int userId}) =>
       'Parking?userId=$userId&pageSize=1000';
 
+  static String sendResetPasswordOtp({required String email}) =>
+      'auth/forgetPassword?email=$email';
+
   static const String sendNotification = 'https://fcm.googleapis.com/fcm/send';
+
+  static const String verifyOtp = 'auth/verifyToken';
 }

@@ -22,6 +22,15 @@ class PickUpCubit extends Cubit<PickUpState> {
   double headerBoxHeight(BuildContext context, double screenHeight) =>
       screenHeight * 0.3;
 
+  int _selectedGateId = 0;
+
+  int get selectedGateId => _selectedGateId;
+
+  set setSelectedGateId(int value) {
+    emit(SetValueLoading());
+    _selectedGateId = value;
+    emit(SetValueLoaded());
+  }
 
   Future<void> getGates() async {
     emit(PickUpLoading());
@@ -30,10 +39,13 @@ class PickUpCubit extends Cubit<PickUpState> {
       response.fold(
           (failure) => emit(PickUpError(
                 failure: failure.failure,
-              )),
-          (gates) => emit(PickUpLoaded(
-                gatesModel: gates,
-              )));
+              )), (gates) {
+        _selectedGateId =
+            gates.content.firstWhere((gate) => gate.isSelected).id;
+        emit(PickUpLoaded(
+          gatesModel: gates,
+        ));
+      });
     } catch (failure) {
       emit(PickUpError(failure: failure.toString()));
     }
