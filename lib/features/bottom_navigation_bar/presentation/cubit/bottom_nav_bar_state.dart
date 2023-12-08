@@ -18,6 +18,10 @@ class BottomNavBarLoaded extends BottomNavBarState {
   @override
   List<Object> get props => [];
 }
+class SendNotificationLoaded extends BottomNavBarState {
+  @override
+  List<Object> get props => [];
+}
 
 class BottomNavBarError extends BottomNavBarState {
   final String failure;

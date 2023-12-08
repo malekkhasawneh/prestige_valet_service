@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/cache_constants.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
@@ -14,6 +16,14 @@ class DioHelper {
   static Dio _dio = Dio(
     BaseOptions(
       baseUrl: NetworkConstants.baseUrl,
+      receiveTimeout: const Duration(
+        seconds: 7,
+      ),
+    ),
+  );
+
+  static Dio dio = Dio(
+    BaseOptions(
       receiveTimeout: const Duration(
         seconds: 7,
       ),
@@ -30,6 +40,20 @@ class DioHelper {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       };
+
+  static Future<void> firebaseHeaders() async {
+    dio = Dio(
+      BaseOptions(
+          receiveTimeout: const Duration(
+            seconds: 7,
+          ),
+          headers: {
+            'Authorization':
+                'key=${dotenv.env[Constants.sendNotificationToken]}',
+            'Content-Type': 'application/json',
+          }),
+    );
+  }
 
   static Future<void> addTokenHeader() async {
     _dio = Dio(

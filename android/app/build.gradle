@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.prvisoft.prestige_valet_sevice.prestige_valet_service"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion "25.1.8937393"
 
     compileOptions {

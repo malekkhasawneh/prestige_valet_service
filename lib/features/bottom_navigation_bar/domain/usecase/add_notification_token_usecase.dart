@@ -6,12 +6,12 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/data/model/not
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/repository/nav_repository.dart';
 
 class AddNotificationTokenUseCase
-    extends UseCase<NotificationContent, AddNotificationTokenUseCaseParams> {
+    extends UseCase<NotificationModel, AddNotificationTokenUseCaseParams> {
   final NavRepository repository;
 
   AddNotificationTokenUseCase({required this.repository});
   @override
-  Future<Either<Failures, NotificationContent>> call(AddNotificationTokenUseCaseParams params)async {
+  Future<Either<Failures, NotificationModel>> call(AddNotificationTokenUseCaseParams params)async {
    return await repository.addNotificationToken(userId: params.userId, token: params.token);
   }
 }

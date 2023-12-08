@@ -16,6 +16,14 @@ class BottomNavBarScreen extends StatefulWidget {
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   @override
+  void initState() {
+    BottomNavBarCubit.get(context).onReceiveNotificationListenerOnApp(context);
+    BottomNavBarCubit.get(context)
+        .onReceiveNotificationListenerOnBackground(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<BottomNavBarCubit, BottomNavBarState>(
         listener: (context, state) {
@@ -27,13 +35,13 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       } else if (state is BottomNavBarLoaded) {
         if (BottomNavBarCubit.get(context).userNotificationToken ==
                 Constants.userLoggedOut &&
-            BottomNavBarCubit.get(context).canUpdateToken) {
-          BottomNavBarCubit.get(context).updateUserNotificationToken(
-              userId: HomeCubit.get(context).userModel.user.id,
-              tokenId: BottomNavBarCubit.get(context).tokenId);
-        }
-      }
-    }, builder: (context, state) {
+                BottomNavBarCubit.get(context).canUpdateToken) {
+              BottomNavBarCubit.get(context).updateUserNotificationToken(
+                  userId: HomeCubit.get(context).userModel.user.id,
+                  tokenId: BottomNavBarCubit.get(context).tokenId);
+            }
+          }
+        }, builder: (context, state) {
       // ignore: deprecated_member_use
       return WillPopScope(
         onWillPop: () async => false,

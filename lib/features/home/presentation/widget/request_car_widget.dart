@@ -22,7 +22,7 @@ class RequestCarWidget extends StatelessWidget {
             height: 43,
             child: ElevatedButton(
               onPressed: () {
-                HomeCubit.get(context).retrieveCar(parkingId: 52);
+                HomeCubit.get(context).retrieveCar(parkingId: 52,gateId: 1);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.blackColor,

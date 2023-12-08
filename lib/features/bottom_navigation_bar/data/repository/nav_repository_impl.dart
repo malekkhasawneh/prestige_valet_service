@@ -35,7 +35,7 @@ class NavRepositoryImpl implements NavRepository {
   }
 
   @override
-  Future<Either<Failures, NotificationContent>> addNotificationToken(
+  Future<Either<Failures, NotificationModel>> addNotificationToken(
       {required int userId, required String token}) async {
     if (await networkInfo.checkConnection()) {
       try {
@@ -51,7 +51,7 @@ class NavRepositoryImpl implements NavRepository {
   }
 
   @override
-  Future<Either<Failures, NotificationContent>> updateNotificationToken(
+  Future<Either<Failures, NotificationModel>> updateNotificationToken(
       {required int userId,
       required String token,
       required int tokenId}) async {

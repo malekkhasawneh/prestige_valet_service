@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
-import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/must_reset_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/send_notification_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/wash_car_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
@@ -56,11 +57,12 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> retrieveCar({required int parkingId}) async {
+  Future<void> retrieveCar(
+      {required int parkingId, required int gateId}) async {
     emit(HomeLoading());
     try {
       final response = await retrieveCarUseCase(
-          RetrieveCarUseCaseParams(parkingId: parkingId));
+          RetrieveCarUseCaseParams(parkingId: parkingId, gateId: gateId));
       response.fold((failure) => emit(HomeError(failure: failure.toString())),
           (success) {
         emit(RetrieveCarLoaded(parkedCarsModel: success));
@@ -100,6 +102,4 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeError(failure: failure.toString()));
     }
   }
-
-
 }

@@ -33,11 +33,11 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<Either<Failures, ParkedCarsModel>> retrieveCar(
-      {required int parkingId}) async {
+      {required int parkingId, required int gateId}) async {
     if (await networkInfo.checkConnection()) {
       try {
-        final response =
-            await remoteDataSource.retrieveCar(parkingId: parkingId);
+        final response = await remoteDataSource.retrieveCar(
+            parkingId: parkingId, gateId: gateId);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));
@@ -78,4 +78,25 @@ class HomeRepositoryImpl implements HomeRepository {
     }
   }
 
+  @override
+  Future<Either<Failures, bool>> sendNotification(
+      {required String title,
+      required String body,
+      required String notificationType,
+      required String token}) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.sendNotification(
+            title: title,
+            body: body,
+            notificationType: notificationType,
+            token: token);
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }

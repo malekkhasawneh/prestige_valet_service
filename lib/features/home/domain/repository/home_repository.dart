@@ -8,7 +8,7 @@ abstract class HomeRepository {
   Future<Either<Failures, SignUpModel>> getUserData();
 
   Future<Either<Failures, ParkedCarsModel>> retrieveCar(
-      {required int parkingId});
+      {required int parkingId,required int gateId});
 
   Future<Either<Failures, ParkedCarsModel>> washCar(
       {required int parkingId, required bool washFlag});
@@ -16,6 +16,11 @@ abstract class HomeRepository {
   Future<Either<Failures, ParkHistoryModel>> getUserHistory({
     required int userId,
   });
-
+  Future<Either<Failures,bool>> sendNotification({
+    required String title,
+    required String body,
+    required String notificationType,
+    required String token,
+  });
 
 }

@@ -29,8 +29,8 @@ class NetworkConstants {
   static String carDelivered({required int parkingId}) =>
       'valet/Parking/delivered?parkingId=$parkingId';
 
-  static String retrieveCar({required int parkingId}) =>
-      'Parking/retrieve?parkingId=$parkingId';
+  static String retrieveCar({required int parkingId, required int gateId}) =>
+      'Parking/retrieve?parkingId=$parkingId&gateId=$gateId';
 
   static String washCar({required int parkingId, required bool washFlag}) =>
       'Parking/washCar/$parkingId?washCar=$washFlag';
@@ -40,4 +40,6 @@ class NetworkConstants {
 
   static String getUserHistory({required int userId}) =>
       'Parking?userId=$userId';
+
+  static const String sendNotification = 'https://fcm.googleapis.com/fcm/send';
 }

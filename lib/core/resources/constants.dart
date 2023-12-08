@@ -1,24 +1,36 @@
-class Constants{
+import 'dart:core';
 
-  static const userRole = 'USER';
-  static const valetRole = 'VALET';
-  static const encryptionKey = '5ClNua5WgenQBtf9lEQv5mJEftisfkq23GM5XKmmVPw=';
-  static const encryptionIv = 'R_i64s1KpBmimQ2UaQ04JQ==';
-  static const serverFailure = 'Unable to connect to server';
-  static const internetFailure = 'Check your connection';
-  static const cacheFailure = 'Unable to access to cache';
-  static const changePasswordSuccess = 'Password changed successfully';
-  static const envFileName = '.env';
-  static const androidFirebaseApiKey = 'ANDROID_FIREBASE_API_KEY';
-  static const androidAppId = 'ANDROID_APP_ID';
-  static const androidMessagingSenderId = 'ANDROID_MESSAGING_SENDER_ID';
-  static const androidProjectId = 'ANDROID_PROJECT_ID';
-  static const twitterApiKey = 'TWITTER_API_KEY';
-  static const twitterApiSecretKey = 'TWITTER_API_SECRET_KEY';
-  static const twitterRedirectUrl = 'TWITTER_REDIRECT_URL';
-  static const deliveredToGateKeeper = "DELIVERED_TO_GATEKEEPER";
-  static const carParked = "PARKED";
-  static const carDelivered = "DELIVERED_TO_USER";
-  static const noElement = "No element";
-  static const userLoggedOut = "user logged out";
+class Constants {
+  static const String userRole = 'USER';
+  static const String valetRole = 'VALET';
+  static const String encryptionKey =
+      '5ClNua5WgenQBtf9lEQv5mJEftisfkq23GM5XKmmVPw=';
+  static const String encryptionIv = 'R_i64s1KpBmimQ2UaQ04JQ==';
+  static const String serverFailure = 'Unable to connect to server';
+  static const String internetFailure = 'Check your connection';
+  static const String cacheFailure = 'Unable to access to cache';
+  static const String changePasswordSuccess = 'Password changed successfully';
+  static const String envFileName = '.env';
+  static const String androidFirebaseApiKey = 'ANDROID_FIREBASE_API_KEY';
+  static const String androidAppId = 'ANDROID_APP_ID';
+  static const String androidMessagingSenderId = 'ANDROID_MESSAGING_SENDER_ID';
+  static const String androidProjectId = 'ANDROID_PROJECT_ID';
+  static const String twitterApiKey = 'TWITTER_API_KEY';
+  static const String twitterApiSecretKey = 'TWITTER_API_SECRET_KEY';
+  static const String twitterRedirectUrl = 'TWITTER_REDIRECT_URL';
+  static const String deliveredToGateKeeper = "DELIVERED_TO_GATEKEEPER";
+  static const String sendNotificationToken = "SEND_NOTIFICATION_TOKEN";
+  static const String carParked = "PARKED";
+  static const String carDelivered = "DELIVERED_TO_USER";
+  static const String noElement = "No element";
+  static const String userLoggedOut = "user logged out";
+  static const String notificationDataType = "click_action";
+  static const String carParkedNotificationTitle = "CAR PARKED";
+  static const String carInRetrievingNotificationTitle = "CAR IN RETRIEVING";
+  static const String carReadyForPickUp = "CAR READY";
+  static const String baseNotificationChannelKey = 'send_notification';
+  static const String baseNotificationChannelName =
+      'notify_user_about_car_status';
+  static const String baseNotificationChannelDesc =
+      'send_notification_to_user_when_status_changed';
 }

@@ -6,6 +6,7 @@ import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
@@ -29,7 +30,12 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
           ScanQrCubit.get(context)
               .changeParkedCarStatus(parkingId: state.parkedCarsModel.id);
         } else if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
-
+          BottomNavBarCubit.get(context).sendNotification(
+            userId: state.parkedCarsModel.user.id,
+            title: 'Hello ${state.parkedCarsModel.user.firstName}',
+            body: 'Your car is parked safely',
+            notificationType: Constants.carParkedNotificationTitle,
+          );
         }
       }
     }, builder: (context, state) {
