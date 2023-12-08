@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/qr_code_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/request_car_widget.dart';
@@ -24,7 +24,12 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<HomeCubit, HomeState>(listener: (context, state) {
       if (state is WashCarLoaded) {
-        log('============================================ yyy ${state.parkedCarsModel.washCar}');
+        BottomNavBarCubit.get(context).sendNotification(
+            userId: HomeCubit.get(context).parkedCarModel.valet.id,
+            title:
+                'Hello ${HomeCubit.get(context).parkedCarModel.valet.firstName}',
+            body: 'New car parked request',
+            notificationType: Constants.carWashNotificationAction);
       }
     }, builder: (context, state) {
       return Scaffold(

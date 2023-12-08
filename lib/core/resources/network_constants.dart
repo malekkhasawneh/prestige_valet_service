@@ -42,7 +42,7 @@ class NetworkConstants {
       'valet/Parking?valetId=$valetId';
 
   static String getUserHistory({required int userId}) =>
-      'Parking?userId=$userId';
+      'Parking?userId=$userId&pageSize=1000';
 
   static const String sendNotification = 'https://fcm.googleapis.com/fcm/send';
 }

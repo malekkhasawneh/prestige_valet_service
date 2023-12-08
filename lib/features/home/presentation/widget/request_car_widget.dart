@@ -13,7 +13,7 @@ class RequestCarWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
           top: HomeCubit.get(context).headerBoxHeight(context, screenHeight) -
-              23.5),
+              24.5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -22,7 +22,7 @@ class RequestCarWidget extends StatelessWidget {
             height: 43,
             child: ElevatedButton(
               onPressed: () {
-                HomeCubit.get(context).retrieveCar(parkingId: 52,gateId: 1);
+                HomeCubit.get(context).retrieveCar(parkingId: 52, gateId: 1);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.blackColor,
@@ -46,7 +46,9 @@ class RequestCarWidget extends StatelessWidget {
             height: 43,
             child: ElevatedButton(
               onPressed: () {
-                HomeCubit.get(context).washCar(parkingId: 52, washFlag: true);
+                HomeCubit.get(context).washCar(
+                    parkingId: HomeCubit.get(context).parkedCarModel.id,
+                    washFlag: true);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.blackColor,

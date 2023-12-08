@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 
 class CancelButtonWidget extends StatelessWidget {
@@ -23,7 +24,10 @@ class CancelButtonWidget extends StatelessWidget {
               color: ColorManager.blackColor,
             )),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            HomeCubit.get(context).cancelCarRetrieving(
+                parkingId: HomeCubit.get(context).parkedCarModel.id);
+          },
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(

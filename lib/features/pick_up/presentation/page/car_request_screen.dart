@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/widgets/cancel_button_widget.dart';
@@ -18,7 +19,15 @@ class CarRequestScreen extends StatelessWidget {
     return BlocListener<HomeCubit, HomeState>(
       listener: (context, state) {
         if (state is CancelCarRetrievingLoaded) {
-          if (state.parkedCarsModel.parkingStatus == Constants.carParked) {}
+          if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
+            BottomNavBarCubit.get(context).sendNotification(
+                userId: state.parkedCarsModel.valet.id,
+                title: 'Hello ${state.parkedCarsModel.valet.firstName}',
+                body:
+                    '${state.parkedCarsModel.user.firstName} cancel his car retrieving',
+                notificationType:
+                    Constants.cancelCarRetrievingNotificationAction);
+          }
         }
       },
       child: Scaffold(

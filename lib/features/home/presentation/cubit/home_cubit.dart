@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
@@ -40,6 +41,8 @@ class HomeCubit extends Cubit<HomeState> {
       (screenHeight * 0.3) - 2;
 
   late SignUpModel userModel;
+  bool isUserCarParked = false;
+  late ParkHistoryContent parkedCarModel;
 
   Future<void> getUserData(BuildContext context) async {
     emit(HomeLoading());
@@ -49,6 +52,7 @@ class HomeCubit extends Cubit<HomeState> {
           (userModel) {
         this.userModel = userModel;
         log('======================================= token ${userModel.token}');
+        getUserHistory(userId: userModel.user.id);
         BottomNavBarCubit.get(context)
             .getNotificationTokenForUser(userId: userModel.user.id);
         emit(HomeLoaded());
@@ -97,6 +101,14 @@ class HomeCubit extends Cubit<HomeState> {
       response.fold((failure) {
         emit(HomeError(failure: failure.toString()));
       }, (success) {
+        loop:
+        for (var status in success.content) {
+          if (status.parkingStatus == Constants.carParked) {
+            parkedCarModel = status;
+            isUserCarParked = true;
+            break loop;
+          }
+        }
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
       });
     } catch (failure) {
