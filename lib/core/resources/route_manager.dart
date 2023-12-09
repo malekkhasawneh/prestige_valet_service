@@ -46,67 +46,68 @@ class RouteGenerator {
       case Routes.splashScreen:
         return MaterialPageRoute(
           builder: (_) => const SplashScreen(),
-        );
+            settings: const RouteSettings(name: Routes.splashScreen));
       case Routes.welcomeScreen:
         return MaterialPageRoute(
-          builder: (_) => const WelcomeScreen(),
-        );
+            builder: (_) => const WelcomeScreen(),
+            settings: const RouteSettings(name: Routes.welcomeScreen));
       case Routes.signUpScreen:
         return MaterialPageRoute(
-          builder: (_) => const SignUpScreen(),
-        );
+            builder: (_) => const SignUpScreen(),
+            settings: const RouteSettings(name: Routes.signUpScreen));
       case Routes.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        );
+            builder: (_) => const LoginScreen(),
+            settings: const RouteSettings(name: Routes.loginScreen));
       case Routes.carParkedHomeScreen:
         return MaterialPageRoute(
-          builder: (_) => const CarParkedHomeScreen(),
-        );
+            builder: (_) => const CarParkedHomeScreen(),
+            settings: const RouteSettings(name: Routes.carParkedHomeScreen));
       case Routes.mainHomeScreen:
         return MaterialPageRoute(
-          builder: (_) => const MainHomeScreen(),
-        );
+            builder: (_) => const MainHomeScreen(),
+            settings: const RouteSettings(name: Routes.mainHomeScreen));
       case Routes.bottomNvBarScreen:
         return MaterialPageRoute(
-          builder: (_) => const BottomNavBarScreen(),
-        );
+            builder: (_) => const BottomNavBarScreen(),
+            settings: const RouteSettings(name: Routes.bottomNvBarScreen));
       case Routes.parkedSuccessfullyScreen:
         return MaterialPageRoute(
-          builder: (_) => const ParkedSuccessfullyScreen(),
-        );
+            builder: (_) => const ParkedSuccessfullyScreen(),
+            settings:
+                const RouteSettings(name: Routes.parkedSuccessfullyScreen));
       case Routes.carReadyScreen:
         return MaterialPageRoute(
-          builder: (_) => const CarReadyScreen(),
-        );
+            builder: (_) => const CarReadyScreen(),
+            settings: const RouteSettings(name: Routes.carReadyScreen));
       case Routes.profileScreen:
         return MaterialPageRoute(
-          builder: (_) => const ProfileScreen(),
-        );
+            builder: (_) => const ProfileScreen(),
+            settings: const RouteSettings(name: Routes.profileScreen));
       case Routes.successScreen:
         return MaterialPageRoute(
-          builder: (_) => const SuccessScreen(),
-        );
+            builder: (_) => const SuccessScreen(),
+            settings: const RouteSettings(name: Routes.successScreen));
       case Routes.addCreditCardScreen:
         return MaterialPageRoute(
-          builder: (_) => const AddCreditCardScreen(),
-        );
+            builder: (_) => const AddCreditCardScreen(),
+            settings: const RouteSettings(name: Routes.addCreditCardScreen));
       case Routes.valetHistoryScreen:
         return MaterialPageRoute(
-          builder: (_) => const ValetHistoryScreen(),
-        );
+            builder: (_) => const ValetHistoryScreen(),
+            settings: const RouteSettings(name: Routes.valetHistoryScreen));
       case Routes.editProfileScreen:
         return MaterialPageRoute(
-          builder: (_) => const EditProfileScreen(),
-        );
+            builder: (_) => const EditProfileScreen(),
+            settings: const RouteSettings(name: Routes.editProfileScreen));
       case Routes.pickUpScreen:
         return MaterialPageRoute(
-          builder: (_) => const PickUpScreen(),
-        );
+            builder: (_) => const PickUpScreen(),
+            settings: const RouteSettings(name: Routes.pickUpScreen));
       case Routes.forgetPasswordScreen:
         return MaterialPageRoute(
-          builder: (_) => const ForgetPasswordScreen(),
-        );
+            builder: (_) => const ForgetPasswordScreen(),
+            settings: const RouteSettings(name: Routes.forgetPasswordScreen));
       case Routes.verifyResetPasswordEmailScreen:
         return MaterialPageRoute(
             builder: (_) => const VerifyResetPasswordEmailScreen(),

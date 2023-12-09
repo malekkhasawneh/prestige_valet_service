@@ -22,6 +22,8 @@ class ForgetPasswordScreen extends StatelessWidget {
       if (state is ForgetPasswordError) {
         AwesomeDialog(
           context: context,
+          dismissOnBackKeyPress: false,
+          dismissOnTouchOutside: false,
           animType: AnimType.scale,
           dialogType: DialogType.error,
           body: const Center(
@@ -31,7 +33,9 @@ class ForgetPasswordScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          btnOkOnPress: () {},
+          btnOkOnPress: () {
+            Navigator.popUntil(context, (route) => route.settings.name == Routes.forgetPasswordScreen);
+          },
           btnOkColor: Colors.red,
         ).show();
       } else if (state is SendResetPasswordOtpLoaded) {

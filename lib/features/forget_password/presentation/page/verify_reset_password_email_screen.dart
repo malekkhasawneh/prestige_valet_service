@@ -18,6 +18,8 @@ class VerifyResetPasswordEmailScreen extends StatelessWidget {
         if (state is VerifyOtpError) {
           AwesomeDialog(
             context: context,
+            dismissOnBackKeyPress: false,
+            dismissOnTouchOutside: false,
             animType: AnimType.scale,
             dialogType: DialogType.error,
             body: const Center(
