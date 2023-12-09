@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +32,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
   String token = '';
 
   Future<void> changePassword() async {
+    emit(ForgetPasswordLoading());
     try {
       final response = await changePasswordUseCase(ChangePasswordUseCaseParams(
         email: emailController.text,
@@ -37,15 +40,19 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
         token: token,
       ));
       response.fold(
-        (failure) => emit(ForgetPasswordError(failure: failure.failure)),
-        (success) => emit(
+        (failure) {
+          emit(ChangePasswordError(failure: failure.failure));
+        },
+        (success) {
+          emit(
           ForgetPasswordLoaded(
             changePasswordModel: success,
           ),
-        ),
+        );
+        },
       );
     } catch (failure) {
-      emit(ForgetPasswordError(failure: failure.toString()));
+      emit(ChangePasswordError(failure: failure.toString()));
     }
   }
 

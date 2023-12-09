@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
@@ -24,7 +26,7 @@ class ChangePasswordRemoteDataSourceImpl
     try {
       Response response = await DioHelper.post(
           NetworkConstants.changePasswordEndPoint,
-          data: {"email": email, "token": token, "password": password});
+          data: {"email": email, "token": token, "newPassword": password});
       ChangePasswordModel changePasswordModel =
           ChangePasswordModel.fromJson(response.data);
       return changePasswordModel;

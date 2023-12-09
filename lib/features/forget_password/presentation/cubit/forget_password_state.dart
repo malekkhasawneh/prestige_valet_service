@@ -58,7 +58,14 @@ class VerifyOtpError extends ForgetPasswordState {
   @override
   List<Object> get props => [failure];
 }
+class ChangePasswordError extends ForgetPasswordState {
+  final String failure;
 
+  const ChangePasswordError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
+}
 // Set And Get Values States
 class SetValueLoading extends ForgetPasswordState {
   @override

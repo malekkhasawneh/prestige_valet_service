@@ -15,7 +15,7 @@ class ChangePasswordUseCase
   Future<Either<Failures, ChangePasswordModel>> call(
       ChangePasswordUseCaseParams params) async {
     return await repository.changePassword(
-        password: params.password, email: params.email, token: '');
+        password: params.password, email: params.email, token: params.token);
   }
 }
 

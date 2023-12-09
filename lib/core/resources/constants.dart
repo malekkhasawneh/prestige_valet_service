@@ -9,7 +9,7 @@ class Constants {
   static const String serverFailure = 'Unable to connect to server';
   static const String internetFailure = 'Check your connection';
   static const String cacheFailure = 'Unable to access to cache';
-  static const String changePasswordSuccess = 'Password changed successfully';
+  static const String resetPasswordSuccess = 'Password reset successfully!!';
   static const String envFileName = '.env';
   static const String androidFirebaseApiKey = 'ANDROID_FIREBASE_API_KEY';
   static const String androidAppId = 'ANDROID_APP_ID';

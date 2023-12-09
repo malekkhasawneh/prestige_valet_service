@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
@@ -16,7 +17,7 @@ class UpdateYourPasswordScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is ForgetPasswordLoaded) {
           if (state.changePasswordModel.message ==
-              Constants.changePasswordSuccess) {
+              Constants.resetPasswordSuccess) {
             AwesomeDialog(
               context: context,
               animType: AnimType.scale,
@@ -27,7 +28,9 @@ class UpdateYourPasswordScreen extends StatelessWidget {
                   style: const TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
-              btnOkOnPress: () {},
+              btnOkOnPress: () {
+                Navigator.pushReplacementNamed(context, Routes.loginScreen);
+              },
             ).show();
           }
         }

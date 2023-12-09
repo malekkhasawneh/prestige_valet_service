@@ -1,13 +1,13 @@
 class ChangePasswordModel {
   final String message;
-  final int statusCode;
+  final String id;
 
-  ChangePasswordModel({required this.message, required this.statusCode});
+  ChangePasswordModel({required this.message, required this.id});
 
   factory ChangePasswordModel.fromJson(Map<String, dynamic> json){
     return ChangePasswordModel(
       message: json['message'],
-      statusCode: json['statusCode'],
+      id: json['id'],
     );
   }
 }
