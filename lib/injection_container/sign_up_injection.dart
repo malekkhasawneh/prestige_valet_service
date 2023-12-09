@@ -13,8 +13,10 @@ Future<void> signUpInjection() async {
   sl.registerFactory(
     () => SignUpCubit(
       signUpUseCase: sl(),
-      signInWithGoogleUseCase: sl(),
+      signUpWithGoogleUseCase: sl(),
       setUserModelUseCase: sl(),
+      signUpWithTwitterUseCase: sl(),
+      signUpWithFacebookUseCase: sl(),
     ),
   );
 

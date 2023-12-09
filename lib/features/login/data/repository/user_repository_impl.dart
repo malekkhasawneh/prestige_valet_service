@@ -59,4 +59,32 @@ class LoginRepositoryImpl implements LoginRepository {
       return const Left(CacheFailure(failure: Constants.cacheFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, UserCredential>> signInWithTwitter() async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.signInWithTwitter();
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(ServerFailure(failure: Constants.internetFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, UserCredential>> signInWithFacebook() async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.signInWithFacebook();
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(ServerFailure(failure: Constants.internetFailure));
+    }
+  }
 }

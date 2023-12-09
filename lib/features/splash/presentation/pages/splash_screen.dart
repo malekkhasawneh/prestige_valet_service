@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (state is SplashLoaded) {
           if (SplashCubit.get(context).isFirstTime) {
             Future.delayed(const Duration(seconds: 3)).then(
-              (_) => Navigator.pushNamed(
+              (_) => Navigator.pushReplacementNamed(
                 context,
                 Routes.welcomeScreen,
               ),
@@ -37,16 +37,16 @@ class _SplashScreenState extends State<SplashScreen> {
             if (state.isLogin) {
               await HomeCubit.get(context).getUserData(context);
               Future.delayed(const Duration(seconds: 3)).then(
-                (_) => Navigator.pushNamed(
+                (_) => Navigator.pushReplacementNamed(
                   context,
                   Routes.bottomNvBarScreen,
                 ),
               );
             } else {
               Future.delayed(const Duration(seconds: 3)).then(
-                (_) => Navigator.pushNamed(
+                (_) => Navigator.pushReplacementNamed(
                   context,
-                  Routes.loginScreen,
+                  Routes.signUpScreen,
                 ),
               );
             }

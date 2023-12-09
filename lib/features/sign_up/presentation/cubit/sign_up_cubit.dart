@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
+import 'package:prestige_valet_app/features/login/domain/usecase/login_with_facebook_usecase.dart';
+import 'package:prestige_valet_app/features/login/domain/usecase/login_with_twitter_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/set_user_model_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_in_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_up_usecase.dart';
@@ -15,13 +17,17 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   SignUpCubit({
     required this.signUpUseCase,
-    required this.signInWithGoogleUseCase,
+    required this.signUpWithGoogleUseCase,
     required this.setUserModelUseCase,
+    required this.signUpWithTwitterUseCase,
+    required this.signUpWithFacebookUseCase,
   }) : super(SignUpInitial());
 
   final SignUpUseCase signUpUseCase;
-  final SignInWithGoogleUseCase signInWithGoogleUseCase;
+  final SignInWithGoogleUseCase signUpWithGoogleUseCase;
   final SetUserModelUseCase setUserModelUseCase;
+  final LoginWithTwitterUseCase signUpWithTwitterUseCase;
+  final LoginWithFacebookUseCase signUpWithFacebookUseCase;
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -78,19 +84,69 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signUpWithGoogle() async {
     emit(SignUpLoading());
     try {
-      final response = await signInWithGoogleUseCase(
+      final response = await signUpWithGoogleUseCase(
         NoParams(),
       );
       response.fold((failure) {
         emit(SignUpError(failure: failure.failure));
       }, (success) {
-        firstNameController.text =
-            success.user!.displayName!.split(' ').first ?? '';
-        lastNameController.text =
-            success.user!.displayName!.split(' ').last ?? '';
+        firstNameController.text = success.user!.displayName!.split(' ').first;
+        lastNameController.text = success.user!.displayName!.split(' ').last;
+        phoneController.text = success.user!.phoneNumber ?? '';
+        emailController.text = success.user!.email ?? '';
+        if (checkIfThereAreAnyMissingDataForSocial()) {
+          hideNormalAuthField = true;
+          emit(SignUpMissingData());
+        } else {
+          signUp(socialProfile: true, imageUrl: success.user!.photoURL ?? "");
+          emit(SetValueLoaded());
+        }
+      });
+    } catch (failure) {
+      emit(SignUpError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> signUpWithTwitter() async {
+    emit(SignUpLoading());
+    try {
+      final response = await signUpWithTwitterUseCase(
+        NoParams(),
+      );
+      response.fold((failure) {
+        emit(SignUpError(failure: failure.failure));
+      }, (success) {
+        firstNameController.text = success.user!.displayName!.split(' ').first;
+        lastNameController.text = success.user!.displayName!.split(' ').last;
+        phoneController.text = success.user!.phoneNumber ?? '';
+        emailController.text = success.user!.email ?? '';
+        if (checkIfThereAreAnyMissingDataForSocial()) {
+          hideNormalAuthField = true;
+          emit(SignUpMissingData());
+        } else {
+          signUp(socialProfile: true, imageUrl: success.user!.photoURL ?? "");
+          emit(SetValueLoaded());
+        }
+      });
+    } catch (failure) {
+      emit(SignUpError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> signUpWithFacebook() async {
+    emit(SignUpLoading());
+    try {
+      final response = await signUpWithFacebookUseCase(
+        NoParams(),
+      );
+      response.fold((failure) {
+        emit(SignUpError(failure: failure.failure));
+      }, (success) {
+        firstNameController.text = success.user!.displayName!.split(' ').first;
+        lastNameController.text = success.user!.displayName!.split(' ').last;
         phoneController.text = success.user!.phoneNumber ?? '';
         emailController.text = success.user!.email ?? '';
         if (checkIfThereAreAnyMissingDataForSocial()) {

@@ -9,4 +9,8 @@ abstract class LoginRepository {
   Future<Either<Failures, UserCredential>> loginWithGoogle();
 
   Future<Either<Failures, void>> setLoginFlag();
+
+  Future<Either<Failures, UserCredential>> signInWithTwitter();
+
+  Future<Either<Failures, UserCredential>> signInWithFacebook();
 }

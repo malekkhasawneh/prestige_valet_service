@@ -75,7 +75,7 @@ class PrestigeValetApp extends StatelessWidget {
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const SplashScreen(),
+        initialRoute: Routes.splashScreen,
       ),
     );
   }
