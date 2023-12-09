@@ -20,6 +20,8 @@ class UpdateYourPasswordScreen extends StatelessWidget {
               Constants.resetPasswordSuccess) {
             AwesomeDialog(
               context: context,
+              dismissOnBackKeyPress: false,
+              dismissOnTouchOutside: false,
               animType: AnimType.scale,
               dialogType: DialogType.success,
               body: Center(
