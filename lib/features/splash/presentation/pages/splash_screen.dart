@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Future.delayed(const Duration(seconds: 3)).then(
                 (_) => Navigator.pushReplacementNamed(
                   context,
-                  Routes.signUpScreen,
+                  Routes.loginScreen,
                 ),
               );
             }

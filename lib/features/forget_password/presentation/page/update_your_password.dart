@@ -31,6 +31,7 @@ class UpdateYourPasswordScreen extends StatelessWidget {
                 ),
               ),
               btnOkOnPress: () {
+                ForgetPasswordCubit.get(context).setMustCheck = false;
                 Navigator.pushReplacementNamed(context, Routes.loginScreen);
               },
             ).show();
@@ -58,10 +59,7 @@ class UpdateYourPasswordScreen extends StatelessWidget {
                 controller: ForgetPasswordCubit.get(context).passwordController,
                 textInputType: TextInputType.visiblePassword,
                 isPassword: true,
-                mustCheck: ForgetPasswordCubit.get(context)
-                    .passwordController
-                    .text
-                    .isEmpty,
+                mustCheck: ForgetPasswordCubit.get(context).mustCheck,
               ),
               const SizedBox(
                 height: 20,
@@ -73,11 +71,12 @@ class UpdateYourPasswordScreen extends StatelessWidget {
                     ForgetPasswordCubit.get(context).confirmPasswordController,
                 textInputType: TextInputType.visiblePassword,
                 isPassword: true,
-                mustCheck:
-                    ForgetPasswordCubit.get(context).passwordController.text !=
-                        ForgetPasswordCubit.get(context)
-                            .confirmPasswordController
-                            .text,
+                mustCheck: ForgetPasswordCubit.get(context).mustCheck,
+                errorText:
+                    ForgetPasswordCubit.get(context).isPasswordDoesNotMatch()
+                        ? Strings.passwordDoesNotMatch
+                        : Strings.textFieldError,
+                doubleCheck: true,
               ),
               const SizedBox(
                 height: 50,

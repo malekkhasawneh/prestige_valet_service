@@ -23,16 +23,9 @@ class SaveNewPasswordButtonWidget extends StatelessWidget {
             onPressed: (state is ForgetPasswordLoading)
                 ? () {}
                 : () {
-                    if ((ForgetPasswordCubit.get(context)
-                                .passwordController
-                                .text ==
-                            ForgetPasswordCubit.get(context)
-                                .confirmPasswordController
-                                .text) &&
-                        ForgetPasswordCubit.get(context)
-                            .passwordController
-                            .text
-                            .isNotEmpty) {
+                    ForgetPasswordCubit.get(context).setMustCheck = true;
+                    if (!ForgetPasswordCubit.get(context)
+                        .isPasswordEmptyOrNotMatch()) {
                       ForgetPasswordCubit.get(context).changePassword();
                     }
                   },

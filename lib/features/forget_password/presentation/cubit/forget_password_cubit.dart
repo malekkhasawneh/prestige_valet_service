@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +28,16 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
   TextEditingController confirmPasswordController = TextEditingController();
 
   String token = '';
+
+  bool _mustCheck = false;
+
+  bool get mustCheck => _mustCheck;
+
+  set setMustCheck(bool value) {
+    emit(SetValueLoading());
+    _mustCheck = value;
+    emit(SetValueLoaded());
+  }
 
   Future<void> changePassword() async {
     emit(ForgetPasswordLoading());
@@ -103,5 +111,19 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
     } catch (failure) {
       emit(VerifyOtpError(failure: failure.toString()));
     }
+  }
+
+  bool isEmailEmpty() {
+    return emailController.text.isEmpty;
+  }
+
+  bool isPasswordEmptyOrNotMatch() {
+    return (passwordController.text.isEmpty ||
+            confirmPasswordController.text.isEmpty) ||
+        (passwordController.text != confirmPasswordController.text);
+  }
+
+  bool isPasswordDoesNotMatch() {
+    return passwordController.text != confirmPasswordController.text;
   }
 }

@@ -39,6 +39,7 @@ class ForgetPasswordScreen extends StatelessWidget {
           btnOkColor: Colors.red,
         ).show();
       } else if (state is SendResetPasswordOtpLoaded) {
+        ForgetPasswordCubit.get(context).setMustCheck = false;
         Navigator.pushNamed(context, Routes.verifyResetPasswordEmailScreen);
       }
     }, builder: (context, state) {
@@ -60,10 +61,12 @@ class ForgetPasswordScreen extends StatelessWidget {
                     TextStyle(color: Colors.grey.withOpacity(.9), fontSize: 15),
               ),
               TextFieldWidget(
-                  title: '',
-                  hintText: Strings.enterEmailHint,
-                  controller: ForgetPasswordCubit.get(context).emailController,
-                  textInputType: TextInputType.emailAddress),
+                title: '',
+                hintText: Strings.enterEmailHint,
+                controller: ForgetPasswordCubit.get(context).emailController,
+                textInputType: TextInputType.emailAddress,
+                mustCheck: ForgetPasswordCubit.get(context).mustCheck,
+              ),
               const SizedBox(
                 height: 50,
               ),
@@ -80,8 +83,12 @@ class ForgetPasswordScreen extends StatelessWidget {
                   onPressed: (state is ForgetPasswordLoading)
                       ? () {}
                       : () {
-                          ForgetPasswordCubit.get(context)
-                              .sendResetPasswordOtp();
+                          ForgetPasswordCubit.get(context).setMustCheck = true;
+                          if (!ForgetPasswordCubit.get(context)
+                              .isEmailEmpty()) {
+                            ForgetPasswordCubit.get(context)
+                                .sendResetPasswordOtp();
+                          }
                         },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

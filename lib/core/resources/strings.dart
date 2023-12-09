@@ -67,9 +67,11 @@ class Strings {
   static const String expirationDate = 'Expiration Date';
   static const String cvv = 'CVV';
   static const String addCard = 'Add Card';
+  static const String creditCardNumberError =
+      'Credit card number must be 14 number';
 
   //Valet History Screen
-  static String valetHistoryHiString (String userName)=>
+  static String valetHistoryHiString(String userName) =>
       "Hi $userName, This is your\n valet history";
 
   //Edit Profile Screen
@@ -96,6 +98,7 @@ class Strings {
   static const String loginTitle = "Log in to your Prestige\nAccount";
   static const String forgetPassword = "Forgot your password?";
   static const String or = "or";
+  static const String loginError = "Please check E-mail and password";
 
   // Sign Up Screen
   static const String signUp = "Sign Up";
@@ -108,6 +111,8 @@ class Strings {
   static const String enterVerificationCode = "Enter Verification Code";
   static const String resendCode = "Resend Code";
   static const String enterOtp = 'Enter OTP';
+  static const String textFieldError = 'This field must not be empty';
+  static const String passwordDoesNotMatch = 'Password does not match';
 
   // Forget Password Screen
   static const String forgetPasswordTitle = "Forgot Your Password?";

@@ -35,7 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         HomeCubit.get(context).userModel.user.email;
     EditProfileCubit.get(context).phoneNumber.text =
         HomeCubit.get(context).userModel.user.phone;
-    EditProfileCubit.get(context).mustCheck = false;
+    EditProfileCubit.get(context).setMustCheck = false;
     super.initState();
   }
 
@@ -66,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }, builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: ColorManager.transparent,
+            backgroundColor: ColorManager.whiteColor,
             elevation: 0,
             title: const Text(
               Strings.profile,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
-import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
-import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
+import 'package:prestige_valet_app/core/resources/strings.dart';
 
 class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
@@ -19,6 +17,8 @@ class TextFieldWidget extends StatelessWidget {
     this.readOnly = false,
     this.mustCheck = false,
     this.maxLength = 1000,
+    this.errorText = Strings.textFieldError,
+    this.doubleCheck = false,
   });
 
   final String title;
@@ -31,7 +31,10 @@ class TextFieldWidget extends StatelessWidget {
   final Widget suffixIcon;
   final bool readOnly;
   final bool mustCheck;
-final int maxLength;
+  final int maxLength;
+  final String errorText;
+  final bool doubleCheck;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -58,7 +61,7 @@ final int maxLength;
           Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: controller.text.isEmpty && mustCheck
+                color: (controller.text.isEmpty || doubleCheck) && mustCheck
                     ? Colors.red
                     : Colors.grey.withOpacity(0.3),
                 width: 1.0,
@@ -95,6 +98,15 @@ final int maxLength;
               ),
             ),
           ),
+          (controller.text.isEmpty || doubleCheck) && mustCheck
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    errorText,
+                    style: const TextStyle(fontSize: 8, color: Colors.red),
+                  ),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );

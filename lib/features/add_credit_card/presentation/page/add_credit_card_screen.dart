@@ -104,8 +104,14 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                         AddCreditCardCubit.get(context).cardNumberController,
                     title: Strings.cardNumber,
                     textInputType: TextInputType.number,
-                    mustCheck: AddCreditCardCubit.get(context).mustCheck,
+                    mustCheck: AddCreditCardCubit.get(context).mustCheck &&
+                        !AddCreditCardCubit.get(context).isCardNumberCorrect(),
                     maxLength: 14,
+                    errorText:
+                        AddCreditCardCubit.get(context).isCardNumberCorrect()
+                            ? Strings.textFieldError
+                            : Strings.creditCardNumberError,
+                    doubleCheck: true,
                   ),
                   const SizedBox(
                     height: 20,
@@ -124,15 +130,16 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                   AddCardButtonWidget(
                     isFromEdit: widget.isFromEdit,
                     onPressed: () {
-                      AddCreditCardCubit.get(context)
-                          .checkIfThereAreEmptyField();
-                      if (!AddCreditCardCubit.get(context).mustCheck) {
+                      AddCreditCardCubit.get(context).setMustCheck = true;
+                      if (!AddCreditCardCubit.get(context)
+                              .checkIfThereAreEmptyField() &&
+                          AddCreditCardCubit.get(context)
+                              .isCardNumberCorrect()) {
                         AddCreditCardCubit.get(context).addNewCard(
                           isFromEdit: widget.isFromEdit,
                           userId: HomeCubit.get(context).userModel.user.id,
                         );
                       }
-                      setState(() {});
                     },
                   ),
                 ],

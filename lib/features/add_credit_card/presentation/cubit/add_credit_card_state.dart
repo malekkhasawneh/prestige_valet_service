@@ -30,3 +30,13 @@ class AddCreditCardError extends AddCreditCardState {
   @override
   List<Object> get props => [failure];
 }
+//Set And Get Values States
+class SetAndGetValueLoading extends AddCreditCardState {
+  @override
+  List<Object> get props => [];
+}
+
+class SetAndGetValueLoaded extends AddCreditCardState {
+  @override
+  List<Object> get props => [];
+}

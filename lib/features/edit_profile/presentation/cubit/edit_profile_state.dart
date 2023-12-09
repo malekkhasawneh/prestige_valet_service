@@ -38,3 +38,13 @@ class UploadUserImage extends EditProfileState {
   @override
   List<Object> get props => [];
 }
+
+//Set and Get Value States
+class SetAndGetValueLoading extends EditProfileState {
+  @override
+  List<Object> get props => [];
+}
+class SetAndGetValueLoaded extends EditProfileState {
+  @override
+  List<Object> get props => [];
+}

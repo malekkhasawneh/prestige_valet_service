@@ -17,6 +17,7 @@ class SocialLoginRow extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () async {
+            SignUpCubit.get(context).setMustCheck = false;
             isFromSignUp
                 ? SignUpCubit.get(context).signUpWithTwitter()
                 : LoginCubit.get(context).loginWithTwitter();
@@ -29,6 +30,7 @@ class SocialLoginRow extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            SignUpCubit.get(context).setMustCheck = false;
             isFromSignUp
                 ? SignUpCubit.get(context).signUpWithGoogle()
                 : LoginCubit.get(context).loginWithGoogle();
@@ -41,6 +43,7 @@ class SocialLoginRow extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            SignUpCubit.get(context).setMustCheck = false;
             isFromSignUp
                 ? SignUpCubit.get(context).signUpWithFacebook()
                 : LoginCubit.get(context).loginWithFacebook();
