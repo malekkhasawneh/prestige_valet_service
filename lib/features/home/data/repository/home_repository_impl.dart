@@ -83,6 +83,7 @@ class HomeRepositoryImpl implements HomeRepository {
       {required String title,
       required String body,
       required String notificationType,
+        required String notificationReceiver,
       required String token}) async {
     if (await networkInfo.checkConnection()) {
       try {
@@ -90,6 +91,7 @@ class HomeRepositoryImpl implements HomeRepository {
             title: title,
             body: body,
             notificationType: notificationType,
+            notificationReceiver: notificationReceiver,
             token: token);
         return Right(response);
       } on ServerException {

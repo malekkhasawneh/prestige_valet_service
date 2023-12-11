@@ -24,97 +24,91 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is HomeLoading) {
-            return const SizedBox();
-          } else if (state is HomeLoaded) {
-            return Scaffold(
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: HomeCubit.get(context)
-                        .headerBoxHeight(context, screenHeight),
-                    width: screenWidth,
-                    color: ColorManager.primaryColor,
-                    child: Padding(
-                          padding: EdgeInsets.only(
-                            left: screenWidth * 0.05,
-                            top: HomeCubit.get(context)
-                                .headerBoxHeight(context, screenHeight) *
-                                0.3,
-                          ),
-                          child: Text(
-                            Strings.mainScreenHiString(
-                                userName:
-                                HomeCubit.get(context).userModel.user.firstName),
-                            style: const TextStyle(
-                                fontFamily: Fonts.sourceSansPro,
-                                fontSize: 26,
-                                color: ColorManager.whiteColor,
-                                fontWeight: FontWeight.bold),
-                          ),
+          return Scaffold(
+            body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: HomeCubit.get(context)
+                          .headerBoxHeight(context, screenHeight),
+                      width: screenWidth,
+                      color: ColorManager.primaryColor,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: screenWidth * 0.05,
+                          top: HomeCubit.get(context)
+                              .headerBoxHeight(context, screenHeight) *
+                              0.3,
+                        ),
+                        child: Text(
+                          Strings.mainScreenHiString(
+                              userName:
+                              HomeCubit.get(context).userModel.user.firstName),
+                          style: const TextStyle(
+                              fontFamily: Fonts.sourceSansPro,
+                              fontSize: 26,
+                              color: ColorManager.whiteColor,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      SizedBox(
-                        height:
-                        HomeCubit.get(context).bodyBoxHeight(context, screenHeight),
-                        child: Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: HomeCubit.get(context)
-                                      .bodyBoxHeight(context, screenHeight) *
-                                      0.2,
-                                ),
-                                QrCodeWidget(
-                                  screenHeight: screenHeight,
-                                ),
-                                SizedBox(
-                                  height: HomeCubit.get(context)
-                                      .bodyBoxHeight(context, screenHeight) *
-                                      0.005,
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 5),
-                                  child: Text(
-                                    Strings.uniqueId,
-                                    style: TextStyle(
-                                      fontFamily: Fonts.sourceSansPro,
-                                      fontSize: 16,
-                                    ),
-                                    textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height:
+                      HomeCubit.get(context).bodyBoxHeight(context, screenHeight),
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: HomeCubit.get(context)
+                                    .bodyBoxHeight(context, screenHeight) *
+                                    0.2,
+                              ),
+                              QrCodeWidget(
+                                screenHeight: screenHeight,
+                              ),
+                              SizedBox(
+                                height: HomeCubit.get(context)
+                                    .bodyBoxHeight(context, screenHeight) *
+                                    0.005,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  Strings.uniqueId,
+                                  style: TextStyle(
+                                    fontFamily: Fonts.sourceSansPro,
+                                    fontSize: 16,
                                   ),
+                                  textAlign: TextAlign.start,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5),
-                                  child: Text(
-                                    HomeCubit.get(context).userModel.user.userId.split('-').first,
-                                    style: const TextStyle(
-                                      fontFamily: Fonts.sourceSansPro,
-                                    ),
-                                    textAlign: TextAlign.start,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Text(
+                                  HomeCubit.get(context).userModel.user.userId.split('-').first,
+                                  style: const TextStyle(
+                                    fontFamily: Fonts.sourceSansPro,
                                   ),
+                                  textAlign: TextAlign.start,
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: HomeCubit.get(context)
-                                  .bodyBoxHeight(context, screenHeight) *
-                                  0.1,
-                            ),
-                            const ShowYourHistoryWidget()
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: HomeCubit.get(context)
+                                .bodyBoxHeight(context, screenHeight) *
+                                0.1,
+                          ),
+                          const ShowYourHistoryWidget()
+                        ],
                       ),
-                    ],
-                  )),
-            );
-          } else {
-            return const SizedBox();
-          }
+                    ),
+                  ],
+                )),
+          );
         });
   }
 }

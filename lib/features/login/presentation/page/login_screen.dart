@@ -8,6 +8,7 @@ import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/login_button_widget.dart';
@@ -32,12 +33,15 @@ class LoginScreen extends StatelessWidget {
               state.userModel.toJson(),
             ))
                 .then((_) async {
+              BottomNavBarCubit.get(context).isLogout = false;
               SplashCubit.get(context).checkIsUser();
               await LoginCubit.get(context).setLoginFlag();
               // ignore: use_build_context_synchronously
-              HomeCubit.get(context).getUserData(context);
-              // ignore: use_build_context_synchronously
-              Navigator.pushReplacementNamed(context, Routes.bottomNvBarScreen);
+              await HomeCubit.get(context).getUserData(context).then((value) {
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacementNamed(
+                    context, Routes.bottomNvBarScreen);
+              });
             });
           } else if (state is LoginError) {
             AwesomeDialog(

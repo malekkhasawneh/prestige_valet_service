@@ -29,7 +29,6 @@ class LoginButtonWidget extends StatelessWidget {
                     if (!LoginCubit.get(context).checkIfThereAreEmptyValue()) {
                       SplashCubit.get(context).checkIsUser();
                       LoginCubit.get(context).login();
-                      BottomNavBarCubit.get(context).canUpdateToken = true;
                       BottomNavBarCubit.get(context).setIndex = 0;
                     }
                   },

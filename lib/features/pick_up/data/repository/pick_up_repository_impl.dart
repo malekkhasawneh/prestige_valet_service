@@ -14,9 +14,9 @@ class PickUpRepositoryImpl implements PickUpRepository {
       {required this.remoteDataSource, required this.networkInfo});
 
   @override
-  Future<Either<Failures, GatesModel>> getGates() async {
+  Future<Either<Failures, GatesModel>> getGates({required int locationId}) async {
     if (await networkInfo.checkConnection()) {
-      final response = await remoteDataSource.getGates();
+      final response = await remoteDataSource.getGates(locationId: locationId);
       return Right(response);
     } else {
       return const Left(InternetFailure(failure: Constants.cacheFailure));

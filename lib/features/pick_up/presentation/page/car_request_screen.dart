@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
@@ -22,11 +23,16 @@ class CarRequestScreen extends StatelessWidget {
           if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
             BottomNavBarCubit.get(context).sendNotification(
                 userId: state.parkedCarsModel.valet.id,
-                title: 'Hello ${state.parkedCarsModel.valet.firstName}',
-                body:
-                    '${state.parkedCarsModel.user.firstName} cancel his car retrieving',
+                title: Strings.notificationTitle(
+                    HomeCubit.get(context).parkedCarModel.valet.firstName),
+                body: Strings.valetUserCanceled(
+                    HomeCubit.get(context).parkedCarModel.user.firstName),
                 notificationType:
-                    Constants.cancelCarRetrievingNotificationAction);
+                    Constants.cancelCarRetrievingNotificationAction,notificationReceiver:Constants.toValetNotification);
+            NotificationHelper.sendLocalNotification(
+                title: Strings.notificationTitle(
+                    HomeCubit.get(context).parkedCarModel.user.firstName),
+                body: Strings.userCancelRetrieving);
             HomeCubit.get(context).isUserCarParked = true;
             HomeCubit.get(context).setSetGate = false;
             HomeCubit.get(context).setIsUserCarInRetrieve = false;

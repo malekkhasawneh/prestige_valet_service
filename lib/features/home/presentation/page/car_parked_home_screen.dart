@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
@@ -27,10 +28,15 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
       if (state is WashCarLoaded) {
         BottomNavBarCubit.get(context).sendNotification(
             userId: HomeCubit.get(context).parkedCarModel.valet.id,
-            title:
-                'Hello ${HomeCubit.get(context).parkedCarModel.valet.firstName}',
-            body: 'New car parked request',
-            notificationType: Constants.carWashNotificationAction);
+            title: Strings.notificationTitle(
+                HomeCubit.get(context).parkedCarModel.valet.firstName),
+            body: Strings.valetCarWashingRequest(
+                HomeCubit.get(context).parkedCarModel.user.firstName),
+            notificationType: Constants.carWashNotificationAction, notificationReceiver:Constants.toValetNotification);
+        NotificationHelper.sendLocalNotification(
+            title: Strings.notificationTitle(
+                HomeCubit.get(context).parkedCarModel.user.firstName),
+            body: Strings.userCarWashRequest);
       } else if (state is RetrieveCarLoaded) {
         HomeCubit.get(context).setIsUserCarInRetrieve = true;
       }

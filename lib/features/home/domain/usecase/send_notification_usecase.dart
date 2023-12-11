@@ -14,10 +14,12 @@ class SendNotificationUseCase
   Future<Either<Failures, bool>> call(
       SendNotificationUseCaseParams params) async {
     return await repository.sendNotification(
-        title: params.title,
-        body: params.body,
-        notificationType: params.notificationType,
-        token: params.token);
+      title: params.title,
+      body: params.body,
+      notificationType: params.notificationType,
+      token: params.token,
+      notificationReceiver: params.notificationReceiver,
+    );
   }
 }
 
@@ -25,12 +27,14 @@ class SendNotificationUseCaseParams extends Equatable {
   final String title;
   final String body;
   final String notificationType;
+  final String notificationReceiver;
   final String token;
 
   const SendNotificationUseCaseParams(
       {required this.title,
       required this.body,
       required this.notificationType,
+      required this.notificationReceiver,
       required this.token});
 
   @override
@@ -38,6 +42,7 @@ class SendNotificationUseCaseParams extends Equatable {
         title,
         body,
         notificationType,
+        notificationReceiver,
         token,
       ];
 }

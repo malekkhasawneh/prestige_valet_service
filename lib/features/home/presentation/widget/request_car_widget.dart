@@ -15,14 +15,17 @@ class RequestCarWidget extends StatelessWidget {
           top: HomeCubit.get(context).headerBoxHeight(context, screenHeight) -
               24.5),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment:
+            (HomeCubit.get(context).parkedCarModel.carWash ?? false)
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
             width: screenWidth * 0.45,
             height: 43,
             child: ElevatedButton(
               onPressed: () {
-              HomeCubit.get(context).setSetGate = true;
+                HomeCubit.get(context).setSetGate = true;
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.blackColor,
@@ -41,32 +44,34 @@ class RequestCarWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            width: screenWidth * 0.45,
-            height: 43,
-            child: ElevatedButton(
-              onPressed: () {
-                HomeCubit.get(context).washCar(
-                    parkingId: HomeCubit.get(context).parkedCarModel.id,
-                    washFlag: true);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorManager.blackColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(25), // Adjust the radius as needed
+          (HomeCubit.get(context).parkedCarModel.carWash ?? false)
+              ? const SizedBox.shrink()
+              : SizedBox(
+                  width: screenWidth * 0.45,
+                  height: 43,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      HomeCubit.get(context).washCar(
+                          parkingId: HomeCubit.get(context).parkedCarModel.id,
+                          washFlag: true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.blackColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            25), // Adjust the radius as needed
+                      ),
+                    ),
+                    child: const Text(
+                      Strings.washCar,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: ColorManager.whiteColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: const Text(
-                Strings.washCar,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: ColorManager.whiteColor,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

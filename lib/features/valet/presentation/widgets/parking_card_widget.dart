@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -13,11 +15,12 @@ class ParkingCardWidget extends StatelessWidget {
     super.key,
     required this.user,
     required this.status,
+    required this.parkingId,
   });
 
   final ParkHistoryContentUser user;
   final String status;
-
+final int parkingId;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -106,8 +109,11 @@ class ParkingCardWidget extends StatelessWidget {
             child: SizedBox(
               height: 35,
               child: ElevatedButton(
-                onPressed: () {
-                  ///Todo
+                onPressed: ScanQrCubit.get(context).retrieveButtonColor(
+                    status: status) == ColorManager.blackColor ? () {
+                  log('======================================== View only');
+                } : () {
+                  ScanQrCubit.get(context).carDelivered(parkingId: parkingId);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ScanQrCubit.get(context).retrieveButtonColor(status: status),

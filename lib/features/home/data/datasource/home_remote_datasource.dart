@@ -21,6 +21,7 @@ abstract class HomeRemoteDataSource {
     required String title,
     required String body,
     required String notificationType,
+    required String notificationReceiver,
     required String token,
   });
 }
@@ -78,6 +79,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       {required String title,
       required String body,
       required String notificationType,
+      required String notificationReceiver,
       required String token}) async {
     try {
       DioHelper.firebaseHeaders();
@@ -85,7 +87,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           await DioHelper.dio.post(NetworkConstants.sendNotification, data: {
         "notification": {"title": title, "body": body},
         "priority": "high",
-        "data": {Constants.notificationDataType: notificationType},
+        "data": {
+          Constants.notificationDataType: notificationType,
+          Constants.notificationReceiverType: notificationReceiver,
+        },
         "to": token
       });
       if (response.statusCode == 200) {

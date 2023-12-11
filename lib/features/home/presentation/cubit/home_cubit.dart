@@ -103,6 +103,7 @@ class HomeCubit extends Cubit<HomeState> {
           WashCarUseCaseParams(parkingId: parkingId, washFlag: washFlag));
       response.fold((failure) => emit(HomeError(failure: failure.toString())),
           (success) {
+            parkedCarModel.carWash = success.washCar;
         emit(WashCarLoaded(parkedCarsModel: success));
       });
     } catch (failure) {
@@ -126,11 +127,11 @@ class HomeCubit extends Cubit<HomeState> {
             parkedCarModel = status;
             isUserCarParked = true;
             break loop;
-          } /*else if (status.parkingStatus == Constants.carInRetrieving) {
+          } else if (status.parkingStatus == Constants.carInRetrieving) {
             parkedCarModel = status;
             _isUserCarInRetrieve = true;
             break loop;
-          }*/
+          }
         }
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
       });

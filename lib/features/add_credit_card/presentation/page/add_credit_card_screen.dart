@@ -51,9 +51,9 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
         appBar: AppBar(
           backgroundColor: ColorManager.transparent,
           elevation: 0,
-          title: const Text(
-            Strings.addCreditCard,
-            style: TextStyle(
+          title:  Text(
+           widget.isFromEdit?Strings.editCreditCard: Strings.addCreditCard,
+            style: const TextStyle(
               fontFamily: Fonts.sourceSansPro,
               fontSize: 26,
               color: ColorManager.blackColor,

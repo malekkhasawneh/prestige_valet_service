@@ -32,10 +32,11 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
         } else if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
           BottomNavBarCubit.get(context).sendNotification(
             userId: state.parkedCarsModel.user.id,
-            title: 'Hello ${state.parkedCarsModel.user.firstName}',
-            body: 'Your car is parked safely',
-            notificationType: Constants.carParkedNotificationAction,
-          );
+              title: Strings.notificationTitle(
+                  state.parkedCarsModel.user.firstName),
+              body: Strings.userCarParked,
+              notificationType: Constants.carParkedNotificationAction,
+              notificationReceiver: Constants.toUserNotification);
         }
       }
     }, builder: (context, state) {

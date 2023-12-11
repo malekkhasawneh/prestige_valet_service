@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/widgets/parking_card_widget.dart';
@@ -27,7 +29,20 @@ class _ParkingScreenState extends State<ParkingScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<ScanQrCubit, ScanQrState>(builder: (context, state) {
+    return BlocConsumer<ScanQrCubit, ScanQrState>(listener: (context, state) {
+      if (state is ScanQrLoaded) {
+        BottomNavBarCubit.get(context).sendNotification(
+            userId: state.parkedCarsModel.user.id,
+            title:
+                Strings.notificationTitle(state.parkedCarsModel.user.firstName),
+            body: Strings.userCarRetrieving,
+            notificationType: Constants.carDeliveredNotificationAction,notificationReceiver:Constants.toUserNotification);
+        ScanQrCubit.get(context).getValetHistory(
+          valetId: state.parkedCarsModel.valet.id,
+          canLoading: false,
+        );
+      }
+    }, builder: (context, state) {
       return Scaffold(
         body: Stack(
           alignment: Alignment.topCenter,
@@ -77,6 +92,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                     status: ScanQrCubit.get(context).status(
                                         status: state.valetHistoryModel
                                             .content[index].parkingStatus),
+                                    parkingId: state
+                                        .valetHistoryModel.content[index].id,
                                   );
                                 },
                               )

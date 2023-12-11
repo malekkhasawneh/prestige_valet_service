@@ -5,16 +5,16 @@ import 'package:prestige_valet_app/core/resources/network_constants.dart';
 import 'package:prestige_valet_app/features/pick_up/data/model/gates_model.dart';
 
 abstract class PickUpRemoteDataSource {
-  Future<GatesModel> getGates();
+  Future<GatesModel> getGates({required int locationId});
 }
 
 class PickUpRemoteDataSourceImpl implements PickUpRemoteDataSource {
   @override
-  Future<GatesModel> getGates() async {
+  Future<GatesModel> getGates({required int locationId}) async {
     try {
       await DioHelper.addTokenHeader();
       Response response =
-          await DioHelper.get(NetworkConstants.getGatesEndPoint);
+          await DioHelper.get(NetworkConstants.getGatesEndPoint(locationId));
       Map<String, dynamic> json = response.data as Map<String, dynamic>;
       GatesModel gatesModel = GatesModel.fromJson(json);
       gatesModel.content.first.isSelected = true;

@@ -17,7 +17,6 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/page/car_request_screen.dart';
-import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/page/parking_screen.dart';
@@ -55,10 +54,9 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   String userNotificationToken = '';
   int tokenId = -1;
-  bool canUpdateToken = true;
+  bool isLogout = false;
 
-  List<Widget> widgetOptions(BuildContext context) =>
-      <Widget>[
+  List<Widget> widgetOptions(BuildContext context) => <Widget>[
         SplashCubit.get(context).isUser
             ? (HomeCubit.get(context).isUserCarParked &&
                     !HomeCubit.get(context).isUserCarInRetrieve)
@@ -122,7 +120,6 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   Future<void> updateUserNotificationToken({
     required int userId,
     required int tokenId,
-    bool isLogout = false,
   }) async {
     emit(BottomNavBarLoading());
     try {
@@ -166,7 +163,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       {required int userId,
       required String title,
       required String body,
-      required String notificationType}) async {
+      required String notificationType,
+      required String notificationReceiver}) async {
     emit(BottomNavBarLoading());
     try {
       await getNotificationTokenForUser(userId: userId);
@@ -175,7 +173,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
               title: title,
               body: body,
               notificationType: notificationType,
-              token: userNotificationToken));
+              token: userNotificationToken,
+              notificationReceiver: notificationReceiver));
       response.fold(
           (failure) => emit(BottomNavBarError(failure: failure.failure)),
           (success) => emit(SendNotificationLoaded()));
@@ -190,13 +189,26 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   Future<void> onReceiveNotificationListenerOnApp(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((message) {
-      NotificationHelper.sendLocalNotification(
-          title: message.notification!.title!,
-          body: message.notification!.body!);
+      if (SplashCubit.get(context).isUser &&
+          message.data[Constants.notificationReceiverType] ==
+              Constants.toUserNotification) {
+        NotificationHelper.sendLocalNotification(
+            title: message.notification!.title!,
+            body: message.notification!.body!);
+      } else if (!SplashCubit.get(context).isUser &&
+          message.data[Constants.notificationReceiverType] ==
+              Constants.toValetNotification) {
+        NotificationHelper.sendLocalNotification(
+            title: message.notification!.title!,
+            body: message.notification!.body!);
+      }
       if (message.data[Constants.notificationDataType] ==
           Constants.carParkedNotificationAction) {
         Navigator.pushReplacementNamed(
             context, Routes.parkedSuccessfullyScreen);
+      } else if (message.data[Constants.notificationDataType] ==
+          Constants.carDeliveredNotificationAction) {
+        Navigator.pushReplacementNamed(context, Routes.successScreen);
       }
     });
   }
@@ -204,13 +216,13 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   Future<void> onReceiveNotificationListenerOnBackground(
       BuildContext context) async {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      NotificationHelper.sendLocalNotification(
-          title: message.notification!.title!,
-          body: message.notification!.body!);
       if (message.data[Constants.notificationDataType] ==
           Constants.carParkedNotificationAction) {
         Navigator.pushReplacementNamed(
             context, Routes.parkedSuccessfullyScreen);
+      } else if (message.data[Constants.notificationDataType] ==
+          Constants.carDeliveredNotificationAction) {
+        Navigator.pushReplacementNamed(context, Routes.successScreen);
       }
     });
   }

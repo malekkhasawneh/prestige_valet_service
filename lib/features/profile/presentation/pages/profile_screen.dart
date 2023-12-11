@@ -21,7 +21,6 @@ class ProfileScreen extends StatelessWidget {
     return BlocConsumer<ProfileCubit, ProfileState>(listener: (context, state) {
       if (state is ProfileLoaded) {
         if (state.logout) {
-
           Navigator.pushReplacementNamed(context, Routes.loginScreen);
         }
       }

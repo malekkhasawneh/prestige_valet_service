@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
-import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
-import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
 class AddCardButtonWidget extends StatelessWidget {
   const AddCardButtonWidget({super.key, required this.isFromEdit,required this.onPressed});
@@ -22,9 +20,9 @@ class AddCardButtonWidget extends StatelessWidget {
             backgroundColor: ColorManager.primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25))),
-        child: const Text(
-          Strings.addCard,
-          style: TextStyle(
+        child: Text(
+          isFromEdit ? Strings.updateCard : Strings.addCard,
+          style: const TextStyle(
               fontFamily: Fonts.sourceSansPro,
               color: ColorManager.whiteColor,
               fontWeight: FontWeight.bold),

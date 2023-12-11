@@ -82,8 +82,9 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
-  Future<void> getValetHistory({required int valetId}) async {
-    emit(ScanQrLoading());
+  Future<void> getValetHistory(
+      {required int valetId, bool canLoading = true}) async {
+    if (canLoading) emit(ScanQrLoading());
     try {
       final response = await getValetHistoryUseCase(
           GetValetHistoryUseCaseParams(valetId: valetId));

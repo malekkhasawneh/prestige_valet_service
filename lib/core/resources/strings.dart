@@ -61,12 +61,14 @@ class Strings {
 
   //Add Credit Card Screen
   static const String addCreditCard = 'Add Credit Card';
+  static const String editCreditCard = 'Edit Credit Card';
   static const String cardHolderName = "Cardholder's Name";
   static const String billingAddress = 'Billing Address';
   static const String cardNumber = 'Card Number';
   static const String expirationDate = 'Expiration Date';
   static const String cvv = 'CVV';
   static const String addCard = 'Add Card';
+  static const String updateCard = 'Update Card';
   static const String creditCardNumberError =
       'Credit card number must be 14 number';
 
@@ -133,4 +135,23 @@ class Strings {
 
   static String parkingHiString(String valetName) =>
       "Hi $valetName, This is Your\nParking History";
+
+  // NotificationBody
+  static String notificationTitle(String userName) => 'Hello $userName';
+  static const String userCarParked = 'Your car has been successfully parked';
+  static const String userCarRetrievingRequest =
+      'Your request has been received';
+  static const String userCarWashRequest = 'Your request has been received';
+  static const String userCancelRetrieving = 'Your request has been canceled';
+  static const String userCarRetrieving = 'Your car is ready for pickup';
+
+//Valet
+  static String valetCarRetrievingRequest(String userName) =>
+      'User $userName has submitted a request to restore their car. Please review and process accordingly';
+
+  static String valetCarWashingRequest(String userName) =>
+      'User $userName has submitted a request for a car wash. Please review and process accordingly';
+
+  static String valetUserCanceled(String userName) =>
+      'User $userName has requested to cancel their previous request to retrieve their car. Please review and process the cancellation';
 }

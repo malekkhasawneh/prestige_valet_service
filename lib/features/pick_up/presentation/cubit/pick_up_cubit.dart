@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/pick_up/data/model/gates_model.dart';
 import 'package:prestige_valet_app/features/pick_up/domain/usecase/get_gates_usecase.dart';
 
@@ -17,30 +16,26 @@ class PickUpCubit extends Cubit<PickUpState> {
   final GetGatesUseCase getGatesUseCase;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
-      (screenHeight * 0.7) - 56;
+      (screenHeight * 0.7) - 58;
 
   double headerBoxHeight(BuildContext context, double screenHeight) =>
       screenHeight * 0.3;
 
-  int _selectedGateId = 0;
+  int selectedGateId = 0;
 
-  int get selectedGateId => _selectedGateId;
 
-  set setSelectedGateId(int value) {
-    emit(SetValueLoading());
-    _selectedGateId = value;
-    emit(SetValueLoaded());
-  }
 
-  Future<void> getGates() async {
+
+  Future<void> getGates({required int locationId}) async {
     emit(PickUpLoading());
     try {
-      final response = await getGatesUseCase(NoParams());
+      final response =
+          await getGatesUseCase(GetGatesUseCaseParams(locationId: locationId));
       response.fold(
           (failure) => emit(PickUpError(
                 failure: failure.failure,
               )), (gates) {
-        _selectedGateId =
+        selectedGateId =
             gates.content.firstWhere((gate) => gate.isSelected).id;
         emit(PickUpLoaded(
           gatesModel: gates,

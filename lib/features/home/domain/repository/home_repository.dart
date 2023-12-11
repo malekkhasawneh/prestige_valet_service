@@ -22,6 +22,7 @@ abstract class HomeRepository {
     required String title,
     required String body,
     required String notificationType,
+    required String notificationReceiver,
     required String token,
   });
 

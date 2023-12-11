@@ -12,7 +12,7 @@ class NetworkConstants {
 
   static String editCardEndPoint(int userId, int walletId) =>
       'wallet?walletId=$walletId&userId=$userId';
-  static const String getGatesEndPoint = 'location/1/gates?pageSize=1000';
+  static  String getGatesEndPoint(int locationId) => 'location/$locationId/gates?pageSize=1000';
 
   static String logoutEndPoint(int userId) => 'auth/logout/$userId';
   static const String parkCar = 'valet/Parking';
