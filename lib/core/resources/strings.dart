@@ -53,6 +53,7 @@ class Strings {
   static String walletHiString (String userName)=>
       'Hi $userName, This is your\n saved payment methods';
   static const String addPaymentMethod = 'Add a new payment method';
+  static const String addNewPaymentMethod = 'Add a new card';
   static const String creditCardOverView = 'Credit card overview';
   static const String thereAreNoData = 'There are no data';
 

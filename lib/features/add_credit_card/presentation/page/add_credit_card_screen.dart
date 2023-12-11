@@ -60,10 +60,15 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
               color: ColorManager.blackColor,
             ),
           ),
-          leading: const Icon(
-            Icons.arrow_back,
-            color: ColorManager.blackColor,
-            size: 30,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: ColorManager.blackColor,
+              size: 30,
+            ),
           ),
         ),
         body: SingleChildScrollView(

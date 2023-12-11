@@ -10,9 +10,11 @@ class CreditCardWidget extends StatelessWidget {
   const CreditCardWidget({
     super.key,
     required this.walletModel,
+    required this.isPaymentMethod,
   });
 
   final WalletModel walletModel;
+  final bool isPaymentMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +85,16 @@ class CreditCardWidget extends StatelessWidget {
                   color: ColorManager.blackColor,
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: const Center(
-                  child: Icon(
-                    Icons.edit,
-                    color: ColorManager.whiteColor,
-                    size: 12,
-                  ),
+                child: Center(
+                  child: isPaymentMethod
+                      ? const SizedBox(
+                          width: 12,
+                        )
+                      : const Icon(
+                          Icons.edit,
+                          color: ColorManager.whiteColor,
+                          size: 12,
+                        ),
                 ),
               ),
             ),

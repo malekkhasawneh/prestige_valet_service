@@ -5,7 +5,9 @@ import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 
 class AddPaymentMethodWidget extends StatelessWidget {
-  const AddPaymentMethodWidget({super.key});
+  const AddPaymentMethodWidget({super.key,required this.isPaymentMethod});
+
+  final bool isPaymentMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,11 @@ class AddPaymentMethodWidget extends StatelessWidget {
                   BorderRadius.circular(25), // Adjust the radius as needed
             ),
           ),
-          child: const Text(
-            Strings.addPaymentMethod,
-            style: TextStyle(
+          child: Text(
+            isPaymentMethod
+                ? Strings.addNewPaymentMethod
+                : Strings.addPaymentMethod,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: ColorManager.whiteColor,
               fontSize: 16,

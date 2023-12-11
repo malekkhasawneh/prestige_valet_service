@@ -9,7 +9,9 @@ import 'package:prestige_valet_app/features/wallet/presentation/widgets/add_paym
 import 'package:prestige_valet_app/features/wallet/presentation/widgets/credit_card_widget.dart';
 
 class WalletScreen extends StatefulWidget {
-  const WalletScreen({super.key});
+  const WalletScreen({super.key, this.isPaymentMethod = false});
+
+  final bool isPaymentMethod;
 
   @override
   State<WalletScreen> createState() => _WalletScreenState();
@@ -29,6 +31,21 @@ class _WalletScreenState extends State<WalletScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<WalletCubit, WalletState>(builder: (context, state) {
       return Scaffold(
+        appBar: AppBar(
+          leading: widget.isPaymentMethod
+              ?GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: ColorManager.whiteColor,
+            ),
+          )
+              : const SizedBox(),
+          backgroundColor: ColorManager.transparent,
+        ),
+        extendBodyBehindAppBar: true,
         body: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -48,8 +65,9 @@ class _WalletScreenState extends State<WalletScreen> {
                               .headerBoxHeight(context, screenHeight) *
                           0.35,
                     ),
-                    child:  Text(
-                      Strings.carParkedHiString(HomeCubit.get(context).userModel.user.firstName),
+                    child: Text(
+                      Strings.carParkedHiString(
+                          HomeCubit.get(context).userModel.user.firstName),
                       style: const TextStyle(
                           fontFamily: Fonts.sourceSansPro,
                           fontSize: 26,
@@ -71,6 +89,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               itemBuilder: (context, index) {
                                 return CreditCardWidget(
                                   walletModel: state.model[index],
+                                  isPaymentMethod: widget.isPaymentMethod,
                                 );
                               },
                             )
@@ -97,7 +116,9 @@ class _WalletScreenState extends State<WalletScreen> {
                 ]
               ],
             )),
-            const AddPaymentMethodWidget(),
+            AddPaymentMethodWidget(
+              isPaymentMethod: widget.isPaymentMethod,
+            ),
           ],
         ),
       );

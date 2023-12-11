@@ -17,6 +17,7 @@ import 'package:prestige_valet_app/features/sign_up/presentation/page/sign_up_sc
 import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/welcome_screen.dart';
 import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
+import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
 class Routes {
   static const String splashScreen = "/";
@@ -28,6 +29,7 @@ class Routes {
   static const String bottomNvBarScreen = "/bottomNavBarScreen";
   static const String parkedSuccessfullyScreen = "/parkedSuccessfullyScreen";
   static const String carReadyScreen = "/carReadyScreen";
+  static const String walletScreen = "/walletScreen";
   static const String profileScreen = "/profileScreen";
   static const String successScreen = "/successScreen";
   static const String addCreditCardScreen = "/addCreditCardScreen";
@@ -59,6 +61,10 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => const LoginScreen(),
             settings: const RouteSettings(name: Routes.loginScreen));
+      case Routes.walletScreen:
+        return MaterialPageRoute(
+            builder: (_) => const WalletScreen(),
+            settings: const RouteSettings(name: Routes.walletScreen));
       case Routes.carParkedHomeScreen:
         return MaterialPageRoute(
             builder: (_) => const CarParkedHomeScreen(),
