@@ -150,13 +150,17 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SocialLoginRow(),
-                const Center(
-                  child: Text(
-                    Strings.doNotHaveAccount,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                const SocialLoginRow(),
+                 Center(
+                  child: GestureDetector(onTap: (){
+                    Navigator.pushNamed(context, Routes.signUpScreen);
+                  },
+                    child:const Text(
+                      Strings.doNotHaveAccount,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

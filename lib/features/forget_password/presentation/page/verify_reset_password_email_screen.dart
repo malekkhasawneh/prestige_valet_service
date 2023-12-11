@@ -90,24 +90,6 @@ class VerifyResetPasswordEmailScreen extends StatelessWidget {
                       TextStyle(color: ColorManager.primaryColor, fontSize: 12),
                 ),
               ),
-              const SizedBox(
-                height: 70,
-              ),
-              const Text(
-                Strings.or,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SocialLoginRow(),
-              const Text(
-                Strings.doNotHaveAccount,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ],
           ),
         ),

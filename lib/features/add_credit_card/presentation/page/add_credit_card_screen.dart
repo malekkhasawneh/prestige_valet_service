@@ -25,6 +25,7 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
     AddCreditCardCubit.get(context).resetValues(widget.isFromEdit);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddCreditCardCubit, AddCreditCardState>(
@@ -43,16 +44,16 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
               textAlign: TextAlign.center,
             ),
           ),
-              btnOkOnPress: () {},
-            ).show();
+          btnOkOnPress: () {},
+        ).show();
       }
     }, builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: ColorManager.transparent,
           elevation: 0,
-          title:  Text(
-           widget.isFromEdit?Strings.editCreditCard: Strings.addCreditCard,
+          title: Text(
+            widget.isFromEdit ? Strings.editCreditCard : Strings.addCreditCard,
             style: const TextStyle(
               fontFamily: Fonts.sourceSansPro,
               fontSize: 26,
@@ -112,6 +113,7 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                             ? Strings.textFieldError
                             : Strings.creditCardNumberError,
                     doubleCheck: true,
+                    onlyNumbers: true,
                   ),
                   const SizedBox(
                     height: 20,
@@ -123,6 +125,7 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                     textInputType: TextInputType.number,
                     mustCheck: AddCreditCardCubit.get(context).mustCheck,
                     maxLength: 5,
+                    isExpiry: true,
                   ),
                   const SizedBox(
                     height: 50,

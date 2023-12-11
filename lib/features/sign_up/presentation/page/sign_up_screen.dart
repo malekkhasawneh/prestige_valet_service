@@ -72,6 +72,7 @@ class SignUpScreen extends StatelessWidget {
                   hintText: Strings.signUpPhoneNumber,
                   textInputType: TextInputType.name,
                   mustCheck: SignUpCubit.get(context).mustCheck,
+                  onlyNumbers: true,
                 ),
                 TextFieldWidget(
                   controller: SignUpCubit.get(context).emailController,

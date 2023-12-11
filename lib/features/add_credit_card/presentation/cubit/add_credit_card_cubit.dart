@@ -46,8 +46,8 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
           isFromEdit: isFromEdit,
           holderName: cardHolderNameController.text,
           cardNumber: cardNumberController.text,
-          month: expirationDateController.text.substring(0, 2),
-          year: expirationDateController.text.substring(2, 4)));
+          month: expirationDateController.text.split('/').first,
+          year: expirationDateController.text.split('/').last));
       response
           .fold((failure) => emit(AddCreditCardError(failure: failure.failure)),
               (success) {

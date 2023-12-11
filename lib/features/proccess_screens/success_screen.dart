@@ -56,6 +56,8 @@ class SuccessScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   BottomNavBarCubit.get(context).setIndex = 0;
+                  HomeCubit.get(context).setIsUserCarInRetrieve = false;
+                  HomeCubit.get(context).isUserCarParked = false;
                   HomeCubit.get(context).getUserData(context);
                   Navigator.pushReplacementNamed(
                       context, Routes.bottomNvBarScreen);

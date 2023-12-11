@@ -7,7 +7,6 @@ import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
-import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
@@ -117,26 +116,6 @@ class ForgetPasswordScreen extends StatelessWidget {
                                     : 14,
                           ),
                         ),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Center(
-                child: Text(
-                  Strings.or,
-                  style: TextStyle(
-                    color: Colors.grey.withOpacity(0.9),
-                    fontSize: 11,
-                  ),
-                ),
-              ),
-              const SocialLoginRow(),
-              const Text(
-                Strings.doNotHaveAccount,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

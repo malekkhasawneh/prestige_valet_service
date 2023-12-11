@@ -32,7 +32,8 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
                 HomeCubit.get(context).parkedCarModel.valet.firstName),
             body: Strings.valetCarWashingRequest(
                 HomeCubit.get(context).parkedCarModel.user.firstName),
-            notificationType: Constants.carWashNotificationAction, notificationReceiver:Constants.toValetNotification);
+            notificationType: Constants.carWashNotificationAction,
+            notificationReceiver: Constants.toValetNotification);
         NotificationHelper.sendLocalNotification(
             title: Strings.notificationTitle(
                 HomeCubit.get(context).parkedCarModel.user.firstName),
@@ -55,83 +56,85 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
                         height: HomeCubit.get(context)
                             .headerBoxHeight(context, screenHeight),
                         width: screenWidth,
-                      color: ColorManager.primaryColor,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: screenWidth * 0.05,
-                          top: HomeCubit.get(context)
-                              .headerBoxHeight(context, screenHeight) *
-                              0.35,
-                        ),
-                        child: Text(
-                          Strings.carParkedHiString(
-                              HomeCubit.get(context).userModel.user.firstName),
-                          style: const TextStyle(
-                              fontFamily: Fonts.sourceSansPro,
-                              fontSize: 26,
-                              color: ColorManager.whiteColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: HomeCubit.get(context)
-                          .bodyBoxHeight(context, screenHeight),
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: HomeCubit.get(context)
-                                    .bodyBoxHeight(context, screenHeight) *
-                                    0.2,
-                              ),
-                              QrCodeWidget(
-                                screenHeight: screenHeight,
-                              ),
-                              SizedBox(
-                                height: HomeCubit.get(context)
-                                    .bodyBoxHeight(context, screenHeight) *
-                                0.03,
+                        color: ColorManager.primaryColor,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: screenWidth * 0.05,
+                            top: HomeCubit.get(context)
+                                    .headerBoxHeight(context, screenHeight) *
+                                0.35,
                           ),
-                          const Text(
-                            Strings.uniqueId,
-                            style: TextStyle(
-                              fontFamily: Fonts.sourceSansPro,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                          Text(
-                            HomeCubit.get(context)
+                          child: Text(
+                            Strings.carParkedHiString(HomeCubit.get(context)
                                 .userModel
                                 .user
-                                .userId
-                                .split('-')
-                                .first,
+                                .firstName),
                             style: const TextStyle(
-                              fontFamily: Fonts.sourceSansPro,
-                            ),
-                            textAlign: TextAlign.start,
+                                fontFamily: Fonts.sourceSansPro,
+                                fontSize: 26,
+                                color: ColorManager.whiteColor,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ],
-                          ),
-                          SizedBox(
-                            height: HomeCubit.get(context)
-                                .bodyBoxHeight(context, screenHeight) *
-                                0.1,
-                          ),
-                          const ShowYourHistoryWidget()
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
-                )),
-            const RequestCarWidget(),
-          ],
-        ),
-      );
+                      SizedBox(
+                        height: HomeCubit.get(context)
+                            .bodyBoxHeight(context, screenHeight),
+                        child: Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: HomeCubit.get(context).bodyBoxHeight(
+                                          context, screenHeight) *
+                                      0.2,
+                                ),
+                                QrCodeWidget(
+                                  screenHeight: screenHeight,
+                                ),
+                                SizedBox(
+                                  height: HomeCubit.get(context).bodyBoxHeight(
+                                          context, screenHeight) *
+                                      0.03,
+                                ),
+                                const Text(
+                                  Strings.uniqueId,
+                                  style: TextStyle(
+                                    fontFamily: Fonts.sourceSansPro,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  HomeCubit.get(context)
+                                      .userModel
+                                      .user
+                                      .userId
+                                      .split('-')
+                                      .first,
+                                  style: const TextStyle(
+                                    fontFamily: Fonts.sourceSansPro,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: HomeCubit.get(context)
+                                      .bodyBoxHeight(context, screenHeight) *
+                                  0.1,
+                            ),
+                            const ShowYourHistoryWidget()
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+                  const RequestCarWidget(),
+                ],
+              ),
+            );
     });
   }
 }

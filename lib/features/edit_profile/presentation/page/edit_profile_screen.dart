@@ -173,11 +173,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 20,
                     ),
                     TextFieldWidget(
-                        controller: EditProfileCubit.get(context).phoneNumber,
-                        title: Strings.phoneNumber,
-                        textInputType: TextInputType.phone,
-                        addPrefixIcon: true,
-                        mustCheck: EditProfileCubit.get(context).mustCheck),
+                      controller: EditProfileCubit.get(context).phoneNumber,
+                      title: Strings.phoneNumber,
+                      textInputType: TextInputType.phone,
+                      addPrefixIcon: true,
+                      mustCheck: EditProfileCubit.get(context).mustCheck,
+                      onlyNumbers: true,
+                    ),
                     const SizedBox(
                       height: 20,
                     ),

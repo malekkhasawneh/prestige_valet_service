@@ -96,7 +96,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     emit(BottomNavBarLoading());
     try {
       final response =
-      await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
+          await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
         userId: userId,
       ));
       response.fold((failure) {
