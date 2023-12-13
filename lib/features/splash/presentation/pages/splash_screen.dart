@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
-import 'package:prestige_valet_app/core/resources/route_manager.dart';
-import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:prestige_valet_app/features/payment_gateway/presentation/page/my_fatoorah_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,31 +25,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<SplashCubit,SplashState>(
       listener: (context, state) async {
         if (state is SplashLoaded) {
-          if (SplashCubit.get(context).isFirstTime) {
-            Future.delayed(const Duration(seconds: 3)).then(
-              (_) => Navigator.pushReplacementNamed(
-                context,
-                Routes.welcomeScreen,
-              ),
-            );
-          } else {
-            if (state.isLogin) {
-              await HomeCubit.get(context).getUserData(context);
-              Future.delayed(const Duration(seconds: 3)).then(
-                (_) => Navigator.pushReplacementNamed(
-                  context,
-                  Routes.bottomNvBarScreen,
-                ),
-              );
-            } else {
-              Future.delayed(const Duration(seconds: 3)).then(
-                (_) => Navigator.pushReplacementNamed(
-                  context,
-                  Routes.loginScreen,
-                ),
-              );
-            }
-          }
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const MyFatoorahScreen(),
+            ),
+          );
         }
       },
       child: Scaffold(
