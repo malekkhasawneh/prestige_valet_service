@@ -20,6 +20,7 @@ class Constants {
   static const String twitterRedirectUrl = 'TWITTER_REDIRECT_URL';
   static const String deliveredToGateKeeper = "DELIVERED_TO_GATEKEEPER";
   static const String sendNotificationToken = "SEND_NOTIFICATION_TOKEN";
+  static const String myFatoorahToken = "MY_FATOORAH_TOKEN";
   static const String carParked = "PARKED";
   static const String carDelivered = "DELIVERED_TO_USER";
   static const String carInRetrieving = "RETRIEVING";
