@@ -118,4 +118,18 @@ class HomeRepositoryImpl implements HomeRepository {
       return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, void>> deleteUserAccountFomFirebase() async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.deleteUserAccountFomFirebase();
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }

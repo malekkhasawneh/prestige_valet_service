@@ -7,6 +7,7 @@ import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/delete_firebase_account_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
@@ -26,6 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
     required this.washCarUseCase,
     required this.getUserHistoryUseCase,
     required this.cancelCarRetrievingUseCase,
+    required this.deleteFirebaseAccountUseCase,
   }) : super(HomeInitial());
 
   final GetUserDataUseCase getUserDataUseCase;
@@ -33,6 +35,7 @@ class HomeCubit extends Cubit<HomeState> {
   final WashCarUseCase washCarUseCase;
   final GetUserHistoryUseCase getUserHistoryUseCase;
   final CancelCarRetrievingUseCase cancelCarRetrievingUseCase;
+  final DeleteFirebaseAccountUseCase deleteFirebaseAccountUseCase;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -69,11 +72,12 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await getUserDataUseCase(NoParams());
       response.fold((failure) => emit(HomeError(failure: failure.toString())),
           (userModel) {
-        this.userModel = userModel;
+            this.userModel = userModel;
         log('======================================= token ${userModel.token}');
         getUserHistory(userId: userModel.user.id);
-        BottomNavBarCubit.get(context)
-            .getNotificationTokenForUser(userId: userModel.user.id);
+        BottomNavBarCubit.get(context).getNotificationTokenForUser(
+          userId: userModel.user.id,
+        );
         emit(HomeLoaded());
       });
     } catch (failure) {
@@ -153,5 +157,9 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (failure) {
       emit(HomeError(failure: failure.toString()));
     }
+  }
+
+  Future<void> deleteFirebaseAccount() async {
+    await deleteFirebaseAccountUseCase(NoParams());
   }
 }

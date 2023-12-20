@@ -36,7 +36,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
             title:
                 Strings.notificationTitle(state.parkedCarsModel.user.firstName),
             body: Strings.userCarRetrieving,
-            notificationType: Constants.carDeliveredNotificationAction,notificationReceiver:Constants.toUserNotification);
+            notificationType: Constants.carDeliveredNotificationAction,
+            notificationReceiver: Constants.toUserNotification);
         ScanQrCubit.get(context).getValetHistory(
           valetId: state.parkedCarsModel.valet.id,
           canLoading: false,

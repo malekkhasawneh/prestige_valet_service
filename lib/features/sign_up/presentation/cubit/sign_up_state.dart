@@ -15,8 +15,11 @@ class SignUpLoading extends SignUpState {
 }
 
 class SignUpLoaded extends SignUpState {
+  final SignUpModel model;
+
+  const SignUpLoaded({required this.model});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [model];
 }
 
 class SignUpMissingData extends SignUpState {

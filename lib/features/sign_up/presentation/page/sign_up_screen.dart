@@ -1,7 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
@@ -15,7 +18,55 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return BlocBuilder<SignUpCubit, SignUpState>(builder: (context, state) {
+    return BlocConsumer<SignUpCubit, SignUpState>(listener: (context, state) {
+      if (state is SignUpLoaded) {
+        if (state.model.message.contains(Constants.signUpEmailError)) {
+          AwesomeDialog(
+            context: context,
+            dismissOnBackKeyPress: false,
+            dismissOnTouchOutside: false,
+            animType: AnimType.scale,
+            dialogType: DialogType.error,
+            body: Center(
+              child: Text(
+                state.model.message,
+                style: const TextStyle(fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            btnOkOnPress: () {
+              SignUpCubit.get(context).setHideNormalField = false;
+              SignUpCubit.get(context).firstNameController.clear();
+              SignUpCubit.get(context).lastNameController.clear();
+              SignUpCubit.get(context).phoneController.clear();
+              SignUpCubit.get(context).emailController.clear();
+              SignUpCubit.get(context).passwordController.clear();
+              SignUpCubit.get(context).setMustCheck = false;
+            },
+            btnOkColor: Colors.red,
+          ).show();
+        } else {
+          AwesomeDialog(
+            context: context,
+            dismissOnBackKeyPress: false,
+            dismissOnTouchOutside: false,
+            animType: AnimType.scale,
+            dialogType: DialogType.success,
+            body: const Center(
+              child: Text(
+                'Registration completed successfully',
+                style: TextStyle(fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            btnOkOnPress: () {
+              Navigator.pushReplacementNamed(context, Routes.loginScreen);
+            },
+            btnOkColor: Colors.green,
+          ).show();
+        }
+      }
+    }, builder: (context, state) {
       return Scaffold(
         body: SingleChildScrollView(
           child: Padding(
@@ -79,10 +130,10 @@ class SignUpScreen extends StatelessWidget {
                   title: '',
                   hintText: Strings.signUpEmailAddress,
                   textInputType: TextInputType.emailAddress,
-                  readOnly: SignUpCubit.get(context).hideNormalAuthField,
+                  readOnly: SignUpCubit.get(context).hideNormalField,
                   mustCheck: SignUpCubit.get(context).mustCheck,
                 ),
-                !SignUpCubit.get(context).hideNormalAuthField
+                !SignUpCubit.get(context).hideNormalField
                     ? TextFieldWidget(
                         controller: SignUpCubit.get(context).passwordController,
                         title: '',
@@ -111,7 +162,7 @@ class SignUpScreen extends StatelessWidget {
                   height: 25,
                 ),
                 const SignUpButtonWidget(),
-                !SignUpCubit.get(context).hideNormalAuthField
+                !SignUpCubit.get(context).hideNormalField
                     ? Column(children: [
                         const SizedBox(
                           height: 20,

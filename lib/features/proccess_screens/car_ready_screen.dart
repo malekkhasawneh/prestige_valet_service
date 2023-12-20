@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
 import '../../core/resources/color_manager.dart';
 import '../../core/resources/fonts.dart';
@@ -23,7 +25,9 @@ class CarReadyScreen extends StatelessWidget {
                   color: ColorManager.blackColor,
                   size: 120,
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 Text(
                   Strings.carReady,
                   style: TextStyle(
@@ -49,7 +53,9 @@ class CarReadyScreen extends StatelessWidget {
                   backgroundColor: ColorManager.whiteColor,
                   elevation: 0.2,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, Routes.successScreen);
+                },
                 child: const Row(
                   children: [
                     Icon(
@@ -87,7 +93,17 @@ class CarReadyScreen extends StatelessWidget {
                   backgroundColor: ColorManager.whiteColor,
                   elevation: 0.2,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const WalletScreen(
+                        isFromPayScreen: true,
+                        isPaymentMethod: true,
+                      ),
+                    ),
+                  );
+                },
                 child: const Row(
                   children: [
                     Icon(

@@ -25,10 +25,10 @@ class SignUpButtonWidget extends StatelessWidget {
                     SignUpCubit.get(context).setMustCheck = true;
                     if ((!SignUpCubit.get(context)
                                 .checkIfThereAreAnyMissingData() &&
-                            !SignUpCubit.get(context).hideNormalAuthField) ||
+                            !SignUpCubit.get(context).hideNormalField) ||
                         (!SignUpCubit.get(context)
                                 .checkIfThereAreAnyMissingDataForSocial() &&
-                            SignUpCubit.get(context).hideNormalAuthField)) {
+                            SignUpCubit.get(context).hideNormalField)) {
                       await SignUpCubit.get(context).signUp();
                     }
                   },

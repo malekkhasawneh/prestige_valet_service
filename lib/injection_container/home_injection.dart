@@ -10,6 +10,8 @@ import 'package:prestige_valet_app/features/home/domain/usecase/wash_car_usecase
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart';
 
+import '../features/home/domain/usecase/delete_firebase_account_usecase.dart';
+
 Future<void> homeInjection() async {
   // Cubit
   sl.registerFactory(
@@ -18,7 +20,7 @@ Future<void> homeInjection() async {
       retrieveCarUseCase: sl(),
       washCarUseCase: sl(),
       getUserHistoryUseCase: sl(),
-      cancelCarRetrievingUseCase: sl(),
+      cancelCarRetrievingUseCase: sl(), deleteFirebaseAccountUseCase: sl(),
     ),
   );
 
@@ -28,6 +30,7 @@ Future<void> homeInjection() async {
   sl.registerLazySingleton(() => WashCarUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetUserHistoryUseCase(repository: sl()));
   sl.registerLazySingleton(() => CancelCarRetrievingUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteFirebaseAccountUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HomeRepository>(

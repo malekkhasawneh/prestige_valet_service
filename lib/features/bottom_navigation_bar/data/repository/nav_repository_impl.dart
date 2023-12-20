@@ -24,7 +24,7 @@ class NavRepositoryImpl implements NavRepository {
     if (await networkInfo.checkConnection()) {
       try {
         final response =
-            await remoteDataSource.getNotificationTokenByUserId(userId: userId);
+            await remoteDataSource.getNotificationTokenByUserId(userId: userId,);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

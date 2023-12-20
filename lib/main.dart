@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:prestige_valet_app/core/helpers/firebase_messaging_helper.dart';
@@ -18,7 +19,6 @@ import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_c
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
-import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart' as di;

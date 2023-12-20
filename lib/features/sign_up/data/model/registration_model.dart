@@ -2,17 +2,30 @@ class SignUpModel {
   String token;
   String message;
   User user;
+  int statusCode;
 
   SignUpModel({
     required this.token,
     required this.message,
     required this.user,
+    required this.statusCode,
   });
 
   factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
-        token: json["token"],
-        message: json["message"],
-        user: User.fromJson(json["user"]),
+        token: json["token"] ?? '',
+        message: json["message"] ?? '',
+        statusCode: int.tryParse(json["message"]) ?? -1,
+        user: User.fromJson(json["user"] ??
+            User(
+                id: -1,
+                userId: '',
+                firstName: '',
+                lastName: '',
+                phone: '',
+                profileImg: '',
+                socialProfile: false,
+                role: '',
+                email: '').toJson()),
       );
 
   Map<String, dynamic> toJson() => {

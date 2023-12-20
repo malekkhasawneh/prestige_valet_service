@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_facebook_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_twitter_usecase.dart';
+import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/set_user_model_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_in_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_up_usecase.dart';
@@ -55,7 +56,14 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(SetValueLoaded());
   }
 
-  bool hideNormalAuthField = false;
+  bool _hideNormalAuthField = false;
+  bool get hideNormalField => _hideNormalAuthField;
+
+  set setHideNormalField(bool value){
+    emit(SetValueLoading());
+    _hideNormalAuthField = value;
+    emit(SetValueLoaded());
+  }
 
   Future<void> signUp(
       {bool socialProfile = false, String imageUrl = ""}) async {
@@ -77,7 +85,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         emit(SignUpError(failure: failure.failure));
       }, (success) {
         setUserModel(userModel: jsonEncode(success.toJson()));
-        emit(SetValueLoaded());
+        emit(SignUpLoaded(model: success));
       });
     } catch (failure) {
       emit(SignUpError(failure: failure.toString()));
@@ -98,7 +106,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         phoneController.text = success.user!.phoneNumber ?? '';
         emailController.text = success.user!.email ?? '';
         if (checkIfThereAreAnyMissingDataForSocial()) {
-          hideNormalAuthField = true;
+          setHideNormalField = true;
           emit(SignUpMissingData());
         } else {
           signUp(socialProfile: true, imageUrl: success.user!.photoURL ?? "");
@@ -124,7 +132,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         phoneController.text = success.user!.phoneNumber ?? '';
         emailController.text = success.user!.email ?? '';
         if (checkIfThereAreAnyMissingDataForSocial()) {
-          hideNormalAuthField = true;
+          setHideNormalField = true;
           emit(SignUpMissingData());
         } else {
           signUp(socialProfile: true, imageUrl: success.user!.photoURL ?? "");
@@ -150,7 +158,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         phoneController.text = success.user!.phoneNumber ?? '';
         emailController.text = success.user!.email ?? '';
         if (checkIfThereAreAnyMissingDataForSocial()) {
-          hideNormalAuthField = true;
+          setHideNormalField = true;
           emit(SignUpMissingData());
         } else {
           signUp(socialProfile: true, imageUrl: success.user!.photoURL ?? "");

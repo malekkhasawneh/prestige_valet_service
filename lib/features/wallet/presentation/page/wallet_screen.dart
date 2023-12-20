@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:myfatoorah_flutter/myfatoorah_flutter.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
@@ -9,9 +13,14 @@ import 'package:prestige_valet_app/features/wallet/presentation/widgets/add_paym
 import 'package:prestige_valet_app/features/wallet/presentation/widgets/credit_card_widget.dart';
 
 class WalletScreen extends StatefulWidget {
-  const WalletScreen({super.key, this.isPaymentMethod = false});
+  const WalletScreen({
+    super.key,
+    this.isPaymentMethod = false,
+    this.isFromPayScreen = false,
+  });
 
   final bool isPaymentMethod;
+  final bool isFromPayScreen;
 
   @override
   State<WalletScreen> createState() => _WalletScreenState();
@@ -22,26 +31,42 @@ class _WalletScreenState extends State<WalletScreen> {
   void initState() {
     WalletCubit.get(context)
         .getCards(userId: HomeCubit.get(context).userModel.user.id);
+    if (widget.isFromPayScreen) {
+      initiate();
+    }
     super.initState();
+  }
+
+  initiate() async {
+    await MFSDK.init(dotenv.env[Constants.myFatoorahToken]!,
+        MFCountry.SAUDIARABIA, MFEnvironment.TEST);
   }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<WalletCubit, WalletState>(builder: (context, state) {
+    return BlocConsumer<WalletCubit, WalletState>(listener: (context, state) {
+      if (state is ExecutePaymentLoaded) {
+        if (state.model.cardInfoResponse!.status == Constants.paymentSuccess) {
+          Navigator.pushReplacementNamed(context, Routes.successScreen);
+        } else {
+          Navigator.pop(context);
+        }
+      }
+    }, builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           leading: widget.isPaymentMethod
-              ?GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              color: ColorManager.whiteColor,
-            ),
-          )
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: ColorManager.whiteColor,
+                  ),
+                )
               : const SizedBox(),
           backgroundColor: ColorManager.transparent,
         ),
@@ -87,9 +112,24 @@ class _WalletScreenState extends State<WalletScreen> {
                           ? ListView.builder(
                               itemCount: state.model.length,
                               itemBuilder: (context, index) {
-                                return CreditCardWidget(
-                                  walletModel: state.model[index],
-                                  isPaymentMethod: widget.isPaymentMethod,
+                                return GestureDetector(
+                                  onTap: widget.isFromPayScreen
+                                      ? () async {
+                                          await WalletCubit.get(context)
+                                              .executePayment(
+                                                  cardNumber:
+                                                      '5453010000095489',
+                                                  cardHolderName:
+                                                      'Test Account',
+                                                  expiryDate: '05/21',
+                                                  cvv: '100',
+                                                  amount: '10');
+                                        }
+                                      : null,
+                                  child: CreditCardWidget(
+                                    walletModel: state.model[index],
+                                    isPaymentMethod: widget.isPaymentMethod,
+                                  ),
                                 );
                               },
                             )

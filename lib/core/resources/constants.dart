@@ -32,7 +32,8 @@ class Constants {
   static const String toValetNotification = "to valet";
   static const String carParkedNotificationAction = "CAR_PARKED";
   static const String carInRetrievingNotificationAction = "CAR_IN_RETRIEVING";
-  static const String cancelCarRetrievingNotificationAction = "CANCEL CAR RETRIEVING";
+  static const String cancelCarRetrievingNotificationAction =
+      "CANCEL CAR RETRIEVING";
   static const String carDeliveredNotificationAction = "DELIVERED_TO_USER";
   static const String carWashNotificationAction = "CAR_WASH_REQUEST";
 
@@ -41,4 +42,6 @@ class Constants {
       'notify_user_about_car_status';
   static const String baseNotificationChannelDesc =
       'send_notification_to_user_when_status_changed';
+  static const String paymentSuccess = 'Success';
+  static const String signUpEmailError = 'Email already in use';
 }

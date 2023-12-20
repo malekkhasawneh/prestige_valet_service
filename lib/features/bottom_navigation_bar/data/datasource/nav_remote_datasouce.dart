@@ -44,7 +44,7 @@ class NavRemoteDataSourceImpl implements NavRemoteDataSource {
       Response response =
       await DioHelper.get(NetworkConstants.getNotificationToken(userId));
       NotificationModel notificationModel =
-      NotificationModel.fromJson(response.data.first);
+      NotificationModel.fromJson(response.data.last);
       return notificationModel;
     } on Exception {
       throw ServerException();

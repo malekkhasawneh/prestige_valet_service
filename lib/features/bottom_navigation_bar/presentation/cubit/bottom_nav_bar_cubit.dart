@@ -208,7 +208,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
             context, Routes.parkedSuccessfullyScreen);
       } else if (message.data[Constants.notificationDataType] ==
           Constants.carDeliveredNotificationAction) {
-        Navigator.pushReplacementNamed(context, Routes.successScreen);
+        Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });
   }
@@ -222,7 +222,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
             context, Routes.parkedSuccessfullyScreen);
       } else if (message.data[Constants.notificationDataType] ==
           Constants.carDeliveredNotificationAction) {
-        Navigator.pushReplacementNamed(context, Routes.successScreen);
+        Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });
   }

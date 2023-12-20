@@ -56,13 +56,16 @@ class ParkedSuccessfullyScreen extends StatelessWidget {
                   backgroundColor: ColorManager.whiteColor,
                   elevation: 0.2,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   BottomNavBarCubit.get(context).setIndex = 0;
-                  HomeCubit.get(context).setIsUserCarInRetrieve = false;
-                  HomeCubit.get(context).isUserCarParked = true;
                   HomeCubit.get(context).getUserData(context);
-                  Navigator.pushReplacementNamed(
-                      context, Routes.bottomNvBarScreen);
+                  HomeCubit.get(context).getUserHistory(
+                      userId: HomeCubit.get(context).userModel.user.id);
+                  await Future.delayed(const Duration(microseconds: 500))
+                      .then((_) {
+                    Navigator.pushReplacementNamed(
+                        context, Routes.bottomNvBarScreen);
+                  });
                 },
                 child: const Text(
                   Strings.goToHome,

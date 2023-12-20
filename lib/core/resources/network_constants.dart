@@ -39,7 +39,7 @@ class NetworkConstants {
       'Parking/washCar/$parkingId?washCar=$washFlag';
 
   static String getValetCarHistory({required int valetId}) =>
-      'valet/Parking?valetId=$valetId';
+      'valet/Parking?valetId=$valetId&pageSize=1000';
 
   static String getUserHistory({required int userId}) =>
       'Parking?userId=$userId&pageSize=1000';

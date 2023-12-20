@@ -18,7 +18,6 @@ class GetNotificationTokenUseCase
 
 class GetNotificationTokenUseCaseParams extends Equatable {
   final int userId;
-
   const GetNotificationTokenUseCaseParams(
       {required this.userId});
 

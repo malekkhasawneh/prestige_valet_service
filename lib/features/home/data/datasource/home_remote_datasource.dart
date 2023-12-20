@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -7,13 +10,11 @@ import 'package:prestige_valet_app/features/valet/data/model/park_history_model.
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<ParkedCarsModel> retrieveCar(
-      {required int parkingId, required int gateId});
+  Future<ParkedCarsModel> retrieveCar({required int parkingId, required int gateId});
 
   Future<ParkedCarsModel> cancelCarRetrieving({required int parkingId});
 
-  Future<ParkedCarsModel> washCar(
-      {required int parkingId, required bool washFlag});
+  Future<ParkedCarsModel> washCar({required int parkingId, required bool washFlag});
 
   Future<ParkHistoryModel> getUserHistory({required int userId});
 
@@ -24,12 +25,13 @@ abstract class HomeRemoteDataSource {
     required String notificationReceiver,
     required String token,
   });
+
+  Future<void> deleteUserAccountFomFirebase();
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
-  Future<ParkedCarsModel> retrieveCar(
-      {required int parkingId, required int gateId}) async {
+  Future<ParkedCarsModel> retrieveCar({required int parkingId, required int gateId}) async {
     try {
       await DioHelper.addTokenHeader();
       final Map<String, dynamic> response = await DioHelper.patch(
@@ -42,12 +44,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<ParkedCarsModel> washCar(
-      {required int parkingId, required bool washFlag}) async {
+  Future<ParkedCarsModel> washCar({required int parkingId, required bool washFlag}) async {
     try {
       await DioHelper.addTokenHeader();
       final Map<String, dynamic> response =
-          await DioHelper.patch(NetworkConstants.washCar(
+      await DioHelper.patch(NetworkConstants.washCar(
         parkingId: parkingId,
         washFlag: washFlag,
       ));
@@ -63,11 +64,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     try {
       await DioHelper.addTokenHeader();
       final Response response =
-          await DioHelper.get(NetworkConstants.getUserHistory(
+      await DioHelper.get(NetworkConstants.getUserHistory(
         userId: userId,
       ));
       ParkHistoryModel parkHistoryModel =
-          ParkHistoryModel.fromJson(response.data);
+      ParkHistoryModel.fromJson(response.data);
       return parkHistoryModel;
     } on Exception {
       throw ServerException();
@@ -75,13 +76,15 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<bool> sendNotification(
-      {required String title,
-      required String body,
-      required String notificationType,
-      required String notificationReceiver,
-      required String token}) async {
+  Future<bool> sendNotification({
+    required String title,
+    required String body,
+    required String notificationType,
+    required String notificationReceiver,
+    required String token,
+  }) async {
     try {
+      log('================================== notifications sent to $token');
       DioHelper.firebaseHeaders();
       Response response =
           await DioHelper.dio.post(NetworkConstants.sendNotification, data: {
@@ -112,6 +115,18 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
       parkedCarsModel.isUserCanceled = true;
       return parkedCarsModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<void> deleteUserAccountFomFirebase() async {
+    try {
+      auth.User? user = auth.FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        user.delete();
+      }
     } on Exception {
       throw ServerException();
     }

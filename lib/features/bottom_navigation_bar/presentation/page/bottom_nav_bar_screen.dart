@@ -20,6 +20,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     BottomNavBarCubit.get(context).onReceiveNotificationListenerOnApp(context);
     BottomNavBarCubit.get(context)
         .onReceiveNotificationListenerOnBackground(context);
+    HomeCubit.get(context).deleteFirebaseAccount();
     super.initState();
   }
 
