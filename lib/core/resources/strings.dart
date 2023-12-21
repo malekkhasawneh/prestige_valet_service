@@ -132,6 +132,8 @@ class Strings {
 
   // Scan Qr code screen
   static const String scanQrCode = "Scan QR code";
+  static const String generateQrCode = "Generate guest QR code";
+  static const String retrieveGuestCar = "Retrieve guest car";
   static const String gate = "Gate";
 
   static String parkingHiString(String valetName) =>

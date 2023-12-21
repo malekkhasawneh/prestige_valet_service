@@ -17,10 +17,10 @@ class ValetRepositoryImpl implements ValetRepository {
 
   @override
   Future<Either<Failures, ParkedCarsModel>> parkCar(
-      {required int valetId}) async {
+      {required int valetId, required bool isGuest}) async {
     if (await networkInfo.checkConnection()) {
       try {
-        final response = await remoteDataSource.parkCar(valetId: valetId);
+        final response = await remoteDataSource.parkCar(valetId: valetId,isGuest: isGuest);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,20 +29,31 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   final CarDeliveredUseCase carDeliveredUseCase;
   final GetValetHistoryUseCase getValetHistoryUseCase;
 
-  Future<void> parkCar({required int valetId}) async {
+  Future<void> parkCar({required int valetId, bool isGuest = false}) async {
     emit(ScanQrLoading());
     try {
-      final response =
-      await parkCarUseCase(ParkCarUseCaseParams(valetId: valetId));
+      final response = await parkCarUseCase(ParkCarUseCaseParams(
+        valetId: valetId,
+        isGuest: isGuest,
+      ));
       response.fold(
-            (failure) => emit(ScanQrError(failure: failure.failure)),
-            (success) => emit(
-          ScanQrLoaded(
-            parkedCarsModel: success,
-          ),
-        ),
+        (failure) {
+          log('=================================== here ${failure.failure}');
+          emit(ScanQrError(failure: failure.failure));
+        },
+        (success) {
+          log('=================================== here ${success.id}');
+
+          emit(
+            ScanQrLoaded(
+              parkedCarsModel: success,
+            ),
+          );
+        },
       );
     } catch (failure) {
+      log('=================================== here ${failure.toString()}');
+
       emit(ScanQrError(failure: failure.toString()));
     }
   }
@@ -82,6 +94,27 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
+  Future<void> retrieveGuestCar() async {
+    var result = await BarcodeScanner.scan();
+    if (result.rawContent.isNotEmpty && result.rawContent.contains('Guest')) {
+      emit(ScanQrLoading());
+      try {
+        final response = await carDeliveredUseCase(CarDeliveredUseCaseParams(
+            parkingId: int.parse(result.rawContent.split(',').last)));
+        response.fold(
+          (failure) => emit(ScanQrError(failure: failure.failure)),
+          (success) => emit(
+            RetrieveGuestCarLoaded(),
+          ),
+        );
+      } catch (failure) {
+        emit(ScanQrError(failure: failure.toString()));
+      }
+    } else {
+      emit(const RetrieveGuestCarLoadedError(failure: 'Invalid QR code'));
+    }
+  }
+
   Future<void> getValetHistory(
       {required int valetId, bool canLoading = true}) async {
     if (canLoading) emit(ScanQrLoading());
@@ -90,12 +123,12 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           GetValetHistoryUseCaseParams(valetId: valetId));
       response.fold(
         (failure) {
-          log('========================================= mmmm ${failure.failure}');
-
+          log('====================================== error ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
         (success) {
-          log('========================================= mmmm ${success.content.length}');
+          log('====================================== error ${success.content.first.id}');
+
           emit(
             GetValetHistoryLoaded(
               valetHistoryModel: success,
@@ -104,16 +137,22 @@ class ScanQrCubit extends Cubit<ScanQrState> {
         },
       );
     } catch (failure) {
+      log('====================================== error ${failure.toString()}');
+
       emit(ScanQrError(failure: failure.toString()));
     }
   }
 
-  String status({required String status}) {
+  String status({required String status, required bool isGuest}) {
     switch (status) {
       case 'DELIVERED_TO_GATEKEEPER':
         return 'Delivered to gatekeeper';
       case 'PARKED':
-        return 'Parked';
+        if (isGuest) {
+          return 'Retrieve the car';
+        } else {
+          return 'Parked';
+        }
       case 'DELIVERED_TO_USER':
         return 'Delivered to user';
       case 'RETRIEVING':

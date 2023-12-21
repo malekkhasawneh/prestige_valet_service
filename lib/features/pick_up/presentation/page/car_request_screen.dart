@@ -26,12 +26,12 @@ class CarRequestScreen extends StatelessWidget {
                 title: Strings.notificationTitle(
                     HomeCubit.get(context).parkedCarModel.valet.firstName),
                 body: Strings.valetUserCanceled(
-                    HomeCubit.get(context).parkedCarModel.user.firstName),
+                    HomeCubit.get(context).parkedCarModel.user!.firstName),
                 notificationType:
                     Constants.cancelCarRetrievingNotificationAction,notificationReceiver:Constants.toValetNotification);
             NotificationHelper.sendLocalNotification(
                 title: Strings.notificationTitle(
-                    HomeCubit.get(context).parkedCarModel.user.firstName),
+                    HomeCubit.get(context).parkedCarModel.user!.firstName),
                 body: Strings.userCancelRetrieving);
             HomeCubit.get(context).isUserCarParked = true;
             HomeCubit.get(context).setSetGate = false;

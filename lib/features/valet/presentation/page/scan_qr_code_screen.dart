@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -10,6 +11,7 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/c
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
+import 'package:prestige_valet_app/features/valet/presentation/widgets/guest_qr_widget.dart';
 
 class ScanQrCodeScreen extends StatefulWidget {
   const ScanQrCodeScreen({super.key});
@@ -30,16 +32,72 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
           ScanQrCubit.get(context)
               .changeParkedCarStatus(parkingId: state.parkedCarsModel.id);
         } else if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
-          BottomNavBarCubit.get(context).sendNotification(
-            userId: state.parkedCarsModel.user.id,
-              title: Strings.notificationTitle(
-                  state.parkedCarsModel.user.firstName),
-              body: Strings.userCarParked,
-              notificationType: Constants.carParkedNotificationAction,
-              notificationReceiver: Constants.toUserNotification);
+          if (!state.parkedCarsModel.isGuest) {
+            BottomNavBarCubit.get(context).sendNotification(
+                userId: state.parkedCarsModel.user!.id,
+                title: Strings.notificationTitle(
+                    state.parkedCarsModel.user!.firstName),
+                body: Strings.userCarParked,
+                notificationType: Constants.carParkedNotificationAction,
+                notificationReceiver: Constants.toUserNotification);
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => GuestQrWidget(
+                  screenHeight: screenHeight,
+                  parkedCarsModel: state.parkedCarsModel,
+                ),
+              ),
+            );
+          }
         }
+      } else if (state is RetrieveGuestCarLoadedError) {
+        AwesomeDialog(
+          context: context,
+          dismissOnBackKeyPress: false,
+          dismissOnTouchOutside: false,
+          animType: AnimType.scale,
+          dialogType: DialogType.error,
+          body: Center(
+            child: Text(
+              '${state.failure}\n ',
+              style: const TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          btnOkOnPress: () {},
+          btnOkColor: Colors.red,
+        ).show();
+      } else if (state is RetrieveGuestCarLoaded) {
+        AwesomeDialog(
+          context: context,
+          dismissOnBackKeyPress: false,
+          dismissOnTouchOutside: false,
+          animType: AnimType.scale,
+          dialogType: DialogType.success,
+          body: const Center(
+            child: Text(
+              'Process Completed Successfully\n ',
+              style: TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          btnOkOnPress: () {},
+          btnOkColor: Colors.green,
+        ).show();
       }
     }, builder: (context, state) {
+      if (state is ScanQrLoading) {
+        return const Padding(
+          padding: EdgeInsets.only(top: 56),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: ColorManager.primaryColor,
+            ),
+          ),
+        );
+      }
       return Scaffold(
         body: Center(
           child: Column(
@@ -83,7 +141,74 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                     ),
                   ),
                 ),
-              )
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                width: screenWidth * 0.85,
+                height: screenHeight * 0.065,
+                constraints: const BoxConstraints(maxHeight: 50),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    ScanQrCubit.get(context).parkCar(
+                      valetId: HomeCubit.get(context).userModel.user.id,
+                      isGuest: true,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ),
+                      ),
+                      backgroundColor: ColorManager.primaryColor,
+                      elevation: 0.5),
+                  child: Text(
+                    Strings.generateQrCode,
+                    style: TextStyle(
+                      color: ColorManager.whiteColor,
+                      fontFamily: Fonts.montserrat,
+                      fontSize: ProfileCubit.get(context).isTablet(screenWidth)
+                          ? 16
+                          : 14,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                width: screenWidth * 0.85,
+                height: screenHeight * 0.065,
+                constraints: const BoxConstraints(maxHeight: 50),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    ScanQrCubit.get(context).retrieveGuestCar();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ),
+                      ),
+                      backgroundColor: ColorManager.blackColor,
+                      elevation: 0.5),
+                  child: Text(
+                    Strings.retrieveGuestCar,
+                    style: TextStyle(
+                      color: ColorManager.whiteColor,
+                      fontFamily: Fonts.montserrat,
+                      fontSize: ProfileCubit.get(context).isTablet(screenWidth)
+                          ? 16
+                          : 14,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

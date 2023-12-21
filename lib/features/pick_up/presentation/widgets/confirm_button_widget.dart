@@ -26,13 +26,13 @@ class ConfirmButtonWidget extends StatelessWidget {
               title: Strings.notificationTitle(
                   state.parkedCarsModel.valet.firstName),
               body: Strings.valetCarRetrievingRequest(
-                  state.parkedCarsModel.user.firstName),
+                  state.parkedCarsModel.user!.firstName),
               notificationType: Constants.carInRetrievingNotificationAction,
                 notificationReceiver:Constants.toValetNotification
             );
             NotificationHelper.sendLocalNotification(
                 title: Strings.notificationTitle(
-                    state.parkedCarsModel.user.firstName),
+                    state.parkedCarsModel.user!.firstName),
                 body: Strings.userCarRetrievingRequest);
             HomeCubit.get(context).setSetGate = false;
             HomeCubit.get(context).isUserCarParked = false;

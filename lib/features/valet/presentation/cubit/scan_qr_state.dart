@@ -8,9 +8,24 @@ class ScanQrInitial extends ScanQrState {
   @override
   List<Object> get props => [];
 }
+
 class ScanQrLoading extends ScanQrState {
   @override
   List<Object> get props => [];
+}
+
+class GenerateQrLoading extends ScanQrState {
+  @override
+  List<Object> get props => [];
+}
+
+class GenerateQrLoaded extends ScanQrState {
+  final ParkedCarsModel parkedCarsModel;
+
+  const GenerateQrLoaded({required this.parkedCarsModel});
+
+  @override
+  List<Object> get props => [parkedCarsModel];
 }
 
 class ScanQrLoaded extends ScanQrState {
@@ -35,6 +50,20 @@ class ScanQrError extends ScanQrState {
   final String failure;
 
   const ScanQrError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
+}
+
+class RetrieveGuestCarLoaded extends ScanQrState {
+  @override
+  List<Object> get props => [];
+}
+
+class RetrieveGuestCarLoadedError extends ScanQrState {
+  final String failure;
+
+  const RetrieveGuestCarLoadedError({required this.failure});
 
   @override
   List<Object> get props => [failure];

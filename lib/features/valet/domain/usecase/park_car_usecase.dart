@@ -13,15 +13,15 @@ class ParkCarUseCase extends UseCase<ParkedCarsModel, ParkCarUseCaseParams> {
   @override
   Future<Either<Failures, ParkedCarsModel>> call(
       ParkCarUseCaseParams params) async {
-    return await repository.parkCar(valetId: params.valetId);
+    return await repository.parkCar(valetId: params.valetId,isGuest: params.isGuest);
   }
 }
 
 class ParkCarUseCaseParams extends Equatable {
   final int valetId;
-
-  const ParkCarUseCaseParams({required this.valetId});
+  final bool isGuest;
+  const ParkCarUseCaseParams({required this.valetId, required this. isGuest});
 
   @override
-  List<Object?> get props => [valetId];
+  List<Object?> get props => [valetId,isGuest];
 }

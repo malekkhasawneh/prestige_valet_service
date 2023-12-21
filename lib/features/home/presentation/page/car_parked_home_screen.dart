@@ -33,12 +33,12 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
             title: Strings.notificationTitle(
                 HomeCubit.get(context).parkedCarModel.valet.firstName),
             body: Strings.valetCarWashingRequest(
-                HomeCubit.get(context).parkedCarModel.user.firstName),
+                HomeCubit.get(context).parkedCarModel.user!.firstName),
             notificationType: Constants.carWashNotificationAction,
             notificationReceiver: Constants.toValetNotification);
         NotificationHelper.sendLocalNotification(
             title: Strings.notificationTitle(
-                HomeCubit.get(context).parkedCarModel.user.firstName),
+                HomeCubit.get(context).parkedCarModel.user!.firstName),
             body: Strings.userCarWashRequest);
       } else if (state is RetrieveCarLoaded) {
         HomeCubit.get(context).setIsUserCarInRetrieve = true;

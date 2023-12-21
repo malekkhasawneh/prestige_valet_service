@@ -18,11 +18,12 @@ class ParkHistoryContent {
   DateTime updatedOn;
   String updatedBy;
   int id;
-  ParkHistoryContentUser user;
+  ParkHistoryContentUser? user;
   ParkHistoryContentUser valet;
   String parkingStatus;
   bool? carWash;
-
+bool isGuest;
+String guestName;
   ParkHistoryContent({
     required this.createdOn,
     required this.createdBy,
@@ -33,18 +34,24 @@ class ParkHistoryContent {
     required this.valet,
     required this.parkingStatus,
     required this.carWash,
+    required this.isGuest,
+    required this.guestName,
   });
 
   factory ParkHistoryContent.fromJson(Map<String, dynamic> json) => ParkHistoryContent(
-        createdOn: DateTime.parse(json["createdOn"]),
+    createdOn: DateTime.parse(json["createdOn"]),
         createdBy: json["createdBy"] ?? '',
         updatedOn: DateTime.parse(json["updatedOn"]),
         updatedBy: json["updatedBy"] ?? '',
         id: json["id"],
-        user: ParkHistoryContentUser.fromJson(json["user"]),
+        user: json["user"] == null
+            ? null
+            : ParkHistoryContentUser.fromJson(json["user"]),
         valet: ParkHistoryContentUser.fromJson(json["valet"]),
         parkingStatus: json["parkingStatus"] ?? '',
         carWash: json["carWash"] ?? false,
+    isGuest: json["isGuest"] ?? false,
+    guestName: json["guestName"] ?? '',
       );
 }
 

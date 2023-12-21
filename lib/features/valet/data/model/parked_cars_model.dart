@@ -4,11 +4,13 @@ class ParkedCarsModel {
   DateTime updatedOn;
   String updatedBy;
   int id;
-  User user;
+  User? user;
   User valet;
   String parkingStatus;
   bool washCar;
   bool isUserCanceled = false;
+  bool isGuest;
+  String guestName;
 
   ParkedCarsModel({
     required this.createdOn,
@@ -20,6 +22,8 @@ class ParkedCarsModel {
     required this.valet,
     required this.parkingStatus,
     required this.washCar,
+    required this.isGuest,
+    required this.guestName,
     this.isUserCanceled = false,
   });
 
@@ -29,10 +33,12 @@ class ParkedCarsModel {
         updatedOn: DateTime.parse(json["updatedOn"]),
         updatedBy: json["updatedBy"],
         id: json["id"],
-        user: User.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         valet: User.fromJson(json["valet"]),
         parkingStatus: json["parkingStatus"],
         washCar: json['carWash'],
+        isGuest: json["isGuest"] ?? false,
+        guestName: json["guestName"] ?? '',
       );
 
   Map<String, dynamic> toJson() =>
@@ -42,7 +48,7 @@ class ParkedCarsModel {
         "updatedOn": updatedOn.toIso8601String(),
         "updatedBy": updatedBy,
         "id": id,
-        "user": user.toJson(),
+        "user": user!.toJson(),
         "valet": valet.toJson(),
         "parkingStatus": parkingStatus,
         "carWash": washCar,
