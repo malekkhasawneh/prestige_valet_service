@@ -37,7 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     EditProfileCubit.get(context).email.text =
         HomeCubit.get(context).userModel.user.email;
     EditProfileCubit.get(context).phoneNumber.text =
-        HomeCubit.get(context).userModel.user.phone;
+        EditProfileCubit.get(context).filterPhoneNumber(HomeCubit.get(context).userModel.user.phone);
     EditProfileCubit.get(context).setMustCheck = false;
     super.initState();
   }

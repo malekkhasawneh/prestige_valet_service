@@ -79,4 +79,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         phoneNumber.text.isEmpty ||
         email.text.isEmpty;
   }
+
+  String filterPhoneNumber(String phone) {
+  return  phone[0] == '0' && phone[1] == '7' ? phone.replaceFirst('0', '') : phone;
+  }
 }
