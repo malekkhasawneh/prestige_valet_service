@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -30,16 +31,29 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       return BlocConsumer<BottomNavBarCubit, BottomNavBarState>(
           listener: (context, state) {
         if (state is GetUserTokenError) {
-          if (state.failure == Constants.noElement) {
+          if (state.failure == Constants.internetFailure) {
+            Navigator.pushNamed(context, Routes.noInternetScreen);
+          } else if (state.failure == Constants.noElement) {
             BottomNavBarCubit.get(context).addNotificationToken(
                 userId: HomeCubit.get(context).userModel.user.id);
           }
         } else if (state is BottomNavBarLoaded) {
           if (BottomNavBarCubit.get(context).userNotificationToken ==
-                  Constants.userLoggedOut) {
+              Constants.userLoggedOut) {
             BottomNavBarCubit.get(context).updateUserNotificationToken(
                 userId: HomeCubit.get(context).userModel.user.id,
                 tokenId: BottomNavBarCubit.get(context).tokenId);
+          }
+        } else if (state is BottomNavBarError) {
+          if (state.failure == Constants.internetFailure) {
+            HomeCubit.get(context).refreshAfterConnect = () {
+              BottomNavBarCubit.get(context)
+                  .onReceiveNotificationListenerOnApp(context);
+              BottomNavBarCubit.get(context)
+                  .onReceiveNotificationListenerOnBackground(context);
+              HomeCubit.get(context).deleteFirebaseAccount();
+            };
+            Navigator.pushNamed(context, Routes.noInternetScreen);
           }
         }
       }, builder: (context, state) {

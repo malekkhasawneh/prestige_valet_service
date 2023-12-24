@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
@@ -19,7 +20,10 @@ class ForgetPasswordScreen extends StatelessWidget {
     return BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
         listener: (context, state) {
       if (state is ForgetPasswordError) {
-        AwesomeDialog(
+        if(state.failure == Constants.internetFailure){
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }else {
+          AwesomeDialog(
           context: context,
           dismissOnBackKeyPress: false,
           dismissOnTouchOutside: false,
@@ -37,6 +41,7 @@ class ForgetPasswordScreen extends StatelessWidget {
           },
           btnOkColor: Colors.red,
         ).show();
+        }
       } else if (state is SendResetPasswordOtpLoaded) {
         ForgetPasswordCubit.get(context).setMustCheck = false;
         Navigator.pushNamed(context, Routes.verifyResetPasswordEmailScreen);

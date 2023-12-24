@@ -19,7 +19,7 @@ class PickUpRepositoryImpl implements PickUpRepository {
       final response = await remoteDataSource.getGates(locationId: locationId);
       return Right(response);
     } else {
-      return const Left(InternetFailure(failure: Constants.cacheFailure));
+      return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
 }

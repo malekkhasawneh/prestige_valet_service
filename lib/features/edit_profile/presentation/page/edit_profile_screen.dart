@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
@@ -16,6 +17,8 @@ import 'package:prestige_valet_app/features/edit_profile/presentation/cubit/edit
 import 'package:prestige_valet_app/features/edit_profile/presentation/widgets/save_changes_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../../core/resources/route_manager.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -62,6 +65,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             btnOkOnPress: () {},
           ).show();
+        }else if(state is EditProfileError){
+          if(state.failure == Constants.internetFailure){
+            Navigator.pushNamed(context, Routes.noInternetScreen);
+          }
         }
       }, builder: (context, state) {
         return Scaffold(

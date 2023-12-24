@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -36,6 +37,10 @@ class CarRequestScreen extends StatelessWidget {
             HomeCubit.get(context).isUserCarParked = true;
             HomeCubit.get(context).setSetGate = false;
             HomeCubit.get(context).setIsUserCarInRetrieve = false;
+          }
+        }else if(state is HomeError){
+          if(state.failure == Constants.internetFailure){
+            Navigator.pushNamed(context, Routes.noInternetScreen);
           }
         }
       },

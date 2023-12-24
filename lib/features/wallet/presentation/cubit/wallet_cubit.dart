@@ -32,12 +32,17 @@ class WalletCubit extends Cubit<WalletState> {
     try {
       final response =
           await getCardsUseCase(GetCardsUseCaseParams(userId: userId));
-      response.fold((failure) => emit(WalletError(failure: failure.failure)),
+      response.fold((failure) {
+        log('=================================== ooo ${failure.failure}');
+
+        emit(WalletError(failure: failure.failure));
+      },
           (success) {
         log('=================================== ooo ${success.length}');
         emit(WalletLoaded(model: success));
       });
     } catch (failure) {
+      log('=================================== ooo ${failure.toString()}');
       emit(WalletError(failure: failure.toString()));
     }
   }

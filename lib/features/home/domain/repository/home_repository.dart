@@ -26,5 +26,5 @@ abstract class HomeRepository {
     required String token,
   });
   Future<Either<Failures,void>> deleteUserAccountFomFirebase();
-
+  Future<Either<Failures,bool>> checkInternetConnection();
 }

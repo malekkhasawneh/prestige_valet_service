@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -44,26 +45,42 @@ class _ParkingScreenState extends State<ParkingScreen> {
           canLoading: false,
         );
       } else if (state is RetrieveGuestCarLoadedError) {
-        ScanQrCubit.get(context)
-            .getValetHistory(valetId: HomeCubit.get(context).userModel.user.id);
-        AwesomeDialog(
-          context: context,
-          dismissOnBackKeyPress: false,
-          dismissOnTouchOutside: false,
-          animType: AnimType.scale,
-          dialogType: DialogType.error,
-          body: Center(
-            child: Text(
-              '${state.failure}\n ',
-              style: const TextStyle(fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
+        if (state.failure == Constants.internetFailure) {
+          HomeCubit.get(context).refreshAfterConnect = () {
+            ScanQrCubit.get(context)
+                .getValetHistory(valetId: HomeCubit.get(context).userModel.user.id);
+          };
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        } else {
+          ScanQrCubit.get(context)
+              .getValetHistory(valetId: HomeCubit
+              .get(context)
+              .userModel
+              .user
+              .id);
+
+          AwesomeDialog(
+            context: context,
+            dismissOnBackKeyPress: false,
+            dismissOnTouchOutside: false,
+            animType: AnimType.scale,
+            dialogType: DialogType.error,
+            body: Center(
+              child: Text(
+                '${state.failure}\n ',
+                style: const TextStyle(fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          btnOkOnPress: () {},
-          btnOkColor: Colors.red,
-        ).show();
-      }
-    }, builder: (context, state) {
+            btnOkOnPress: () {},
+            btnOkColor: Colors.red,
+          ).show();
+        }
+      }else if(state is ScanQrError){
+        if(state.failure == Constants.internetFailure){
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }
+      } }, builder: (context, state) {
       return Scaffold(
         body: Stack(
           alignment: Alignment.topCenter,

@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/features/home/data/datasource/home_remote_dat
 import 'package:prestige_valet_app/features/home/data/repository/home_repository_impl.dart';
 import 'package:prestige_valet_app/features/home/domain/repository/home_repository.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/check_internet_connction_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
@@ -20,7 +21,9 @@ Future<void> homeInjection() async {
       retrieveCarUseCase: sl(),
       washCarUseCase: sl(),
       getUserHistoryUseCase: sl(),
-      cancelCarRetrievingUseCase: sl(), deleteFirebaseAccountUseCase: sl(),
+      cancelCarRetrievingUseCase: sl(),
+      deleteFirebaseAccountUseCase: sl(),
+      checkInternetConnectionUseCase: sl(),
     ),
   );
 
@@ -30,7 +33,10 @@ Future<void> homeInjection() async {
   sl.registerLazySingleton(() => WashCarUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetUserHistoryUseCase(repository: sl()));
   sl.registerLazySingleton(() => CancelCarRetrievingUseCase(repository: sl()));
-  sl.registerLazySingleton(() => DeleteFirebaseAccountUseCase(repository: sl()));
+  sl.registerLazySingleton(
+      () => DeleteFirebaseAccountUseCase(repository: sl()));
+  sl.registerLazySingleton(
+      () => CheckInternetConnectionUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<HomeRepository>(
@@ -43,7 +49,7 @@ Future<void> homeInjection() async {
 
   // Data sources
   sl.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeRemoteDataSourceImpl(),
+        () => HomeRemoteDataSourceImpl(networkInfo: sl()),
   );
   sl.registerLazySingleton<HomeLocalDataSource>(
     () => HomeLocalDataSourceImpl(),

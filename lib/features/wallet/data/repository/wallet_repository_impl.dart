@@ -26,7 +26,7 @@ class WalletRepositoryImpl implements WalletRepository {
         return const Left(ServerFailure(failure: Constants.serverFailure));
       }
     } else {
-      throw const Left(InternetFailure(failure: Constants.internetFailure));
+      return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
 

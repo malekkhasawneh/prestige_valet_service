@@ -53,6 +53,17 @@ class _WalletScreenState extends State<WalletScreen> {
         } else {
           Navigator.pop(context);
         }
+      } else if (state is WalletError) {
+        if (state.failure == Constants.internetFailure) {
+          HomeCubit.get(context).refreshAfterConnect = () {
+            WalletCubit.get(context)
+                .getCards(userId: HomeCubit.get(context).userModel.user.id);
+            if (widget.isFromPayScreen) {
+              initiate();
+            }
+          };
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }
       }
     }, builder: (context, state) {
       return Scaffold(
@@ -110,6 +121,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           horizontal: screenWidth * 0.13, vertical: 0),
                       child: state.model.isNotEmpty
                           ? ListView.builder(
+                        padding: const EdgeInsets.only(top: 25),
                               itemCount: state.model.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
@@ -121,17 +133,17 @@ class _WalletScreenState extends State<WalletScreen> {
                                                       '5453010000095489',
                                                   cardHolderName:
                                                       'Test Account',
-                                                  expiryDate: '05/21',
-                                                  cvv: '100',
-                                                  amount: '10');
-                                        }
-                                      : null,
-                                  child: CreditCardWidget(
-                                    walletModel: state.model[index],
-                                    isPaymentMethod: widget.isPaymentMethod,
-                                  ),
-                                );
-                              },
+                                  expiryDate: '05/21',
+                                  cvv: '100',
+                                  amount: '10');
+                            }
+                                : null,
+                            child: CreditCardWidget(
+                              walletModel: state.model[index],
+                              isPaymentMethod: widget.isPaymentMethod,
+                            ),
+                          );
+                        },
                             )
                           : SizedBox(
                               height: WalletCubit.get(context)

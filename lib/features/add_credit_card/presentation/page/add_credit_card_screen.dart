@@ -2,7 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/cubit/add_credit_card_cubit.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/add_card_button_widget.dart';
@@ -46,6 +48,13 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
           ),
           btnOkOnPress: () {},
         ).show();
+      } else if (state is AddCreditCardError) {
+        if (state.failure == Constants.internetFailure) {
+          HomeCubit.get(context).refreshAfterConnect = () {
+            AddCreditCardCubit.get(context).resetValues(widget.isFromEdit);
+          };
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }
       }
     }, builder: (context, state) {
       return Scaffold(

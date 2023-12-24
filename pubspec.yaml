@@ -61,6 +61,7 @@ flutter:
     - images/Facebook_Logo.png
     - images/Twitter_Logo.png
     - images/qr_code_scanner.json
+    - images/no_internet.json
 
   fonts:
     - family: SourceSansPro

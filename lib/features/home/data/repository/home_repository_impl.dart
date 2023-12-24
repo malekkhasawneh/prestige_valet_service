@@ -132,4 +132,14 @@ class HomeRepositoryImpl implements HomeRepository {
       return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, bool>> checkInternetConnection() async {
+    try {
+      final response = await remoteDataSource.checkInternetConnection();
+      return Right(response);
+    } on Exception {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }

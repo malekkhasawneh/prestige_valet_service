@@ -36,6 +36,10 @@ class UpdateYourPasswordScreen extends StatelessWidget {
               },
             ).show();
           }
+        } else if (state is ForgetPasswordError) {
+          if (state.failure == Constants.internetFailure) {
+            Navigator.pushNamed(context, Routes.noInternetScreen);
+          }
         }
       },
       builder: (context, state) {

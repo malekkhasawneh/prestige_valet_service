@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
@@ -21,6 +22,10 @@ class ProfileScreen extends StatelessWidget {
       if (state is ProfileLoaded) {
         if (state.logout) {
           Navigator.pushReplacementNamed(context, Routes.loginScreen);
+        }
+      }else if(state is ProfileError){
+        if(state.failure == Constants.internetFailure){
+          Navigator.pushNamed(context, Routes.noInternetScreen);
         }
       }
     }, builder: (context, state) {

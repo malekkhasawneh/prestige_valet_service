@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -50,6 +51,15 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               );
             }
+          }
+        }else if(state is SplashError){
+          if(state.failure == Constants.internetFailure){
+            HomeCubit.get(context).refreshAfterConnect = () {
+              SplashCubit.get(context).getIsFirstTimeOpenTheApp();
+              SplashCubit.get(context).checkIfUserLogin();
+              SplashCubit.get(context).checkIsUser();
+            };
+            Navigator.pushNamed(context, Routes.noInternetScreen);
           }
         }
       },

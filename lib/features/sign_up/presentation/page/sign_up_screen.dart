@@ -65,6 +65,10 @@ class SignUpScreen extends StatelessWidget {
             btnOkColor: Colors.green,
           ).show();
         }
+      }else if(state is SignUpError){
+        if(state.failure == Constants.internetFailure){
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }
       }
     }, builder: (context, state) {
       return Scaffold(

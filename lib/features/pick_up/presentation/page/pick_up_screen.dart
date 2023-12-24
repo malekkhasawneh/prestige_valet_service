@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
@@ -29,7 +31,18 @@ class _PickUpScreenState extends State<PickUpScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<PickUpCubit, PickUpState>(
+    return BlocConsumer<PickUpCubit, PickUpState>(
+      listener: (context,state){
+        if(state is PickUpError){
+          if(state.failure == Constants.internetFailure){
+            HomeCubit.get(context).refreshAfterConnect = () {
+              PickUpCubit.get(context).getGates(
+                  locationId: HomeCubit.get(context).parkedCarModel.valet.location!.id);
+            };
+            Navigator.pushNamed(context, Routes.noInternetScreen);
+          }
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: Stack(

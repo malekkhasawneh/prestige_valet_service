@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
+import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
@@ -27,11 +28,18 @@ abstract class HomeRemoteDataSource {
   });
 
   Future<void> deleteUserAccountFomFirebase();
+
+  Future<bool> checkInternetConnection();
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
+  final NetworkInfo networkInfo;
+
+  HomeRemoteDataSourceImpl({required this.networkInfo});
+
   @override
-  Future<ParkedCarsModel> retrieveCar({required int parkingId, required int gateId}) async {
+  Future<ParkedCarsModel> retrieveCar(
+      {required int parkingId, required int gateId}) async {
     try {
       await DioHelper.addTokenHeader();
       final Map<String, dynamic> response = await DioHelper.patch(
@@ -87,7 +95,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       log('================================== notifications sent to $token');
       DioHelper.firebaseHeaders();
       Response response =
-          await DioHelper.dio.post(NetworkConstants.sendNotification, data: {
+      await DioHelper.dio.post(NetworkConstants.sendNotification, data: {
         "notification": {"title": title, "body": body},
         "priority": "high",
         "data": {
@@ -129,6 +137,15 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       }
     } on Exception {
       throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> checkInternetConnection() async {
+    if (await networkInfo.checkConnection()) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

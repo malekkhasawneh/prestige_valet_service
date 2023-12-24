@@ -10,6 +10,7 @@ import 'package:prestige_valet_app/features/home/presentation/page/main_home_scr
 import 'package:prestige_valet_app/features/login/presentation/page/login_screen.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
 import 'package:prestige_valet_app/features/proccess_screens/car_ready_screen.dart';
+import 'package:prestige_valet_app/features/proccess_screens/no_internet_screen.dart';
 import 'package:prestige_valet_app/features/proccess_screens/parcked_sucessfully_screen.dart';
 import 'package:prestige_valet_app/features/proccess_screens/success_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
@@ -40,6 +41,7 @@ class Routes {
   static const String verifyResetPasswordEmailScreen =
       '/verifyResetPasswordEmailScreen';
   static const String updateYourPasswordScreen = '/updateYourPasswordScreen';
+  static const String noInternetScreen = '/noInternetScreen';
 }
 
 class RouteGenerator {
@@ -124,6 +126,11 @@ class RouteGenerator {
             builder: (_) => const UpdateYourPasswordScreen(),
             settings:
                 const RouteSettings(name: Routes.updateYourPasswordScreen));
+      case Routes.noInternetScreen:
+        return MaterialPageRoute(
+            builder: (_) => const NoInternetScreen(),
+            settings:
+            const RouteSettings(name: Routes.noInternetScreen));
       default:
         return unDefinedRoute();
     }

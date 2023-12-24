@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/qr_code_widget.dart';
@@ -15,7 +17,13 @@ class MainHomeScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<HomeCubit, HomeState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is HomeError){
+            if(state.failure == Constants.internetFailure){
+              Navigator.pushNamed(context, Routes.noInternetScreen);
+            }
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             body: Center(

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
-import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
 
 class VerifyResetPasswordEmailScreen extends StatelessWidget {
   const VerifyResetPasswordEmailScreen({super.key});
@@ -16,18 +16,21 @@ class VerifyResetPasswordEmailScreen extends StatelessWidget {
     return BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
       listener: (context, state) {
         if (state is VerifyOtpError) {
-          AwesomeDialog(
-            context: context,
-            dismissOnBackKeyPress: false,
-            dismissOnTouchOutside: false,
-            animType: AnimType.scale,
-            dialogType: DialogType.error,
-            body: const Center(
-              child: Text(
-                'Wrong OTP\n ',
-                style: TextStyle(fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
+          if (state.failure == Constants.internetFailure) {
+            Navigator.pushNamed(context, Routes.noInternetScreen);
+          } else {
+            AwesomeDialog(
+              context: context,
+              dismissOnBackKeyPress: false,
+              dismissOnTouchOutside: false,
+              animType: AnimType.scale,
+              dialogType: DialogType.error,
+              body: const Center(
+                child: Text(
+                  'Wrong OTP\n ',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                  textAlign: TextAlign.center,
+                ),
             ),
             btnOkOnPress: () {
               Navigator.popUntil(
@@ -38,9 +41,14 @@ class VerifyResetPasswordEmailScreen extends StatelessWidget {
             },
             btnOkColor: Colors.red,
           ).show();
+          }
         } else if (state is VerifyOtpLoaded) {
           if (state.isVerified) {
             Navigator.pushNamed(context, Routes.updateYourPasswordScreen);
+          }
+        } else if (state is ForgetPasswordError) {
+          if (state.failure == Constants.internetFailure) {
+            Navigator.pushNamed(context, Routes.noInternetScreen);
           }
         }
       },

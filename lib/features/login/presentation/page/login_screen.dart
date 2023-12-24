@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
@@ -44,25 +45,29 @@ class LoginScreen extends StatelessWidget {
               });
             });
           } else if (state is LoginError) {
-            AwesomeDialog(
-                    context: context,
-                    dismissOnBackKeyPress: false,
-                    dismissOnTouchOutside: false,
-                    animType: AnimType.scale,
-                    dialogType: DialogType.error,
-                    body: const Center(
-                      child: Text(
-                        '${Strings.loginError}\n ',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+            if(state.error == Constants.internetFailure){
+              Navigator.pushNamed(context, Routes.noInternetScreen);
+            }else {
+              AwesomeDialog(
+                  context: context,
+                  dismissOnBackKeyPress: false,
+                  dismissOnTouchOutside: false,
+                  animType: AnimType.scale,
+                  dialogType: DialogType.error,
+                  body: const Center(
+                    child: Text(
+                      '${Strings.loginError}\n ',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                    btnOkOnPress: () {
-                      Navigator.popUntil(context,
-                          (route) => route.settings.name == Routes.loginScreen);
-                    },
-                    btnOkColor: Colors.red)
-                .show();
-          }
+                  ),
+                  btnOkOnPress: () {
+                    Navigator.popUntil(context,
+                            (route) =>
+                        route.settings.name == Routes.loginScreen);
+                  },
+                  btnOkColor: Colors.red)
+                  .show();
+            }}
         },
         builder: (context, state) {
           return SingleChildScrollView(

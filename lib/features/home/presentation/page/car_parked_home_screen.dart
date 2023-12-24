@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -14,14 +13,9 @@ import 'package:prestige_valet_app/features/home/presentation/widget/request_car
 import 'package:prestige_valet_app/features/home/presentation/widget/show_your_history_widget.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
 
-class CarParkedHomeScreen extends StatefulWidget {
+class CarParkedHomeScreen extends StatelessWidget {
   const CarParkedHomeScreen({super.key});
 
-  @override
-  State<CarParkedHomeScreen> createState() => _CarParkedHomeScreenState();
-}
-
-class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -42,6 +36,10 @@ class _CarParkedHomeScreenState extends State<CarParkedHomeScreen> {
             body: Strings.userCarWashRequest);
       } else if (state is RetrieveCarLoaded) {
         HomeCubit.get(context).setIsUserCarInRetrieve = true;
+      } else if (state is HomeError) {
+        if (state.failure == Constants.internetFailure) {
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }
       }
     }, builder: (context, state) {
       return HomeCubit.get(context).setGate

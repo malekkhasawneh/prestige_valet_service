@@ -1,9 +1,8 @@
 import 'package:prestige_valet_app/core/resources/english_strings.dart';
 
 class Strings {
-  static String noInternetConnection() {
-    return EnglishStrings.noInternetConnection;
-  }
+  static const String noInternetConnection =
+      EnglishStrings.noInternetConnection;
 
   static String processFailed() {
     return EnglishStrings.processFailed;

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
@@ -7,6 +8,7 @@ import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/check_internet_connction_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/delete_firebase_account_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
@@ -28,6 +30,7 @@ class HomeCubit extends Cubit<HomeState> {
     required this.getUserHistoryUseCase,
     required this.cancelCarRetrievingUseCase,
     required this.deleteFirebaseAccountUseCase,
+    required this.checkInternetConnectionUseCase,
   }) : super(HomeInitial());
 
   final GetUserDataUseCase getUserDataUseCase;
@@ -36,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
   final GetUserHistoryUseCase getUserHistoryUseCase;
   final CancelCarRetrievingUseCase cancelCarRetrievingUseCase;
   final DeleteFirebaseAccountUseCase deleteFirebaseAccountUseCase;
+  final CheckInternetConnectionUseCase checkInternetConnectionUseCase;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -54,6 +58,7 @@ class HomeCubit extends Cubit<HomeState> {
     _isUserCarInRetrieve = value;
     emit(HomeLoaded());
   }
+
   bool _setGate = false;
 
   bool get setGate => _setGate;
@@ -70,9 +75,9 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     try {
       final response = await getUserDataUseCase(NoParams());
-      response.fold((failure) => emit(HomeError(failure: failure.toString())),
+      response.fold((failure) => emit(HomeError(failure: failure.failure)),
           (userModel) {
-            this.userModel = userModel;
+        this.userModel = userModel;
         log('======================================= token ${userModel.token}');
         getUserHistory(userId: userModel.user.id);
         BottomNavBarCubit.get(context).getNotificationTokenForUser(
@@ -85,13 +90,12 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> retrieveCar(
-      {required int parkingId, required int gateId}) async {
+  Future<void> retrieveCar({required int parkingId, required int gateId}) async {
     emit(HomeLoading());
     try {
       final response = await retrieveCarUseCase(
           RetrieveCarUseCaseParams(parkingId: parkingId, gateId: gateId));
-      response.fold((failure) => emit(HomeError(failure: failure.toString())),
+      response.fold((failure) => emit(HomeError(failure: failure.failure)),
           (success) {
         emit(RetrieveCarLoaded(parkedCarsModel: success));
       });
@@ -105,9 +109,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final response = await washCarUseCase(
           WashCarUseCaseParams(parkingId: parkingId, washFlag: washFlag));
-      response.fold((failure) => emit(HomeError(failure: failure.toString())),
+      response.fold((failure) => emit(HomeError(failure: failure.failure)),
           (success) {
-            parkedCarModel.carWash = success.washCar;
+        parkedCarModel.carWash = success.washCar;
         emit(WashCarLoaded(parkedCarsModel: success));
       });
     } catch (failure) {
@@ -123,7 +127,7 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await getUserHistoryUseCase(
           GetUserHistoryUseCaseParams(userId: userId));
       response.fold((failure) {
-        emit(HomeError(failure: failure.toString()));
+        emit(HomeError(failure: failure.failure));
       }, (success) {
         loop:
         for (var status in success.content) {
@@ -150,7 +154,7 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await cancelCarRetrievingUseCase(
           CancelCarRetrievingUseCaseParams(parkingId: parkingId));
       response.fold((failure) {
-        emit(HomeError(failure: failure.toString()));
+        emit(HomeError(failure: failure.failure));
       }, (success) {
         emit(CancelCarRetrievingLoaded(parkedCarsModel: success));
       });
@@ -161,5 +165,32 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> deleteFirebaseAccount() async {
     await deleteFirebaseAccountUseCase(NoParams());
+  }
+
+  Future<bool> checkInternetConnection() async {
+    bool isConnected = false;
+    try {
+      final response = await checkInternetConnectionUseCase(NoParams());
+      response.fold(
+          (failure) => isConnected = false, (success) => isConnected = success);
+    } catch (failure) {
+      isConnected = false;
+    }
+    return isConnected;
+  }
+
+  Function refreshAfterConnect = () {};
+
+  Future<void> checkInternetConnectionTimer(BuildContext context) async {
+    Timer.periodic(const Duration(seconds: 2), (timer) async {
+      if (await checkInternetConnection()) {
+        timer.cancel();
+        refreshAfterConnect();
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+      } else {
+        log('=============================== still not connected');
+      }
+    });
   }
 }

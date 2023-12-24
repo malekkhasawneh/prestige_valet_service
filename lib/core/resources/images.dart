@@ -8,6 +8,7 @@ class Images{
   static const String gmailLogo = '${images}Gmail_Logo.png';
   static const String appleLogo = '${images}Apple_Logo.png';
   static const String qrCodeScanner = '${images}qr_code_scanner.json';
+  static const String noInternetConnection = '${images}no_internet.json';
 
 
 }

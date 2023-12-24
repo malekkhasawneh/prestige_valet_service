@@ -6,6 +6,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
@@ -53,7 +54,10 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {
-        AwesomeDialog(
+        if(state.failure == Constants.internetFailure){
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }else {
+          AwesomeDialog(
           context: context,
           dismissOnBackKeyPress: false,
           dismissOnTouchOutside: false,
@@ -69,6 +73,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
           btnOkOnPress: () {},
           btnOkColor: Colors.red,
         ).show();
+        }
       } else if (state is RetrieveGuestCarLoaded) {
         AwesomeDialog(
           context: context,
@@ -86,6 +91,10 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
           btnOkOnPress: () {},
           btnOkColor: Colors.green,
         ).show();
+      }else if(state is ScanQrError){
+        if(state.failure == Constants.internetFailure){
+          Navigator.pushNamed(context, Routes.noInternetScreen);
+        }
       }
     }, builder: (context, state) {
       if (state is ScanQrLoading) {
