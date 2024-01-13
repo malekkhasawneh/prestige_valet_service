@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -16,9 +18,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    SplashCubit.get(context).isFirstOpening();
     SplashCubit.get(context).getIsFirstTimeOpenTheApp();
     SplashCubit.get(context).checkIfUserLogin();
     SplashCubit.get(context).checkIsUser();
+
     super.initState();
   }
 
@@ -27,7 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<SplashCubit,SplashState>(
       listener: (context, state) async {
         if (state is SplashLoaded) {
-          if (SplashCubit.get(context).isFirstTime) {
+          if (SplashCubit.get(context).isFirstTime ||
+              SplashCubit.get(context).isFirstOpining) {
             Future.delayed(const Duration(seconds: 3)).then(
               (_) => Navigator.pushReplacementNamed(
                 context,

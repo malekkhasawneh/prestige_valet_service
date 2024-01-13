@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/features/splash/data/repository/splash_reposi
 import 'package:prestige_valet_app/features/splash/domain/repository/splash_repository.dart';
 import 'package:prestige_valet_app/features/splash/domain/usecase/check_is_user_login_usecase.dart';
 import 'package:prestige_valet_app/features/splash/domain/usecase/get_is_first_time_usecae.dart';
+import 'package:prestige_valet_app/features/splash/domain/usecase/is_first_opening_usecase.dart';
 import 'package:prestige_valet_app/features/splash/domain/usecase/is_user_usecase.dart';
 import 'package:prestige_valet_app/features/splash/domain/usecase/set_is_first_time_usecase.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
@@ -15,7 +16,8 @@ Future<void> splashInjection() async {
         checkIsUserLoginUseCase: sl(),
         setIsFirstTimeOpenTheAppUseCase: sl(),
         getIsFirstTimeOpenTheAppUseCase: sl(),
-        isUserUseCase: sl()),
+        isUserUseCase: sl(),
+        isFirstOpeningUseCase: sl()),
   );
 
   // Use cases
@@ -25,6 +27,7 @@ Future<void> splashInjection() async {
   sl.registerLazySingleton(
       () => GetIsFirstTimeOpenTheAppUseCase(repository: sl()));
   sl.registerLazySingleton(() => IsUserUseCase(repository: sl()));
+  sl.registerLazySingleton(() => IsFirstOpeningUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<SplashRepository>(

@@ -49,4 +49,14 @@ class SplashRepositoryImpl implements SplashRepository{
       return const Left(CacheFailure(failure: Constants.cacheFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, bool>> isFirstOpining() async{
+    try {
+      final response = await localDataSource.isFirstOpining();
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(failure: Constants.cacheFailure));
+    }
+  }
 }

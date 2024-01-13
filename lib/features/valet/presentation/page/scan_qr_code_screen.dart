@@ -41,6 +41,22 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                 body: Strings.userCarParked,
                 notificationType: Constants.carParkedNotificationAction,
                 notificationReceiver: Constants.toUserNotification);
+            AwesomeDialog(
+              context: context,
+              dismissOnBackKeyPress: false,
+              dismissOnTouchOutside: false,
+              animType: AnimType.scale,
+              dialogType: DialogType.success,
+              body: Center(
+                child: Text(
+                  "${state.parkedCarsModel.user!.firstName}'s car has been parked successfully\n ",
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              btnOkOnPress: () {},
+              btnOkColor: Colors.green,
+            ).show();
           } else {
             Navigator.push(
               context,
