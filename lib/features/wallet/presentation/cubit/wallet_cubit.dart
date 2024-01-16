@@ -42,7 +42,6 @@ class WalletCubit extends Cubit<WalletState> {
         emit(WalletLoaded(model: success));
       });
     } catch (failure) {
-      log('=================================== ooo ${failure.toString()}');
       emit(WalletError(failure: failure.toString()));
     }
   }

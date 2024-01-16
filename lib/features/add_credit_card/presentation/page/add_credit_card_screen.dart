@@ -54,6 +54,8 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
             AddCreditCardCubit.get(context).resetValues(widget.isFromEdit);
           };
           Navigator.pushNamed(context, Routes.noInternetScreen);
+        }else if(state.failure == Constants.serverFailure){
+          Navigator.pushReplacementNamed(context, Routes.loginScreen);
         }
       }
     }, builder: (context, state) {

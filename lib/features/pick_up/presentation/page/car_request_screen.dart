@@ -41,6 +41,8 @@ class CarRequestScreen extends StatelessWidget {
         }else if(state is HomeError){
           if(state.failure == Constants.internetFailure){
             Navigator.pushNamed(context, Routes.noInternetScreen);
+          }else if(state.failure == Constants.serverFailure){
+            Navigator.pushReplacementNamed(context, Routes.loginScreen);
           }
         }
       },

@@ -34,7 +34,7 @@ void main() async {
       projectId: dotenv.env[Constants.androidProjectId]!,
     ),
   );
-  await FirebaseMessagingHelper.initNotifications();
+ // await FirebaseMessagingHelper.initNotifications();
   await di.init();
   runApp(
     const PrestigeValetApp(),

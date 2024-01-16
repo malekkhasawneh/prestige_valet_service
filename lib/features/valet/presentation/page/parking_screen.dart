@@ -51,6 +51,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
                 .getValetHistory(valetId: HomeCubit.get(context).userModel.user.id);
           };
           Navigator.pushNamed(context, Routes.noInternetScreen);
+        }else if(state.failure == Constants.serverFailure){
+          Navigator.pushReplacementNamed(context, Routes.loginScreen);
         } else {
           ScanQrCubit.get(context)
               .getValetHistory(valetId: HomeCubit

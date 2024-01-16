@@ -68,6 +68,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         }else if(state is EditProfileError){
           if(state.failure == Constants.internetFailure){
             Navigator.pushNamed(context, Routes.noInternetScreen);
+          }else if(state.failure == Constants.serverFailure){
+            Navigator.pushReplacementNamed(context, Routes.loginScreen);
           }
         }
       }, builder: (context, state) {

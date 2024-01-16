@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -21,6 +23,8 @@ class MainHomeScreen extends StatelessWidget {
           if(state is HomeError){
             if(state.failure == Constants.internetFailure){
               Navigator.pushNamed(context, Routes.noInternetScreen);
+            }else if(state.failure == Constants.serverFailure){
+              Navigator.pushReplacementNamed(context, Routes.loginScreen);
             }
           }
         },

@@ -54,6 +54,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
               HomeCubit.get(context).deleteFirebaseAccount();
             };
             Navigator.pushNamed(context, Routes.noInternetScreen);
+          }else if(state.failure == Constants.serverFailure){
+            Navigator.pushReplacementNamed(context, Routes.loginScreen);
           }
         }
       }, builder: (context, state) {
