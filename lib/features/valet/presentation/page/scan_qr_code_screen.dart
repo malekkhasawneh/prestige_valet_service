@@ -241,31 +241,35 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ElevatedButton(
-                  onPressed: ScanQrCubit.get(context).connected
-                      ? () {
-                          ScanQrCubit.get(context).parkCar(
-                            valetId: HomeCubit.get(context).userModel.user.id,
-                            isGuest: true,
-                          );
-                        }
-                      : () {
-                          AwesomeDialog(
-                            context: context,
-                            dismissOnBackKeyPress: false,
-                            dismissOnTouchOutside: false,
-                            animType: AnimType.scale,
-                            dialogType: DialogType.error,
-                            body: const Center(
-                              child: Text(
-                                'No connected printer\n ',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                                textAlign: TextAlign.center,
-                              ),
+                  onPressed: () async {
+                    await ScanQrCubit.get(context)
+                        .isPrinterConnected()
+                        .then((_) {
+                      if (ScanQrCubit.get(context).connected) {
+                        ScanQrCubit.get(context).parkCar(
+                          valetId: HomeCubit.get(context).userModel.user.id,
+                          isGuest: true,
+                        );
+                      } else {
+                        AwesomeDialog(
+                          context: context,
+                          dismissOnBackKeyPress: false,
+                          dismissOnTouchOutside: false,
+                          animType: AnimType.scale,
+                          dialogType: DialogType.error,
+                          body: const Center(
+                            child: Text(
+                              'No connected printer\n ',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                              textAlign: TextAlign.center,
                             ),
-                            btnOkOnPress: () {},
-                            btnOkColor: Colors.red,
-                          ).show();
-                        },
+                          ),
+                          btnOkOnPress: () {},
+                          btnOkColor: Colors.red,
+                        ).show();
+                      }
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(

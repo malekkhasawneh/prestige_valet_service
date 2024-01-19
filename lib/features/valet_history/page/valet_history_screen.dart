@@ -13,6 +13,16 @@ class ValetHistoryScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back,color: ColorManager.whiteColor,),
+        ),
+        backgroundColor: ColorManager.primaryColor,
+      ),
+      extendBodyBehindAppBar: true,
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -29,8 +39,9 @@ class ValetHistoryScreen extends StatelessWidget {
                         .headerBoxHeight(context, screenHeight) *
                     0.35,
               ),
-              child:  Text(
-                Strings.carParkedHiString(HomeCubit.get(context).userModel.user.firstName),
+              child: Text(
+                Strings.carParkedHiString(
+                    HomeCubit.get(context).userModel.user.firstName),
                 style: const TextStyle(
                     fontFamily: Fonts.sourceSansPro,
                     fontSize: 26,

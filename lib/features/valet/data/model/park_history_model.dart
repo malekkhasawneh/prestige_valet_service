@@ -98,14 +98,14 @@ class ParkHistoryContentUser {
 
 class Location {
   DateTime createdOn;
-  String createdBy;
+  String? createdBy;
   DateTime updatedOn;
-  String updatedBy;
+  String? updatedBy;
   int id;
-  String locationName;
-  String cityName;
+  String? locationName;
+  String? cityName;
   double price;
-  String availabilityStatus;
+  String? availabilityStatus;
 
   Location({
     required this.createdOn,
