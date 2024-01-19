@@ -33,7 +33,7 @@ class ParkedCarsModel {
         updatedOn: DateTime.parse(json["updatedOn"]),
         updatedBy: json["updatedBy"] ?? '',
         id: json["id"],
-        user: User.fromJson(json["valet"]),
+        user: json["user"] == null?null: User.fromJson(json["user"]),
         valet: User.fromJson(json["valet"]),
         parkingStatus: json["parkingStatus"]??'',
         washCar: json['carWash'],

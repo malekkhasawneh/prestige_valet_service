@@ -22,8 +22,10 @@ class ParkHistoryContent {
   ParkHistoryContentUser valet;
   String parkingStatus;
   bool? carWash;
-bool isGuest;
-String guestName;
+  bool isGuest;
+  String guestName;
+  String retrievingGate;
+
   ParkHistoryContent({
     required this.createdOn,
     required this.createdBy,
@@ -36,6 +38,7 @@ String guestName;
     required this.carWash,
     required this.isGuest,
     required this.guestName,
+    required this.retrievingGate,
   });
 
   factory ParkHistoryContent.fromJson(Map<String, dynamic> json) => ParkHistoryContent(
@@ -52,7 +55,9 @@ String guestName;
         carWash: json["carWash"] ?? false,
     isGuest: json["isGuest"] ?? false,
     guestName: json["guestName"] ?? '',
-      );
+      retrievingGate: json['retrieveAtGate'] == null
+              ? ''
+              : json['retrieveAtGate']['gateName']);
 }
 
 class ParkHistoryContentUser {

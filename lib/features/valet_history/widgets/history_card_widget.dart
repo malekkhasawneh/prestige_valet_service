@@ -27,13 +27,20 @@ class HistoryCardWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Taj Mall',
-                style: TextStyle(
-                  fontFamily: Fonts.sourceSansPro,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Taj Mall',
+                    style: TextStyle(
+                      fontFamily: Fonts.sourceSansPro,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('12/10/2023  4:30 PM - 7:55 PM',style: TextStyle(fontSize: 10),),
+
+                ],
               ),
               SizedBox(height: 2,),
               Text(

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/item_widget.dart';
+import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
 class ProfileItemsWidget extends StatelessWidget {
@@ -44,7 +46,8 @@ class ProfileItemsWidget extends StatelessWidget {
         SizedBox(
           height: ProfileCubit.get(context).isTablet(screenWidth) ? 25 : 0,
         ),
-        ItemWidget(
+        SplashCubit.get(context).isUser
+            ?  ItemWidget(
           icon: Icons.money,
           title: 'Payment Methods',
           onPressed: () {
@@ -55,7 +58,7 @@ class ProfileItemsWidget extends StatelessWidget {
                           isPaymentMethod: true,
                         )));
           },
-        ),
+        ):const SizedBox(),
         SizedBox(
           height: ProfileCubit.get(context).isTablet(screenWidth) ? 25 : 0,
         ),
@@ -63,7 +66,9 @@ class ProfileItemsWidget extends StatelessWidget {
           icon: Icons.history,
           title: 'History',
           onPressed: () {
-            Navigator.pushNamed(context, Routes.valetHistoryScreen);
+            SplashCubit.get(context).isUser
+                ? Navigator.pushNamed(context, Routes.valetHistoryScreen)
+                : BottomNavBarCubit.get(context).setIndex = 1;
           },
         ),
         SizedBox(
