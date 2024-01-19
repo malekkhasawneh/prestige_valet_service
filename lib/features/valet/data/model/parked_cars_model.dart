@@ -1,16 +1,16 @@
 class ParkedCarsModel {
   DateTime createdOn;
-  String createdBy;
+  String? createdBy;
   DateTime updatedOn;
-  String updatedBy;
+  String? updatedBy;
   int id;
   User? user;
   User valet;
-  String parkingStatus;
+  String? parkingStatus;
   bool washCar;
   bool isUserCanceled = false;
   bool isGuest;
-  String guestName;
+  String? guestName;
 
   ParkedCarsModel({
     required this.createdOn,
@@ -29,13 +29,13 @@ class ParkedCarsModel {
 
   factory ParkedCarsModel.fromJson(Map<String, dynamic> json) => ParkedCarsModel(
     createdOn: DateTime.parse(json["createdOn"]),
-        createdBy: json["createdBy"],
+        createdBy: json["createdBy"] ?? '',
         updatedOn: DateTime.parse(json["updatedOn"]),
-        updatedBy: json["updatedBy"],
+        updatedBy: json["updatedBy"] ?? '',
         id: json["id"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        user: User.fromJson(json["valet"]),
         valet: User.fromJson(json["valet"]),
-        parkingStatus: json["parkingStatus"],
+        parkingStatus: json["parkingStatus"]??'',
         washCar: json['carWash'],
         isGuest: json["isGuest"] ?? false,
         guestName: json["guestName"] ?? '',
@@ -57,15 +57,15 @@ class ParkedCarsModel {
 
 class User {
   int id;
-  String userUuid;
-  String firstName;
-  String lastName;
-  String phone;
+  String? userUuid;
+  String? firstName;
+  String? lastName;
+  String? phone;
   String? profileImg;
   bool socialProfile;
   Location? location;
-  String role;
-  String email;
+  String? role;
+  String? email;
 
   User({
     required this.id,
@@ -82,15 +82,15 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
-    userUuid: json["userUuid"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    phone: json["phone"],
-    profileImg: json["profileImg"],
+    userUuid: json["userUuid"]??'',
+    firstName: json["firstName"]??'',
+    lastName: json["lastName"]??'',
+    phone: json["phone"]??'',
+    profileImg: json["profileImg"]??'',
     socialProfile: json["socialProfile"],
     location: json["location"] == null ? null : Location.fromJson(json["location"]),
-    role: json["role"],
-    email: json["email"],
+    role: json["role"]??'',
+    email: json["email"]??'',
   );
 
   Map<String, dynamic> toJson() => {
@@ -109,14 +109,14 @@ class User {
 
 class Location {
   DateTime createdOn;
-  String createdBy;
+  String? createdBy;
   DateTime updatedOn;
-  String updatedBy;
+  String? updatedBy;
   int id;
-  String locationName;
-  String cityName;
+  String? locationName;
+  String? cityName;
   double price;
-  String availabilityStatus;
+  String? availabilityStatus;
 
   Location({
     required this.createdOn,
@@ -132,14 +132,14 @@ class Location {
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
     createdOn: DateTime.parse(json["createdOn"]),
-    createdBy: json["createdBy"],
+    createdBy: json["createdBy"]??'',
     updatedOn: DateTime.parse(json["updatedOn"]),
-    updatedBy: json["updatedBy"],
+    updatedBy: json["updatedBy"]??'',
     id: json["id"],
-    locationName: json["locationName"],
-    cityName: json["cityName"],
+    locationName: json["locationName"]??'',
+    cityName: json["cityName"]??'',
     price: json["price"],
-    availabilityStatus: json["availabilityStatus"],
+    availabilityStatus: json["availabilityStatus"]??'',
   );
 
   Map<String, dynamic> toJson() => {

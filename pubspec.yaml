@@ -38,6 +38,8 @@ dependencies:
   firebase_messaging: ^14.7.6
   awesome_notifications: ^0.8.2
   myfatoorah_flutter: ^3.0.6
+  bluetooth_thermal_printer: ^0.0.6
+  esc_pos_utils: ^1.1.0
 
 
 

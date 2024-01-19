@@ -36,7 +36,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
         BottomNavBarCubit.get(context).sendNotification(
             userId: state.parkedCarsModel.user!.id,
             title: Strings.notificationTitle(
-                state.parkedCarsModel.user!.firstName),
+                state.parkedCarsModel.user!.firstName!),
             body: Strings.userCarRetrieving,
             notificationType: Constants.carDeliveredNotificationAction,
             notificationReceiver: Constants.toUserNotification);
