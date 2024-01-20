@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,10 +35,12 @@ class _ParkingScreenState extends State<ParkingScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<ScanQrCubit, ScanQrState>(listener: (context, state) {
       if (state is ScanQrLoaded) {
+        log('======================= user id ${state.parkedCarsModel.user!.id}');
+        log('======================= valet id ${state.parkedCarsModel.valet.id}');
         BottomNavBarCubit.get(context).sendNotification(
             userId: state.parkedCarsModel.user!.id,
             title: Strings.notificationTitle(
-                state.parkedCarsModel.user!.firstName),
+                state.parkedCarsModel.user!.firstName!),
             body: Strings.userCarRetrieving,
             notificationType: Constants.carDeliveredNotificationAction,
             notificationReceiver: Constants.toUserNotification);
@@ -127,35 +131,37 @@ class _ParkingScreenState extends State<ParkingScreen> {
                           state.valetHistoryModel.content.length,
                           itemBuilder: (context, index) {
                             return ParkingCardWidget(
-                                    phone: state.valetHistoryModel
-                                            .content[index].isGuest
-                                        ? ''
-                                        : state.valetHistoryModel.content[index]
-                                            .user!.phone,
-                                    imageUrl: state.valetHistoryModel
-                                            .content[index].isGuest
-                                        ? ''
-                                        : state.valetHistoryModel.content[index]
-                                            .user!.profileImg,
-                                    name: state.valetHistoryModel.content[index]
-                                            .isGuest
-                                        ? state.valetHistoryModel.content[index]
-                                            .guestName
-                                        : state.valetHistoryModel.content[index]
-                                                .user!.firstName +
-                                            state.valetHistoryModel
-                                                .content[index].user!.lastName,
-                                    status: ScanQrCubit.get(context).status(
-                                      status: state.valetHistoryModel
-                                          .content[index].parkingStatus,
-                                      isGuest: state.valetHistoryModel
-                                          .content[index].isGuest,
-                                    ),
-                                    parkingId: state
-                                        .valetHistoryModel.content[index].id,
-                                    isGuest: state.valetHistoryModel
-                                        .content[index].isGuest,
-                                  );
+                              phone: state.valetHistoryModel
+                                  .content[index].isGuest
+                                  ? ''
+                                  : state.valetHistoryModel.content[index]
+                                  .user!.phone,
+                              imageUrl: state.valetHistoryModel
+                                  .content[index].isGuest
+                                  ? ''
+                                  : state.valetHistoryModel.content[index]
+                                  .user!.profileImg,
+                              name: state.valetHistoryModel.content[index]
+                                  .isGuest
+                                  ? state.valetHistoryModel.content[index]
+                                  .guestName
+                                  : state.valetHistoryModel.content[index]
+                                  .user!.firstName +
+                                  state.valetHistoryModel
+                                      .content[index].user!.lastName,
+                              status: ScanQrCubit.get(context).status(
+                                status: state.valetHistoryModel
+                                    .content[index].parkingStatus,
+                                isGuest: state.valetHistoryModel
+                                    .content[index].isGuest,
+                              ),
+                              parkingId: state
+                                  .valetHistoryModel.content[index].id,
+                              isGuest: state.valetHistoryModel
+                                  .content[index].isGuest,
+                              gate: state.valetHistoryModel
+                                  .content[index].retrievingGate,
+                            );
                           },
                         )
                             : SizedBox(

@@ -18,6 +18,7 @@ class ParkingCardWidget extends StatelessWidget {
     required this.name,
     required this.imageUrl,
     required this.isGuest,
+    required this.gate,
   });
 
   final String phone;
@@ -26,6 +27,7 @@ class ParkingCardWidget extends StatelessWidget {
   final String status;
   final int parkingId;
   final bool isGuest;
+  final String gate;
 
   @override
   Widget build(BuildContext context) {
@@ -84,21 +86,21 @@ class ParkingCardWidget extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Strings.gate,
-                        style: TextStyle(
+                        gate.isEmpty ? "" : Strings.gate,
+                        style: const TextStyle(
                           fontFamily: Fonts.sourceSansPro,
                           fontSize: 12,
                         ),
                       ),
                       Text(
-                        'Gate 1',
-                        style: TextStyle(
+                        gate,
+                        style: const TextStyle(
                           fontFamily: Fonts.sourceSansPro,
                           fontSize: 14,
                         ),
