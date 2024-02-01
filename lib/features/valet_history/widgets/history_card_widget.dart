@@ -39,7 +39,6 @@ class HistoryCardWidget extends StatelessWidget {
                     ),
                   ),
                   Text('12/10/2023  4:30 PM - 7:55 PM',style: TextStyle(fontSize: 10),),
-
                 ],
               ),
               SizedBox(height: 2,),

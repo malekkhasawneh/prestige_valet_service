@@ -2,7 +2,6 @@ import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SplashLocalDataSource {
   Future<bool> checkIsUserLogin();
@@ -62,14 +61,7 @@ class SplashLocalDataSourceImpl implements SplashLocalDataSource {
   @override
   Future<bool> isFirstOpining() async {
     try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      if (preferences.getBool(CacheConstants.isFirstOpening) ?? true) {
-        CacheHelper.clear();
-        preferences.setBool(CacheConstants.isFirstOpening, false);
-        return true;
-      } else {
-        return false;
-      }
+return  true;
     } on Exception {
       throw CacheException();
     }
