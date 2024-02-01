@@ -22,6 +22,14 @@ class SignUpLoaded extends SignUpState {
   List<Object> get props => [model];
 }
 
+class AccountActivatedLoaded extends SignUpState {
+  final bool activatedState;
+
+  const AccountActivatedLoaded({required this.activatedState});
+  @override
+  List<Object> get props => [activatedState];
+}
+
 class SignUpMissingData extends SignUpState {
   @override
   List<Object> get props => [];

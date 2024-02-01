@@ -14,27 +14,114 @@ class CarReadyScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         children: [
-          const Center(
+          const Positioned(
+            top: 40,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: ColorManager.blackColor,
+                    size: 120,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    Strings.carReady,
+                    style: TextStyle(
+                        fontFamily: Fonts.sourceSansPro,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.check_circle,
-                  color: ColorManager.blackColor,
-                  size: 120,
+                Container(
+                  color: ColorManager.blackColor.withOpacity(.4),
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
                 ),
-                SizedBox(
-                  height: 30,
+                const SizedBox(
+                  height: 5,
                 ),
-                Text(
-                  Strings.carReady,
-                  style: TextStyle(
-                      fontFamily: Fonts.sourceSansPro,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16),
-                  textAlign: TextAlign.center,
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Service',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Price',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  color: ColorManager.blackColor.withOpacity(.4),
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Parking'),
+                    Text('2 JD'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Wash car'),
+                    Text('2 JD'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  color: ColorManager.blackColor.withOpacity(.4),
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Total           4JD',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),

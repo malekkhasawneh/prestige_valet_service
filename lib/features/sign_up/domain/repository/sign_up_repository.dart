@@ -17,4 +17,7 @@ abstract class SignUpRepository {
   Future<Either<Failures, UserCredential>> signInWithGoogle();
 
   Future<Either<Failures, void>> setUserModel({required String userModel});
+
+  Future<Either<Failures, bool>> activateAccount(
+      {required String email, required String token});
 }

@@ -9,6 +9,7 @@ import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/add_credit_card/presentation/widgets/text_field_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
+import 'package:prestige_valet_app/features/sign_up/presentation/page/verify_your_account_screen.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/widgets/sign_up_button_widget.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -52,15 +53,18 @@ class SignUpScreen extends StatelessWidget {
             dismissOnTouchOutside: false,
             animType: AnimType.scale,
             dialogType: DialogType.success,
-            body: const Center(
+            body: Center(
               child: Text(
-                'Registration completed successfully',
-                style: TextStyle(fontStyle: FontStyle.italic),
+                state.model.message,
+                style: const TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
             ),
             btnOkOnPress: () {
-              Navigator.pushReplacementNamed(context, Routes.loginScreen);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const VerifyYourAccountScreen()));
             },
             btnOkColor: Colors.green,
           ).show();

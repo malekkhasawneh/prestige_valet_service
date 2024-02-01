@@ -112,6 +112,7 @@ class Strings {
   static const String verifyYourAccount = "Verify Your Account";
   static const String enterVerificationCode = "Enter Verification Code";
   static const String resendCode = "Resend Code";
+  static const String emailActivated = "The account activated from email";
   static const String enterOtp = 'Enter OTP';
   static const String textFieldError = 'This field must not be empty';
   static const String passwordDoesNotMatch = 'Password does not match';

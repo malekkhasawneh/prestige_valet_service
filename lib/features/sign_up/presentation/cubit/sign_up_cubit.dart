@@ -7,6 +7,7 @@ import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_facebook_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_twitter_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
+import 'package:prestige_valet_app/features/sign_up/domain/usecase/activate_account_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/set_user_model_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_in_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_up_usecase.dart';
@@ -22,6 +23,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     required this.setUserModelUseCase,
     required this.signUpWithTwitterUseCase,
     required this.signUpWithFacebookUseCase,
+    required this.activateAccountUseCase,
   }) : super(SignUpInitial());
 
   final SignUpUseCase signUpUseCase;
@@ -29,7 +31,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   final SetUserModelUseCase setUserModelUseCase;
   final LoginWithTwitterUseCase signUpWithTwitterUseCase;
   final LoginWithFacebookUseCase signUpWithFacebookUseCase;
-
+  final ActivateAccountUseCase activateAccountUseCase;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -179,6 +181,23 @@ class SignUpCubit extends Cubit<SignUpState> {
       response.fold((failure) {
         emit(SignUpError(failure: failure.failure));
       }, (success) {});
+    } catch (failure) {
+      emit(SignUpError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> activateAccount(
+      {required String email, required String token}) async {
+    emit(SignUpLoading());
+    try {
+      final response = await activateAccountUseCase(
+        ActivateAccountUseCaseParams(email: email, token: token),
+      );
+      response.fold((failure) {
+        emit(SignUpError(failure: failure.failure));
+      }, (success) {
+        emit(AccountActivatedLoaded(activatedState: success));
+      });
     } catch (failure) {
       emit(SignUpError(failure: failure.toString()));
     }
