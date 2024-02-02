@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
+import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/check_internet_connction_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/delete_firebase_account_usecase.dart';
@@ -40,6 +41,10 @@ class HomeCubit extends Cubit<HomeState> {
   final CancelCarRetrievingUseCase cancelCarRetrievingUseCase;
   final DeleteFirebaseAccountUseCase deleteFirebaseAccountUseCase;
   final CheckInternetConnectionUseCase checkInternetConnectionUseCase;
+
+  double parkingPrice = 0;
+  double washingPrice = 0;
+  double totalPrice = 0;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -95,11 +100,17 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final response = await retrieveCarUseCase(
           RetrieveCarUseCaseParams(parkingId: parkingId, gateId: gateId));
-      response.fold((failure) => emit(HomeError(failure: failure.failure)),
-          (success) {
+      response.fold((failure) {
+        log('========================================== HEREssss ${failure.failure}');
+
+        emit(HomeError(failure: failure.failure));
+      }, (success) {
+        log('========================================== HERE');
         emit(RetrieveCarLoaded(parkedCarsModel: success));
       });
     } catch (failure) {
+      log('========================================== HEREssss ${failure.toString()}');
+
       emit(HomeError(failure: failure.toString()));
     }
   }

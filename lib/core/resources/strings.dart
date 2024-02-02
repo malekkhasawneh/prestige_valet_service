@@ -90,7 +90,7 @@ class Strings {
   static const String cancel = "Cancel";
   static const String carRequestTitle = "Your Car Will Be Ready\nShortly";
   static const String carRequestNotification =
-      "we will send yu a notification when it's ready";
+      "we will send you a notification when it's ready";
 
   // Login Screen
   static const String login = "Log in";

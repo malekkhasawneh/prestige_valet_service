@@ -7,11 +7,12 @@ import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
+import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<ParkedCarsModel> retrieveCar({required int parkingId, required int gateId});
+  Future<RetrieveCarModel> retrieveCar({required int parkingId, required int gateId});
 
   Future<ParkedCarsModel> cancelCarRetrieving({required int parkingId});
 
@@ -38,14 +39,16 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   HomeRemoteDataSourceImpl({required this.networkInfo});
 
   @override
-  Future<ParkedCarsModel> retrieveCar(
+  Future<RetrieveCarModel> retrieveCar(
       {required int parkingId, required int gateId}) async {
     try {
       await DioHelper.addTokenHeader();
       final Map<String, dynamic> response = await DioHelper.patch(
           NetworkConstants.retrieveCar(parkingId: parkingId, gateId: gateId));
-      ParkedCarsModel parkedCarsModel = ParkedCarsModel.fromJson(response);
-      return parkedCarsModel;
+      log('============================== ooo $response');
+
+      RetrieveCarModel retrieveCarModel = RetrieveCarModel.fromJson(response);
+      return retrieveCarModel;
     } on Exception {
       throw ServerException();
     }

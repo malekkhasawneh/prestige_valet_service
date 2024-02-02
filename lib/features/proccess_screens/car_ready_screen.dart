@@ -1,13 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
 import '../../core/resources/color_manager.dart';
 import '../../core/resources/fonts.dart';
 import '../../core/resources/strings.dart';
 
-class CarReadyScreen extends StatelessWidget {
+class CarReadyScreen extends StatefulWidget {
   const CarReadyScreen({super.key});
+
+  @override
+  State<CarReadyScreen> createState() => _CarReadyScreenState();
+}
+
+class _CarReadyScreenState extends State<CarReadyScreen> {
+  int totalPrice = 0;
+  int parkingPrice = 0;
+  int carWashPrice = 0;
+
+  @override
+  void initState() {
+    getValues();
+    super.initState();
+  }
+
+  getValues() async {
+    parkingPrice = int.parse(await CacheHelper.getValue(
+      key: 'parkingPrice',
+    ));
+    carWashPrice = int.parse(await CacheHelper.getValue(
+      key: 'carWashPrice',
+    ));
+    totalPrice = int.parse(await CacheHelper.getValue(
+      key: 'totalPrice',
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,23 +114,25 @@ class CarReadyScreen extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Parking'),
-                    Text('2 JD'),
+                    const Text('Parking'),
+                    Text('${HomeCubit.get(context).parkingPrice} JD'),
                   ],
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Wash car'),
-                    Text('2 JD'),
-                  ],
-                ),
+                HomeCubit.get(context).washingPrice > 0
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Wash car'),
+                          Text('${HomeCubit.get(context).washingPrice} JD'),
+                        ],
+                      )
+                    : const SizedBox(),
                 const SizedBox(
                   height: 15,
                 ),
@@ -113,11 +144,11 @@ class CarReadyScreen extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                const Align(
+                Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    'Total           4JD',
-                    style: TextStyle(
+                    'Total           ${HomeCubit.get(context).totalPrice} JD',
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

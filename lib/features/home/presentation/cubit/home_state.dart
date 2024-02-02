@@ -15,7 +15,7 @@ class HomeLoading extends HomeState {
 }
 
 class RetrieveCarLoaded extends HomeState {
-  final ParkedCarsModel parkedCarsModel;
+  final RetrieveCarModel parkedCarsModel;
 
   const RetrieveCarLoaded({required this.parkedCarsModel});
 

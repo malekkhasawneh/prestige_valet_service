@@ -5,6 +5,7 @@ import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/features/home/data/datasource/home_local_datasource.dart';
 import 'package:prestige_valet_app/features/home/data/datasource/home_remote_datasource.dart';
+import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/home/domain/repository/home_repository.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
@@ -32,7 +33,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<Failures, ParkedCarsModel>> retrieveCar(
+  Future<Either<Failures, RetrieveCarModel>> retrieveCar(
       {required int parkingId, required int gateId}) async {
     if (await networkInfo.checkConnection()) {
       try {
