@@ -13,6 +13,8 @@ abstract class NavRemoteDataSource {
 
   Future<NotificationModel> updateNotificationToken(
       {required int userId, required String token, required int tokenId});
+
+  Future<bool> isTokenValid();
 }
 
 class NavRemoteDataSourceImpl implements NavRemoteDataSource {
@@ -61,8 +63,23 @@ class NavRemoteDataSourceImpl implements NavRemoteDataSource {
           NetworkConstants.updateNotificationToken(tokenId),
           data: {"userId": userId, "notificationToken": token});
       NotificationModel notificationContent =
-      NotificationModel.fromJson(response.data);
+          NotificationModel.fromJson(response.data);
       return notificationContent;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> isTokenValid() async {
+    try {
+      await DioHelper.addTokenHeader();
+      Response response = await DioHelper.get(NetworkConstants.isTokenValid);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } on Exception {
       throw ServerException();
     }

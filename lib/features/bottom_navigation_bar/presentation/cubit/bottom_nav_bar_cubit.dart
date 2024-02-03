@@ -10,6 +10,7 @@ import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/add_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/get_notification_token_usecase.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/is_token_valid_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/must_reset_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/update_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/send_notification_usecase.dart';
@@ -35,6 +36,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     required this.addNotificationTokenUseCase,
     required this.mustResetNotificationTokenUseCase,
     required this.sendNotificationUseCase,
+    required this.isTokenValidUseCase,
   }) : super(BottomNavBarInitial());
 
   final AddNotificationTokenUseCase addNotificationTokenUseCase;
@@ -42,6 +44,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   final GetNotificationTokenUseCase getNotificationTokenUseCase;
   final MustResetNotificationTokenUseCase mustResetNotificationTokenUseCase;
   final SendNotificationUseCase sendNotificationUseCase;
+  final IsTokenValidUseCase isTokenValidUseCase;
   int _selectedIndex = 0;
 
   int get getSelectedIndex => _selectedIndex;
@@ -180,6 +183,25 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           (success) => emit(SendNotificationLoaded()));
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> isTokenValid() async {
+    emit(BottomNavBarLoading());
+    try {
+      final response = await isTokenValidUseCase(NoParams());
+      response.fold(
+        (failure) => emit(
+          BottomNavBarError(failure: failure.failure),
+        ),
+        (success) => emit(
+          IsTokenValidLoaded(isValid: success),
+        ),
+      );
+    } catch (error) {
+      emit(
+        BottomNavBarError(failure: error.toString()),
+      );
     }
   }
 
