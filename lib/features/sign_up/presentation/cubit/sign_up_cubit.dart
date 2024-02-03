@@ -173,7 +173,6 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   Future<void> setUserModel({required String userModel}) async {
-    emit(SignUpLoading());
     try {
       final response = await setUserModelUseCase(
         SetUserModelUseCaseParams(userModel: userModel),
@@ -219,7 +218,17 @@ class SignUpCubit extends Cubit<SignUpState> {
         phoneController.text.isEmpty ||
         firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty ||
-        passwordController.text.isEmpty) {
+        passwordController.text.isEmpty ||
+        !checkEmailValidity()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool checkEmailValidity() {
+    if (emailController.text.contains('.com') &&
+        emailController.text.contains('@')) {
       return true;
     } else {
       return false;

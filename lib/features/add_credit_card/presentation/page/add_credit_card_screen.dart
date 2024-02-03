@@ -39,6 +39,8 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
           context: context,
           animType: AnimType.topSlide,
           dialogType: DialogType.success,
+          dismissOnTouchOutside: false,
+          dismissOnBackKeyPress: false,
           body: Center(
             child: Text(
               '${state.addCardModel.message}\n ',
@@ -46,7 +48,9 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
               textAlign: TextAlign.center,
             ),
           ),
-          btnOkOnPress: () {},
+          btnOkOnPress: () {
+            Navigator.pop(context);
+          },
         ).show();
       } else if (state is AddCreditCardError) {
         if (state.failure == Constants.internetFailure) {
@@ -140,6 +144,7 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                     mustCheck: AddCreditCardCubit.get(context).mustCheck,
                     maxLength: 5,
                     isExpiry: true,
+                    hintText: '(mm/yy)',
                   ),
                   const SizedBox(
                     height: 50,

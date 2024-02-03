@@ -195,12 +195,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 20,
                     ),
                     TextFieldWidget(
-                        controller: EditProfileCubit.get(context).email,
-                        title: Strings.email,
-                        textInputType: TextInputType.emailAddress,
-                        readOnly:
-                            HomeCubit.get(context).userModel.user.socialProfile,
-                        mustCheck: EditProfileCubit.get(context).mustCheck),
+                      controller: EditProfileCubit.get(context).email,
+                      title: Strings.email,
+                      textInputType: TextInputType.emailAddress,
+                      readOnly:
+                          HomeCubit.get(context).userModel.user.socialProfile,
+                      mustCheck: EditProfileCubit.get(context).mustCheck,
+                      isWrongEmail:
+                          !EditProfileCubit.get(context).checkEmailValidity(),
+                      errorText:
+                          EditProfileCubit.get(context).email.text.isEmpty &&
+                                  EditProfileCubit.get(context).mustCheck
+                              ? Strings.textFieldError
+                              : Strings.wrongEmail,
+                    ),
                     const SizedBox(
                       height: 50,
                     ),

@@ -22,6 +22,7 @@ class TextFieldWidget extends StatelessWidget {
     this.doubleCheck = false,
     this.isExpiry = false,
     this.onlyNumbers = false,
+    this.isWrongEmail = false,
   });
 
   final String title;
@@ -39,6 +40,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool doubleCheck;
   final bool isExpiry;
   final bool onlyNumbers;
+  final bool isWrongEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -81,24 +83,27 @@ class TextFieldWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: (controller.text.isEmpty || doubleCheck) &&
-                                mustCheck
+                        color: ((controller.text.isEmpty || doubleCheck) &&
+                                    mustCheck) ||
+                            (controller.text.isNotEmpty && isWrongEmail)
                             ? Colors.red
                             : Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: (controller.text.isEmpty || doubleCheck) &&
-                                mustCheck
+                        color: ((controller.text.isEmpty || doubleCheck) &&
+                                    mustCheck) ||
+                                (controller.text.isNotEmpty && isWrongEmail)
                             ? Colors.red
                             : Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: (controller.text.isEmpty || doubleCheck) &&
-                            mustCheck
+                        color: ((controller.text.isEmpty || doubleCheck) &&
+                                    mustCheck) ||
+                            (controller.text.isNotEmpty && isWrongEmail)
                             ? Colors.red
                             : Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(20),
@@ -132,7 +137,15 @@ class TextFieldWidget extends StatelessWidget {
                     style: const TextStyle(fontSize: 8, color: Colors.red),
                   ),
                 )
-              : const SizedBox.shrink(),
+              : mustCheck && isWrongEmail
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text(
+                        errorText,
+                        style: const TextStyle(fontSize: 8, color: Colors.red),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
         ],
       ),
     );

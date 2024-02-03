@@ -108,6 +108,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: LoginCubit.get(context).emailController,
                   textInputType: TextInputType.emailAddress,
                   mustCheck: LoginCubit.get(context).mustCheck,
+                  isWrongEmail: !LoginCubit.get(context).checkEmailValidity(),
+                  errorText:
+                  LoginCubit.get(context).emailController.text.isEmpty &&
+                      LoginCubit.get(context).mustCheck
+                      ? Strings.textFieldError
+                      : Strings.wrongEmail,
                 ),
                 const SizedBox(
                   height: 20,

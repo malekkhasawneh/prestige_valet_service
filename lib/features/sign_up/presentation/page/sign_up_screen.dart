@@ -140,6 +140,12 @@ class SignUpScreen extends StatelessWidget {
                   textInputType: TextInputType.emailAddress,
                   readOnly: SignUpCubit.get(context).hideNormalField,
                   mustCheck: SignUpCubit.get(context).mustCheck,
+                  isWrongEmail: !SignUpCubit.get(context).checkEmailValidity(),
+                  errorText:
+                      SignUpCubit.get(context).emailController.text.isEmpty &&
+                              SignUpCubit.get(context).mustCheck
+                          ? Strings.textFieldError
+                          : Strings.wrongEmail,
                 ),
                 !SignUpCubit.get(context).hideNormalField
                     ? TextFieldWidget(

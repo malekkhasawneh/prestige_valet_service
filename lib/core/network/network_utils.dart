@@ -16,18 +16,22 @@ class DioHelper {
   static Dio _dio = Dio(
     BaseOptions(
       baseUrl: NetworkConstants.baseUrl,
-      receiveTimeout: const Duration(
-        seconds: 7,
-      ),
-    ),
+        receiveTimeout: const Duration(
+          seconds: 7,
+        ),
+        validateStatus: (status) {
+          return status! >= 200 && status <= 400;
+        }),
   );
 
   static Dio dio = Dio(
     BaseOptions(
-      receiveTimeout: const Duration(
-        seconds: 7,
-      ),
-    ),
+        receiveTimeout: const Duration(
+          seconds: 7,
+        ),
+        validateStatus: (status) {
+          return status! >= 200 && status <= 400;
+        }),
   );
 
   factory DioHelper() {
@@ -51,6 +55,9 @@ class DioHelper {
             'Authorization':
                 'key=${dotenv.env[Constants.sendNotificationToken]}',
             'Content-Type': 'application/json',
+          },
+          validateStatus: (status) {
+            return status! >= 200 && status <= 400;
           }),
     );
   }
@@ -66,6 +73,9 @@ class DioHelper {
             'Authorization':
                 'Bearer ${await CacheHelper.getValue(key: CacheConstants.appToken)}',
             'Content-Type': 'application/json',
+          },
+          validateStatus: (status) {
+            return status! >= 200 && status <= 400;
           }),
     );
   }
