@@ -34,6 +34,8 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
             "valetId": valetId,
             "carWash": false,
           });
+          log('=================================================== ${response.data}');
+
           ParkedCarsModel parkedCarsModel =
               ParkedCarsModel.fromJson(response.data);
           log('=================================================== Executed');

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
@@ -15,6 +17,7 @@ class PickUpRemoteDataSourceImpl implements PickUpRemoteDataSource {
       await DioHelper.addTokenHeader();
       Response response =
           await DioHelper.get(NetworkConstants.getGatesEndPoint(locationId));
+      log('========================================= ${NetworkConstants.getGatesEndPoint(locationId)}');
       Map<String, dynamic> json = response.data as Map<String, dynamic>;
       GatesModel gatesModel = GatesModel.fromJson(json);
       gatesModel.content.first.isSelected = true;

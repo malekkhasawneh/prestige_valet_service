@@ -127,7 +127,18 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   bool checkIfThereAreEmptyValue() {
-    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+    if (emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        !checkEmailValidity()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool checkEmailValidity() {
+    if (emailController.text.contains('.com') &&
+        emailController.text.contains('@')) {
       return true;
     } else {
       return false;

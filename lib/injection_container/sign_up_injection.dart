@@ -2,6 +2,7 @@ import 'package:prestige_valet_app/features/sign_up/data/datasource/sign_up_loca
 import 'package:prestige_valet_app/features/sign_up/data/datasource/sign_up_remote_datasource.dart';
 import 'package:prestige_valet_app/features/sign_up/data/repository/sign_up_repository_impl.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/repository/sign_up_repository.dart';
+import 'package:prestige_valet_app/features/sign_up/domain/usecase/activate_account_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/set_user_model_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_in_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/sign_up_usecase.dart';
@@ -17,6 +18,7 @@ Future<void> signUpInjection() async {
       setUserModelUseCase: sl(),
       signUpWithTwitterUseCase: sl(),
       signUpWithFacebookUseCase: sl(),
+      activateAccountUseCase: sl(),
     ),
   );
 
@@ -24,6 +26,7 @@ Future<void> signUpInjection() async {
   sl.registerLazySingleton(() => SignUpUseCase(repository: sl()));
   sl.registerLazySingleton(() => SignInWithGoogleUseCase(repository: sl()));
   sl.registerLazySingleton(() => SetUserModelUseCase(repository: sl()));
+  sl.registerLazySingleton(() => ActivateAccountUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<SignUpRepository>(

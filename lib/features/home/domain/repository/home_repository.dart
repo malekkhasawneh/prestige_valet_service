@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:prestige_valet_app/core/errors/failures.dart';
+import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
@@ -7,7 +8,7 @@ import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.d
 abstract class HomeRepository {
   Future<Either<Failures, SignUpModel>> getUserData();
 
-  Future<Either<Failures, ParkedCarsModel>> retrieveCar(
+  Future<Either<Failures, RetrieveCarModel>> retrieveCar(
       {required int parkingId,required int gateId});
   Future<Either<Failures, ParkedCarsModel>> cancelCarRetrieving(
       {required int parkingId});

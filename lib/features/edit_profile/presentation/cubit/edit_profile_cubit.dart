@@ -77,10 +77,21 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return firstName.text.isEmpty ||
         lastName.text.isEmpty ||
         phoneNumber.text.isEmpty ||
-        email.text.isEmpty;
+        email.text.isEmpty ||
+        !checkEmailValidity();
   }
 
   String filterPhoneNumber(String phone) {
-  return  phone[0] == '0' && phone[1] == '7' ? phone.replaceFirst('0', '') : phone;
+    return phone[0] == '0' && phone[1] == '7'
+        ? phone.replaceFirst('0', '')
+        : phone;
+  }
+
+  bool checkEmailValidity() {
+    if (email.text.contains('.com') && email.text.contains('@')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

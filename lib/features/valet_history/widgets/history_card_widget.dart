@@ -24,42 +24,34 @@ class HistoryCardWidget extends StatelessWidget {
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Taj Mall',
-                        style: TextStyle(
-                          fontFamily: Fonts.sourceSansPro,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '4:30 PM - 6:30 PM',
-                        style: TextStyle(
-                          fontFamily: Fonts.sourceSansPro,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 2,),
                   Text(
-                    'Gate 3',
+                    'Taj Mall',
                     style: TextStyle(
                       fontFamily: Fonts.sourceSansPro,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    textAlign: TextAlign.start,
                   ),
+                  Text('12/10/2023  4:30 PM - 7:55 PM',style: TextStyle(fontSize: 10),),
+
                 ],
               ),
-
-
+              SizedBox(height: 2,),
+              Text(
+                'Gate 3',
+                style: TextStyle(
+                  fontFamily: Fonts.sourceSansPro,
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ],
+          ),
           SizedBox(height: 20,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

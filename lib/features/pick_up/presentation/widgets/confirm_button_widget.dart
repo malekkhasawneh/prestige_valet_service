@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -7,6 +10,7 @@ import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 
 class ConfirmButtonWidget extends StatelessWidget {
@@ -17,26 +21,43 @@ class ConfirmButtonWidget extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocListener<HomeCubit, HomeState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is RetrieveCarLoaded) {
           if (state.parkedCarsModel.parkingStatus ==
               Constants.carInRetrieving) {
+            log('=================================== parking ${state.parkedCarsModel.parkingPrice}');
+            log('=================================== parking ${state.parkedCarsModel.carWashPrice}');
+            log('=================================== parking ${state.parkedCarsModel.totalPrice}');
+            HomeCubit.get(context).parkingPrice = state.parkedCarsModel.parkingPrice;
+            HomeCubit.get(context).washingPrice = state.parkedCarsModel.carWashPrice;
+            HomeCubit.get(context).totalPrice = state.parkedCarsModel.totalPrice;
             BottomNavBarCubit.get(context).sendNotification(
-              userId: state.parkedCarsModel.valet.id,
-              title: Strings.notificationTitle(
-                  state.parkedCarsModel.valet.firstName),
-              body: Strings.valetCarRetrievingRequest(
-                  state.parkedCarsModel.user!.firstName),
-              notificationType: Constants.carInRetrievingNotificationAction,
-                notificationReceiver:Constants.toValetNotification
-            );
+                userId: state.parkedCarsModel.valet.id.toInt(),
+                title: Strings.notificationTitle(
+                    state.parkedCarsModel.valet.firstName),
+                body: Strings.valetCarRetrievingRequest(
+                    state.parkedCarsModel.user.firstName),
+                notificationType: Constants.carInRetrievingNotificationAction,
+                notificationReceiver: Constants.toValetNotification);
             NotificationHelper.sendLocalNotification(
                 title: Strings.notificationTitle(
-                    state.parkedCarsModel.user!.firstName),
+                    state.parkedCarsModel.user.firstName),
                 body: Strings.userCarRetrievingRequest);
             HomeCubit.get(context).setSetGate = false;
             HomeCubit.get(context).isUserCarParked = false;
             HomeCubit.get(context).setIsUserCarInRetrieve = true;
+            await CacheHelper.setValue(
+              key: 'parkingPrice',
+              value: state.parkedCarsModel.parkingPrice.toString(),
+            );
+            await CacheHelper.setValue(
+              key: 'carWashPrice',
+              value: state.parkedCarsModel.carWashPrice.toString(),
+            );
+            await CacheHelper.setValue(
+              key: 'totalPrice',
+              value: state.parkedCarsModel.totalPrice.toString(),
+            );
           }
         }
       },
@@ -52,7 +73,8 @@ class ConfirmButtonWidget extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             HomeCubit.get(context).retrieveCar(
-                parkingId: HomeCubit.get(context).parkedCarModel.id, gateId: 1);
+                parkingId: HomeCubit.get(context).parkedCarModel.id,
+                gateId: PickUpCubit.get(context).selectedGateId);
           },
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(

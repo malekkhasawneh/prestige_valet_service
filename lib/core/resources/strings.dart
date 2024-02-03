@@ -90,7 +90,7 @@ class Strings {
   static const String cancel = "Cancel";
   static const String carRequestTitle = "Your Car Will Be Ready\nShortly";
   static const String carRequestNotification =
-      "we will send yu a notification when it's ready";
+      "we will send you a notification when it's ready";
 
   // Login Screen
   static const String login = "Log in";
@@ -112,8 +112,10 @@ class Strings {
   static const String verifyYourAccount = "Verify Your Account";
   static const String enterVerificationCode = "Enter Verification Code";
   static const String resendCode = "Resend Code";
+  static const String emailActivated = "The account activated from email";
   static const String enterOtp = 'Enter OTP';
   static const String textFieldError = 'This field must not be empty';
+  static const String wrongEmail = 'Please enter valid E-mail';
   static const String passwordDoesNotMatch = 'Password does not match';
 
   // Forget Password Screen

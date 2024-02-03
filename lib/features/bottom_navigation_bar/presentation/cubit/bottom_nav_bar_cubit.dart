@@ -189,6 +189,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   Future<void> onReceiveNotificationListenerOnApp(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((message) {
+      log('====================================== ${message.notification!.title}');
+      log('====================================== ${message.notification!.body}');
       if (SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
               Constants.toUserNotification) {
@@ -216,6 +218,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   Future<void> onReceiveNotificationListenerOnBackground(
       BuildContext context) async {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      log('====================================== ${message.notification!.title}');
+      log('====================================== ${message.notification!.body}');
       if (message.data[Constants.notificationDataType] ==
           Constants.carParkedNotificationAction) {
         Navigator.pushReplacementNamed(

@@ -45,7 +45,8 @@ class SignUpButtonWidget extends StatelessWidget {
                     height: 20,
                     child: CircularProgressIndicator(
                       color: ColorManager.whiteColor,
-                    ))
+                    ),
+                  )
                 : const Text(
                     Strings.signUp,
                     style: TextStyle(

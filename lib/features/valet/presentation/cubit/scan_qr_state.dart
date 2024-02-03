@@ -68,3 +68,19 @@ class RetrieveGuestCarLoadedError extends ScanQrState {
   @override
   List<Object> get props => [failure];
 }
+class PrinterNotConnectedError extends ScanQrState {
+  final String failure;
+
+  const PrinterNotConnectedError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
+}
+class SetValueLoading extends ScanQrState {
+  @override
+  List<Object> get props => [];
+}
+class SetValueLoaded extends ScanQrState {
+  @override
+  List<Object> get props => [];
+}

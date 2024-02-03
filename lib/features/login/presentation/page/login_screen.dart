@@ -14,11 +14,24 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/login_button_widget.dart';
 import 'package:prestige_valet_app/features/login/presentation/widgets/social_login_row.dart';
+import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  @override
+  void initState() {
+    ProfileCubit.get(context).clearCache();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +108,12 @@ class LoginScreen extends StatelessWidget {
                   controller: LoginCubit.get(context).emailController,
                   textInputType: TextInputType.emailAddress,
                   mustCheck: LoginCubit.get(context).mustCheck,
+                  isWrongEmail: !LoginCubit.get(context).checkEmailValidity(),
+                  errorText:
+                  LoginCubit.get(context).emailController.text.isEmpty &&
+                      LoginCubit.get(context).mustCheck
+                      ? Strings.textFieldError
+                      : Strings.wrongEmail,
                 ),
                 const SizedBox(
                   height: 20,

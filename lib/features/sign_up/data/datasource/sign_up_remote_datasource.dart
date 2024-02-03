@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,7 +20,10 @@ abstract class SignUpRemoteDataSource {
     required bool socialProfile,
     required String imageUrl,
   });
+
   Future<UserCredential> signInWithGoogle();
+
+  Future<bool> activateAccount({required String email, required String token});
 }
 
 class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
@@ -64,6 +69,25 @@ class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
         idToken: googleAuth?.idToken,
       );
       return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> activateAccount(
+      {required String email, required String token}) async {
+    try {
+      Response response = await DioHelper.post(NetworkConstants.activateAccount,
+          data: {
+            "email": email,
+            "token": token
+          });
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } on Exception {
       throw ServerException();
     }

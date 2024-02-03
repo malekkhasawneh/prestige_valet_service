@@ -73,4 +73,16 @@ class SignUpRepositoryImpl implements SignUpRepository {
       return const Left(CacheFailure(failure: Constants.cacheFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, bool>> activateAccount(
+      {required String email, required String token}) async {
+    try {
+      final response = await signUpRemoteDataSource.activateAccount(
+          email: email, token: token);
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(failure: Constants.cacheFailure));
+    }
+  }
 }
