@@ -1,4 +1,4 @@
-import 'package:prestige_valet_app/features/add_credit_card/data/datasource/add_card_remote_datasource.dart';
+import 'package:prestige_valet_app/features/add_credit_card/data/datasource/add_card_local_datasource.dart';
 import 'package:prestige_valet_app/features/add_credit_card/data/repository/add_card_repository_impl.dart';
 import 'package:prestige_valet_app/features/add_credit_card/domain/repository/add_card_repository.dart';
 import 'package:prestige_valet_app/features/add_credit_card/domain/usecase/add_new_card_usecase.dart';
@@ -16,12 +16,14 @@ Future<void> addCardInjection() async {
 
   // Repository
   sl.registerLazySingleton<AddCardRepository>(
-    () => AddCardRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()),
+    () => AddCardRepositoryImpl(
+      localDataSource: sl(),
+    ),
   );
 
   // Data sources
 
-  sl.registerLazySingleton<AddCardRemoteDataSource>(
-    () => AddCardRemoteDataSourceImpl(),
+  sl.registerLazySingleton<AddCardLocalDataSource>(
+    () => AddCardLocalDataSourceImpl(),
   );
 }

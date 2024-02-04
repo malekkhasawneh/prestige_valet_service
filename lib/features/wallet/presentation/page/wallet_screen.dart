@@ -29,18 +29,17 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   @override
   void initState() {
-    WalletCubit.get(context)
-        .getCards(userId: HomeCubit.get(context).userModel.user.id);
+    WalletCubit.get(context).getCards();
     if (widget.isFromPayScreen) {
-      initiate();
+      //initiate();
     }
     super.initState();
   }
-
-  initiate() async {
-    await MFSDK.init(dotenv.env[Constants.myFatoorahToken]!,
-        MFCountry.SAUDIARABIA, MFEnvironment.TEST);
-  }
+  //
+  // initiate() async {
+  //   await MFSDK.init(dotenv.env[Constants.myFatoorahToken]!,
+  //       MFCountry.SAUDIARABIA, MFEnvironment.TEST);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +55,8 @@ class _WalletScreenState extends State<WalletScreen> {
       } else if (state is WalletError) {
         if (state.failure == Constants.internetFailure) {
           HomeCubit.get(context).refreshAfterConnect = () {
-            WalletCubit.get(context)
-                .getCards(userId: HomeCubit.get(context).userModel.user.id);
             if (widget.isFromPayScreen) {
-              initiate();
+              //initiate();
             }
           };
           Navigator.pushNamed(context, Routes.noInternetScreen);
@@ -126,17 +123,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: widget.isFromPayScreen
-                                      ? () async {
-                                          await WalletCubit.get(context)
-                                              .executePayment(
-                                                  cardNumber:
-                                                      '5453010000095489',
-                                                  cardHolderName:
-                                                      'Test Account',
-                                  expiryDate: '05/21',
-                                  cvv: '100',
-                                  amount: '10');
-                            }
+                                      ? () async {}
                                 : null,
                             child: CreditCardWidget(
                               walletModel: state.model[index],

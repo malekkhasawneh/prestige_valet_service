@@ -15,11 +15,11 @@ class AddCreditCardLoading extends AddCreditCardState {
 }
 
 class AddCreditCardLoaded extends AddCreditCardState {
-  final AddCardModel addCardModel;
+  final bool isAdded;
 
-  const AddCreditCardLoaded({required this.addCardModel});
+  const AddCreditCardLoaded({required this.isAdded});
   @override
-  List<Object> get props => [addCardModel];
+  List<Object> get props => [isAdded];
 }
 
 class AddCreditCardError extends AddCreditCardState {

@@ -69,12 +69,14 @@ class CreditCardWidget extends StatelessWidget {
                 AddCreditCardCubit.get(context).cardNumberController.text =
                     walletModel.cardNumber;
                 AddCreditCardCubit.get(context).expirationDateController.text =
-                    '${walletModel.expiryMonth}/${walletModel.expiryYear}';
+                    walletModel.expiryDate;
                 AddCreditCardCubit.get(context).walletId = walletModel.id;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const AddCreditCardScreen(isFromEdit: true,),
+                    builder: (_) => const AddCreditCardScreen(
+                      isFromEdit: true,
+                    ),
                   ),
                 );
               },

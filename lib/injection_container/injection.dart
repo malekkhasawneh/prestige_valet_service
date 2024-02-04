@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/injection_container/add_card_injection.dart';
@@ -44,6 +45,7 @@ Future<void> init() async {
       ));
   //! External
   sl.registerLazySingleton(() => Dio());
+  sl.registerLazySingleton(() => DatabaseHelper());
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => InternetConnectionChecker());
   await NotificationHelper.init();
