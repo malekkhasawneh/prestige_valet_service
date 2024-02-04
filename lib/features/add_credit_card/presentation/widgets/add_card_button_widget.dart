@@ -17,9 +17,11 @@ class AddCardButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-            backgroundColor: ColorManager.primaryColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25))),
+          backgroundColor: ColorManager.primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
         child: Text(
           isFromEdit ? Strings.updateCard : Strings.addCard,
           style: const TextStyle(

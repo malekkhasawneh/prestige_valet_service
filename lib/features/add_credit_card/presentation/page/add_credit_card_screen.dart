@@ -172,14 +172,38 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                   AddCardButtonWidget(
                     isFromEdit: widget.isFromEdit,
                     onPressed: () {
-                      AddCreditCardCubit.get(context).setMustCheck = true;
-                      if (!AddCreditCardCubit.get(context)
-                              .checkIfThereAreEmptyField() &&
-                          AddCreditCardCubit.get(context)
-                              .isCardNumberCorrect()) {
-                        AddCreditCardCubit.get(context).addNewCard(
-                          isFromEdit: widget.isFromEdit,
-                        );
+                      if (!widget.isFromEdit &&
+                          WalletCubit.get(context).isCardAlreadyExist(
+                              AddCreditCardCubit.get(context)
+                                  .cardNumberController
+                                  .text)) {
+                        AwesomeDialog(
+                                context: context,
+                                animType: AnimType.topSlide,
+                                dialogType: DialogType.error,
+                                dismissOnTouchOutside: false,
+                                dismissOnBackKeyPress: false,
+                                body: const Center(
+                                  child: Text(
+                                    'The card is already exist\n ',
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                btnOkOnPress: () {},
+                                btnOkColor: Colors.red)
+                            .show();
+                      } else {
+                        AddCreditCardCubit.get(context).setMustCheck = true;
+                        if (!AddCreditCardCubit.get(context)
+                                .checkIfThereAreEmptyField() &&
+                            AddCreditCardCubit.get(context)
+                                .isCardNumberCorrect()) {
+                          AddCreditCardCubit.get(context).addNewCard(
+                            isFromEdit: widget.isFromEdit,
+                          );
+                        }
                       }
                     },
                   ),
