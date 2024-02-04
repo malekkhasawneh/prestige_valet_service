@@ -23,6 +23,14 @@ class SendNotificationLoaded extends BottomNavBarState {
   List<Object> get props => [];
 }
 
+class IsTokenValidLoaded extends BottomNavBarState {
+  final bool isValid;
+
+ const IsTokenValidLoaded({required this.isValid});
+  @override
+  List<Object> get props => [isValid];
+}
+
 class BottomNavBarError extends BottomNavBarState {
   final String failure;
 

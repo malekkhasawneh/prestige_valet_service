@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/data/repositor
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/repository/nav_repository.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/add_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/get_notification_token_usecase.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/is_token_valid_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/must_reset_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/update_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
@@ -14,11 +15,13 @@ Future<void> bottomNavInjection() async {
   // Cubit
   sl.registerFactory(
         () => BottomNavBarCubit(
-        getNotificationTokenUseCase: sl(),
-        updateNotificationTokenUseCase: sl(),
-        addNotificationTokenUseCase: sl(),
-        mustResetNotificationTokenUseCase: sl(),
-        sendNotificationUseCase: sl()),
+      getNotificationTokenUseCase: sl(),
+      updateNotificationTokenUseCase: sl(),
+      addNotificationTokenUseCase: sl(),
+      mustResetNotificationTokenUseCase: sl(),
+      sendNotificationUseCase: sl(),
+      isTokenValidUseCase: sl(),
+    ),
   );
 
   // Use cases
@@ -29,6 +32,7 @@ Future<void> bottomNavInjection() async {
   sl.registerLazySingleton(
       () => MustResetNotificationTokenUseCase(repository: sl()));
   sl.registerLazySingleton(() => SendNotificationUseCase(repository: sl()));
+  sl.registerLazySingleton(() => IsTokenValidUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<NavRepository>(

@@ -44,4 +44,6 @@ class Constants {
       'send_notification_to_user_when_status_changed';
   static const String paymentSuccess = 'Success';
   static const String signUpEmailError = 'Email already in use';
+  static const String encryptCardDataKey = 'ENCRYPT_CARD_DATA_KEY';
+  static const String encryptCardDataIv = 'ENCRYPT_CARD_DATA_IV';
 }

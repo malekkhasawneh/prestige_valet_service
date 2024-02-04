@@ -3,14 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/edit_profile/presentation/cubit/edit_profile_cubit.dart';
+import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 
-class TextFieldWidget extends StatelessWidget {
+class TextFieldWidget extends StatefulWidget {
   const TextFieldWidget({
     super.key,
     required this.title,
     this.hintText = '',
     required this.controller,
     required this.textInputType,
+    this.selectedCountryKey = '',
     this.addPrefixIcon = false,
     this.addSuffixIcon = false,
     this.isPassword = false,
@@ -23,6 +26,7 @@ class TextFieldWidget extends StatelessWidget {
     this.isExpiry = false,
     this.onlyNumbers = false,
     this.isWrongEmail = false,
+    this.isFromSignUp = true,
   });
 
   final String title;
@@ -41,7 +45,14 @@ class TextFieldWidget extends StatelessWidget {
   final bool isExpiry;
   final bool onlyNumbers;
   final bool isWrongEmail;
+  final String selectedCountryKey;
+  final bool isFromSignUp;
 
+  @override
+  State<TextFieldWidget> createState() => _TextFieldWidgetState();
+}
+
+class _TextFieldWidgetState extends State<TextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -55,7 +66,7 @@ class TextFieldWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 4),
             child: Text(
-              title,
+              widget.title,
               style: const TextStyle(
                 fontFamily: Fonts.sourceSansPro,
                 fontSize: 15,
@@ -69,79 +80,113 @@ class TextFieldWidget extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.062,
             child: Center(
               child: TextFormField(
-                readOnly: readOnly,
-                obscureText: isPassword,
-                controller: controller,
-                keyboardType: textInputType,
-                inputFormatters: isExpiry
+                readOnly: widget.readOnly,
+                obscureText: widget.isPassword,
+                controller: widget.controller,
+                keyboardType: widget.textInputType,
+                inputFormatters: widget.isExpiry
                     ? [
                         CardExpirationFormatter(),
                       ]
-                    : onlyNumbers
+                    : widget.onlyNumbers
                         ? [FilteringTextInputFormatter.digitsOnly]
                         : [],
                 decoration: InputDecoration(
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: ((controller.text.isEmpty || doubleCheck) &&
-                                    mustCheck) ||
-                            (controller.text.isNotEmpty && isWrongEmail)
+                        color: ((widget.controller.text.isEmpty ||
+                                        widget.doubleCheck) &&
+                                    widget.mustCheck) ||
+                                (widget.controller.text.isNotEmpty &&
+                                    widget.isWrongEmail)
                             ? Colors.red
                             : Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: ((controller.text.isEmpty || doubleCheck) &&
-                                    mustCheck) ||
-                                (controller.text.isNotEmpty && isWrongEmail)
+                        color: ((widget.controller.text.isEmpty ||
+                                        widget.doubleCheck) &&
+                                    widget.mustCheck) ||
+                                (widget.controller.text.isNotEmpty &&
+                                    widget.isWrongEmail)
                             ? Colors.red
                             : Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: ((controller.text.isEmpty || doubleCheck) &&
-                                    mustCheck) ||
-                            (controller.text.isNotEmpty && isWrongEmail)
+                        color: ((widget.controller.text.isEmpty ||
+                                        widget.doubleCheck) &&
+                                    widget.mustCheck) ||
+                                (widget.controller.text.isNotEmpty &&
+                                    widget.isWrongEmail)
                             ? Colors.red
                             : Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   border: InputBorder.none,
-                  prefixIcon: addPrefixIcon
-                      ? const Text('  +962 - ')
+                  prefixIcon: widget.addPrefixIcon
+                      ? SizedBox(
+                          width: 50,
+                          child: DropdownButton<String>(
+                            value: widget.selectedCountryKey,
+                            onChanged: (String? newValue) {
+                              widget.isFromSignUp
+                                  ? SignUpCubit.get(context)
+                                      .setSelectedCountryKey = newValue!
+                                  : EditProfileCubit.get(context)
+                                      .setSelectedCountryKey = newValue!;
+                            },
+                            underline: const SizedBox(),
+                            padding: EdgeInsets.zero,
+                            icon: const SizedBox(),
+                            elevation: 16,
+                            isExpanded: true,
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'JO',
+                                child: Text('  +962 - '),
+                              ),
+                              DropdownMenuItem(
+                                value: 'SA',
+                                child: Text('  +966 - '),
+                              ),
+                            ],
+                          ),
+                        )
                       : const SizedBox(
                           width: 7,
                         ),
                   prefixIconConstraints: const BoxConstraints(minHeight: 10),
-                  suffixIcon: suffixIcon,
+                  suffixIcon: widget.suffixIcon,
                   suffixIconConstraints: const BoxConstraints(minHeight: 10),
                   counterText: '',
-                  hintText: hintText,
+                  hintText: widget.hintText,
                   hintStyle: const TextStyle(
                     fontFamily: Fonts.sourceSansPro,
                     fontSize: 12,
                   ),
                 ),
                 cursorColor: ColorManager.primaryColor,
-                maxLength: maxLength,
+                maxLength: widget.maxLength,
               ),
             ),
           ),
-          (controller.text.isEmpty || doubleCheck) && mustCheck
+          (widget.controller.text.isEmpty || widget.doubleCheck) &&
+                  widget.mustCheck
               ? Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Text(
-                    errorText,
+                    widget.errorText,
                     style: const TextStyle(fontSize: 8, color: Colors.red),
                   ),
                 )
-              : mustCheck && isWrongEmail
+              : widget.mustCheck && widget.isWrongEmail
                   ? Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Text(
-                        errorText,
+                        widget.errorText,
                         style: const TextStyle(fontSize: 8, color: Colors.red),
                       ),
                     )

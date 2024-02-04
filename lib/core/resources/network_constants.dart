@@ -53,4 +53,6 @@ class NetworkConstants {
   static const String sendNotification = 'https://fcm.googleapis.com/fcm/send';
 
   static const String verifyOtp = 'auth/verifyToken';
+
+  static const String isTokenValid = 'auth/token/validate';
 }

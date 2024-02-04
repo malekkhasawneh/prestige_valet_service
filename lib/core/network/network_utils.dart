@@ -20,7 +20,7 @@ class DioHelper {
           seconds: 7,
         ),
         validateStatus: (status) {
-          return status! >= 200 && status <= 400;
+          return status! >= 200 && status <= 401;
         }),
   );
 
@@ -30,7 +30,7 @@ class DioHelper {
           seconds: 7,
         ),
         validateStatus: (status) {
-          return status! >= 200 && status <= 400;
+          return status! >= 200 && status <= 401;
         }),
   );
 
@@ -57,7 +57,7 @@ class DioHelper {
             'Content-Type': 'application/json',
           },
           validateStatus: (status) {
-            return status! >= 200 && status <= 400;
+            return status! >= 200 && status <= 401;
           }),
     );
   }
@@ -75,7 +75,7 @@ class DioHelper {
             'Content-Type': 'application/json',
           },
           validateStatus: (status) {
-            return status! >= 200 && status <= 400;
+            return status! >= 200 && status <= 401;
           }),
     );
   }

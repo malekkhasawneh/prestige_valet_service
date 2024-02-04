@@ -37,7 +37,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     EditProfileCubit.get(context).email.text =
         HomeCubit.get(context).userModel.user.email;
     EditProfileCubit.get(context).phoneNumber.text =
-        EditProfileCubit.get(context).filterPhoneNumber(HomeCubit.get(context).userModel.user.phone);
+        EditProfileCubit.get(context).filterPhoneNumber(
+            HomeCubit.get(context).userModel.user.phone.split(',').last);
+    EditProfileCubit.get(context).setSelectedCountryKey =
+        HomeCubit.get(context).userModel.user.phone.split(',').first;
     EditProfileCubit.get(context).setMustCheck = false;
     super.initState();
   }
@@ -188,10 +191,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFieldWidget(
                       controller: EditProfileCubit.get(context).phoneNumber,
                       title: Strings.phoneNumber,
-                      textInputType: TextInputType.phone,
+                      textInputType: TextInputType.number,
                       addPrefixIcon: true,
                       mustCheck: EditProfileCubit.get(context).mustCheck,
                       onlyNumbers: true,
+                      selectedCountryKey:
+                          EditProfileCubit.get(context).getSelectedCountryKey,
+                      isFromSignUp: false,
                     ),
                     const SizedBox(
                       height: 20,

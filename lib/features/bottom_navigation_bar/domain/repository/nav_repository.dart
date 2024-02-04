@@ -11,5 +11,8 @@ abstract class NavRepository {
 
   Future<Either<Failures, NotificationModel>> updateNotificationToken(
       {required int userId, required String token, required int tokenId});
+
   Future<Either<Failures, bool>> mustResetNotificationToken();
+
+  Future<Either<Failures, bool>> isTokenValid();
 }

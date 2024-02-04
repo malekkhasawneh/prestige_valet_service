@@ -33,25 +33,45 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
     return BlocConsumer<AddCreditCardCubit, AddCreditCardState>(
         listener: (context, state) {
       if (state is AddCreditCardLoaded) {
-        WalletCubit.get(context)
-            .getCards(userId: HomeCubit.get(context).userModel.user.id);
-        AwesomeDialog(
-          context: context,
-          animType: AnimType.topSlide,
-          dialogType: DialogType.success,
-          dismissOnTouchOutside: false,
-          dismissOnBackKeyPress: false,
-          body: Center(
-            child: Text(
-              '${state.addCardModel.message}\n ',
-              style: const TextStyle(fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
+        if (state.isAdded) {
+          AwesomeDialog(
+            context: context,
+            animType: AnimType.topSlide,
+            dialogType: DialogType.success,
+            dismissOnTouchOutside: false,
+            dismissOnBackKeyPress: false,
+            body: Center(
+              child: Text(
+                widget.isFromEdit
+                    ? 'Card data updated successfully\n '
+                    : 'New card added successfully\n ',
+                style: const TextStyle(fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          btnOkOnPress: () {
-            Navigator.pop(context);
-          },
-        ).show();
+            btnOkOnPress: () {
+              WalletCubit.get(context).getCards();
+              Navigator.pop(context);
+            },
+          ).show();
+        } else {
+          AwesomeDialog(
+                  context: context,
+                  animType: AnimType.topSlide,
+                  dialogType: DialogType.error,
+                  dismissOnTouchOutside: false,
+                  dismissOnBackKeyPress: false,
+                  body: const Center(
+                    child: Text(
+                      'Something wrong, please try again\n ',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  btnOkOnPress: () {},
+                  btnOkColor: Colors.red)
+              .show();
+        }
       } else if (state is AddCreditCardError) {
         if (state.failure == Constants.internetFailure) {
           HomeCubit.get(context).refreshAfterConnect = () {
@@ -161,7 +181,6 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                               .isCardNumberCorrect()) {
                         AddCreditCardCubit.get(context).addNewCard(
                           isFromEdit: widget.isFromEdit,
-                          userId: HomeCubit.get(context).userModel.user.id,
                         );
                       }
                     },
