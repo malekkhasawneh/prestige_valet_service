@@ -23,6 +23,8 @@ class WalletCubit extends Cubit<WalletState> {
   double headerBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.3) - 2;
 
+  List<String> existingCardsNumber = [];
+
   Future<void> getCards() async {
     emit(WalletLoading());
     try {
@@ -33,9 +35,14 @@ class WalletCubit extends Cubit<WalletState> {
             failure: failure.failure,
           ),
         ),
-        (cards) => emit(
-          WalletLoaded(model: cards),
-        ),
+        (cards) {
+          for (var card in cards) {
+            existingCardsNumber.add(card.cardNumber);
+          }
+          emit(
+            WalletLoaded(model: cards),
+          );
+        },
       );
     } catch (failure) {
       emit(
@@ -44,5 +51,15 @@ class WalletCubit extends Cubit<WalletState> {
         ),
       );
     }
+  }
+
+  bool isCardAlreadyExist(String cardNumber) {
+    bool isCardExist = false;
+    for (var card in existingCardsNumber) {
+      if (card.contains(cardNumber)) {
+        isCardExist = true;
+      }
+    }
+    return isCardExist;
   }
 }
