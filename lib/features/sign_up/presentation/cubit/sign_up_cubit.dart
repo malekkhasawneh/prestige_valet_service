@@ -75,7 +75,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       final response = await signUpUseCase(
         SignUpUseCaseParams(
           email: emailController.text,
-          phone: phoneController.text,
+          phone: '$_selectedCountryKey,${phoneController.text}',
           password: passwordController.text,
           firstName: firstNameController.text,
           lastName: lastNameController.text,
@@ -233,5 +233,15 @@ class SignUpCubit extends Cubit<SignUpState> {
     } else {
       return false;
     }
+  }
+
+  String _selectedCountryKey = 'JO';
+
+  String get getSelectedCountryKey => _selectedCountryKey;
+
+  set setSelectedCountryKey(String value) {
+    emit(SetValueLoading());
+    _selectedCountryKey = value;
+    emit(SetValueLoaded());
   }
 }

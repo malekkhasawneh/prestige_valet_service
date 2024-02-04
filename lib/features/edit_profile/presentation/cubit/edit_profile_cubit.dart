@@ -32,6 +32,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(SetAndGetValueLoaded());
   }
 
+  String _selectedCountryKey = 'JO';
+
+  String get getSelectedCountryKey => _selectedCountryKey;
+
+  set setSelectedCountryKey(String value) {
+    emit(SetAndGetValueLoading());
+    _selectedCountryKey = value;
+    emit(SetAndGetValueLoaded());
+  }
+
   File file = File('');
 
   Future<void> editProfile({required int userId}) async {
@@ -41,7 +51,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           userId: userId,
           firstName: firstName.text,
           lastName: lastName.text,
-          phone: phoneNumber.text,
+          phone: '$_selectedCountryKey,${phoneNumber.text}',
           email: email.text));
       response.fold(
           (failure) => emit(EditProfileError(failure: failure.failure)),
