@@ -52,22 +52,6 @@ class _ScanScreenState extends State<ScanScreen> {
     super.dispose();
   }
 
-  Future onScanPressed() async {
-    try {
-      _systemDevices = await FlutterBluePlus.systemDevices;
-    } catch (e) {
-      Snackbar.show(ABC.b, prettyException("System Devices Error:", e), success: false);
-    }
-    try {
-      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
-    } catch (e) {
-      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e), success: false);
-    }
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   Future onStopPressed() async {
     try {
       FlutterBluePlus.stopScan();
@@ -93,18 +77,6 @@ class _ScanScreenState extends State<ScanScreen> {
       setState(() {});
     }
     return Future.delayed(Duration(milliseconds: 500));
-  }
-
-  Widget buildScanButton(BuildContext context) {
-    if (FlutterBluePlus.isScanningNow) {
-      return FloatingActionButton(
-        child: const Icon(Icons.stop),
-        onPressed: onStopPressed,
-        backgroundColor: Colors.red,
-      );
-    } else {
-      return FloatingActionButton(child: const Text("SCAN"), onPressed: onScanPressed);
-    }
   }
 
   List<Widget> _buildSystemDeviceTiles(BuildContext context) {
@@ -152,7 +124,6 @@ class _ScanScreenState extends State<ScanScreen> {
             ],
           ),
         ),
-        floatingActionButton: buildScanButton(context),
       ),
     );
   }

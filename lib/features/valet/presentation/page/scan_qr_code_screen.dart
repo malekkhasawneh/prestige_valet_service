@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:lottie/lottie.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -14,6 +17,8 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/c
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
+import 'package:prestige_valet_app/screens/scan_screen.dart';
+import 'package:prestige_valet_app/utils/snackbar.dart';
 
 class ScanQrCodeScreen extends StatefulWidget {
   const ScanQrCodeScreen({super.key});
@@ -23,10 +28,33 @@ class ScanQrCodeScreen extends StatefulWidget {
 }
 
 class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
+  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
+
+  late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
+
   @override
   void initState() {
-    ScanQrCubit.get(context).isPrinterConnected();
     super.initState();
+    ScanQrCubit.get(context).isPrinterConnected();
+    _adapterStateStateSubscription =
+        FlutterBluePlus.adapterState.listen((state) {
+      _adapterState = state;
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  Future onScanPressed() async {
+    try {
+      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
+    } catch (e) {
+      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
+          success: false);
+    }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -136,49 +164,13 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
               padding: const EdgeInsets.only(right: 10),
               child: GestureDetector(
                 onTap: () async {
-                  await ScanQrCubit.get(context)
-                      .getBluetooth()
-                      .then((_) => showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                                title:
-                                    const Center(child: Text('Paired devices')),
-                                content: SizedBox(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    itemCount: ScanQrCubit.get(context)
-                                            .availableBluetoothDevices
-                                            .isNotEmpty
-                                        ? ScanQrCubit.get(context)
-                                            .availableBluetoothDevices
-                                            .length
-                                        : 0,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        onTap: () {
-                                          String select = ScanQrCubit.get(
-                                                  context)
-                                              .availableBluetoothDevices[index];
-                                          List list = select.split("#");
-                                          String mac = list[1];
-                                          ScanQrCubit.get(context).setConnect(
-                                              mac,
-                                              ScanQrCubit.get(context)
-                                                  .availableBluetoothDevices[
-                                                      index]
-                                                  .split('#')
-                                                  .first);
-                                          Navigator.pop(context);
-                                        },
-                                        title: Text(
-                                            '${ScanQrCubit.get(context).availableBluetoothDevices[index].split('#').first}'),
-                                        subtitle:
-                                            const Text("Click to connect"),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              )));
+                  await onScanPressed();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ScanScreen(),
+                    ),
+                  );
                 },
                 child: const Icon(
                   Icons.print,
@@ -327,5 +319,11 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
         ),
       );
     });
+  }
+
+  @override
+  void dispose() {
+    _adapterStateStateSubscription.cancel();
+    super.dispose();
   }
 }
