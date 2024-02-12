@@ -422,6 +422,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.0"
+  flutter_blue_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_blue_plus
+      sha256: "976d8cfd4068c392a9c2236bb1952b2bbc3905747f4177c5baa95aaa1f054f75"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.31.13"
+  flutter_bluetooth_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_bluetooth_plus
+      sha256: "30f595da37f076c8828317a69f20890496d141241371981aeb8f27fc677fc6b7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.16"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -736,6 +752,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: b10a7b2ff83d83c777edba3c6a0f97045ddadd56c944e1a23a3fdf43a1bf4467
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.8.1"
   lints:
     dependency: transitive
     description:
@@ -841,13 +865,13 @@ packages:
     source: hosted
     version: "1.8.3"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
-      sha256: a1aa8aaa2542a6bc57e381f132af822420216c80d4781f7aa085ca3229208aaa
+      sha256: b27217933eeeba8ff24845c34003b003b2b22151de3c908d0e679e8fe1aa078b
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   path_provider_android:
     dependency: transitive
     description:
