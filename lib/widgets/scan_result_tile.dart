@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 
 class ScanResultTile extends StatefulWidget {
   const ScanResultTile({Key? key, required this.result, this.onTap}) : super(key: key);
@@ -17,18 +19,6 @@ class _ScanResultTileState extends State<ScanResultTile> {
   BluetoothConnectionState _connectionState = BluetoothConnectionState.disconnected;
 
   late StreamSubscription<BluetoothConnectionState> _connectionStateSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _connectionStateSubscription = widget.result.device.connectionState.listen((state) {
-      _connectionState = state;
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
 
   @override
   void dispose() {
@@ -57,73 +47,44 @@ class _ScanResultTileState extends State<ScanResultTile> {
   }
 
   Widget _buildTitle(BuildContext context) {
-    if (widget.result.device.platformName.isNotEmpty) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            widget.result.device.platformName,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            widget.result.device.remoteId.str,
-            style: Theme.of(context).textTheme.bodySmall,
-          )
-        ],
-      );
-    } else {
-      return Text(widget.result.device.remoteId.str);
-    }
+    return Text(
+      widget.result.device.advName,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 
   Widget _buildConnectButton(BuildContext context) {
     return ElevatedButton(
-      child: isConnected ? const Text('OPEN') : const Text('CONNECT'),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-      onPressed: (widget.result.advertisementData.connectable) ? widget.onTap : null,
+      onPressed: (widget.result.advertisementData.connectable &&
+              (ScanQrCubit.get(context).connectedDeviceName !=
+                  widget.result.device.advName))
+          ? () {
+              ScanQrCubit.get(context).setConnect(
+                  widget.result.device.remoteId.str,
+                  widget.result.device.advName);
+            }
+          : null,
+      child: ScanQrCubit.get(context).connectedDeviceName ==
+              widget.result.device.advName
+          ? const Text('Connected')
+          : const Text('Connect'),
     );
   }
 
-  Widget _buildAdvRow(BuildContext context, String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(title, style: Theme.of(context).textTheme.bodySmall),
-          const SizedBox(
-            width: 12.0,
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodySmall?.apply(color: Colors.black),
-              softWrap: true,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    var adv = widget.result.advertisementData;
-    return ExpansionTile(
-      title: _buildTitle(context),
-      leading: Text(widget.result.rssi.toString()),
-      trailing: _buildConnectButton(context),
-      children: <Widget>[
-        if (adv.advName.isNotEmpty) _buildAdvRow(context, 'Name', adv.advName),
-        if (adv.txPowerLevel != null) _buildAdvRow(context, 'Tx Power Level', '${adv.txPowerLevel}'),
-        if (adv.msd.isNotEmpty) _buildAdvRow(context, 'Manufacturer Data', getNiceManufacturerData(adv.msd)),
-        if (adv.serviceUuids.isNotEmpty) _buildAdvRow(context, 'Service UUIDs', getNiceServiceUuids(adv.serviceUuids)),
-        if (adv.serviceData.isNotEmpty) _buildAdvRow(context, 'Service Data', getNiceServiceData(adv.serviceData)),
-      ],
-    );
+    return BlocBuilder<ScanQrCubit, ScanQrState>(builder: (context, state) {
+      return widget.result.device.advName.isEmpty
+          ? const SizedBox()
+          : ExpansionTile(
+              title: _buildTitle(context),
+              trailing: _buildConnectButton(context),
+            );
+    });
   }
 }
