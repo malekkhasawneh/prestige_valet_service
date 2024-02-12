@@ -84,3 +84,4 @@ class SetValueLoaded extends ScanQrState {
   @override
   List<Object> get props => [];
 }
+

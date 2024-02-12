@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,14 +28,16 @@ import 'package:prestige_valet_app/injection_container/injection.dart' as di;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: Constants.envFileName);
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: dotenv.env[Constants.androidFirebaseApiKey]!,
-      appId: dotenv.env[Constants.androidAppId]!,
-      messagingSenderId: dotenv.env[Constants.androidMessagingSenderId]!,
-      projectId: dotenv.env[Constants.androidProjectId]!,
-    ),
-  );
+  Platform.isIOS
+      ? await Firebase.initializeApp()
+      : await Firebase.initializeApp(
+          options: FirebaseOptions(
+            apiKey: dotenv.env[Constants.androidFirebaseApiKey]!,
+            appId: dotenv.env[Constants.androidAppId]!,
+            messagingSenderId: dotenv.env[Constants.androidMessagingSenderId]!,
+            projectId: dotenv.env[Constants.androidProjectId]!,
+          ),
+        );
   await FirebaseMessagingHelper.initNotifications();
   await di.init();
   runApp(
