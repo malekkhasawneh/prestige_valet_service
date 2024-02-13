@@ -177,9 +177,12 @@ class ScanQrCubit extends Cubit<ScanQrState> {
 
   Future<void> isPrinterConnected() async {
     emit(SetValueLoading());
-    connected =
-        bool.parse(await BluetoothThermalPrinter.connectionStatus ?? 'false');
-    connectedDeviceName =  connectedDeviceName.isEmpty
+    connected = bool.parse(
+        await BluetoothThermalPrinter.connectionStatus != '' &&
+                await BluetoothThermalPrinter.connectionStatus != 'false'
+            ? 'true'
+            : await BluetoothThermalPrinter.connectionStatus ?? 'false');
+    connectedDeviceName = connectedDeviceName.isEmpty
         ? await CacheHelper.getValue(key: 'connectedDeviceName')
         : connectedDeviceName;
     emit(SetValueLoaded());
@@ -207,7 +210,11 @@ class ScanQrCubit extends Cubit<ScanQrState> {
 
   Future<void> printGraphics(String qrString) async {
     emit(SetValueLoading());
-    String? isConnected = await BluetoothThermalPrinter.connectionStatus;
+    String? isConnected =
+        await BluetoothThermalPrinter.connectionStatus != '' &&
+                await BluetoothThermalPrinter.connectionStatus != 'false'
+            ? 'true'
+            : await BluetoothThermalPrinter.connectionStatus ?? 'false';
     if (isConnected == "true") {
       List<int> bytes = await getGraphicsTicket(qrString);
       final result = await BluetoothThermalPrinter.writeBytes(bytes);

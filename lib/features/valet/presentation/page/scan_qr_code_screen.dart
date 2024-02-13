@@ -28,22 +28,7 @@ class ScanQrCodeScreen extends StatefulWidget {
 }
 
 class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
-  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
 
-  late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    ScanQrCubit.get(context).isPrinterConnected();
-    _adapterStateStateSubscription =
-        FlutterBluePlus.adapterState.listen((state) {
-      _adapterState = state;
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
 
   Future onScanPressed() async {
     try {
@@ -319,11 +304,5 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
         ),
       );
     });
-  }
-
-  @override
-  void dispose() {
-    _adapterStateStateSubscription.cancel();
-    super.dispose();
   }
 }
