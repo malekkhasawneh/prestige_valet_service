@@ -1,11 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:async';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:lottie/lottie.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -17,45 +14,9 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/c
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
-import 'package:prestige_valet_app/screens/scan_screen.dart';
-import 'package:prestige_valet_app/utils/snackbar.dart';
 
-class ScanQrCodeScreen extends StatefulWidget {
+class ScanQrCodeScreen extends StatelessWidget {
   const ScanQrCodeScreen({super.key});
-
-  @override
-  State<ScanQrCodeScreen> createState() => _ScanQrCodeScreenState();
-}
-
-class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
-  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
-
-  late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    ScanQrCubit.get(context).isPrinterConnected();
-    _adapterStateStateSubscription =
-        FlutterBluePlus.adapterState.listen((state) {
-      _adapterState = state;
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
-
-  Future onScanPressed() async {
-    try {
-      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
-    } catch (e) {
-      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
-          success: false);
-    }
-    if (mounted) {
-      setState(() {});
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +54,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
               btnOkColor: Colors.green,
             ).show();
           } else {
-            ScanQrCubit.get(context).printGraphics(
-                '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}');
+            ///Todo :: Here add print method
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {
@@ -182,13 +142,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
               padding: const EdgeInsets.only(right: 10),
               child: GestureDetector(
                 onTap: () async {
-                  await onScanPressed();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const ScanScreen(),
-                    ),
-                  );
+                  ///Todo :: navigate to printers devices screen
                 },
                 child: const Icon(
                   Icons.print,
@@ -252,33 +206,29 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    await ScanQrCubit.get(context)
-                        .isPrinterConnected()
-                        .then((_) {
-                      if (ScanQrCubit.get(context).connected) {
-                        ScanQrCubit.get(context).parkCar(
-                          valetId: HomeCubit.get(context).userModel.user.id,
-                          isGuest: true,
-                        );
-                      } else {
-                        AwesomeDialog(
-                          context: context,
-                          dismissOnBackKeyPress: false,
-                          dismissOnTouchOutside: false,
-                          animType: AnimType.scale,
-                          dialogType: DialogType.error,
-                          body: const Center(
-                            child: Text(
-                              'No connected printer\n ',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                              textAlign: TextAlign.center,
-                            ),
+                    if (ScanQrCubit.get(context).connected) {
+                      ScanQrCubit.get(context).parkCar(
+                        valetId: HomeCubit.get(context).userModel.user.id,
+                        isGuest: true,
+                      );
+                    } else {
+                      AwesomeDialog(
+                        context: context,
+                        dismissOnBackKeyPress: false,
+                        dismissOnTouchOutside: false,
+                        animType: AnimType.scale,
+                        dialogType: DialogType.error,
+                        body: const Center(
+                          child: Text(
+                            'No connected printer\n ',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                            textAlign: TextAlign.center,
                           ),
-                          btnOkOnPress: () {},
-                          btnOkColor: Colors.red,
-                        ).show();
-                      }
-                    });
+                        ),
+                        btnOkOnPress: () {},
+                        btnOkColor: Colors.red,
+                      ).show();
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -337,11 +287,5 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
         ),
       );
     });
-  }
-
-  @override
-  void dispose() {
-    _adapterStateStateSubscription.cancel();
-    super.dispose();
   }
 }
