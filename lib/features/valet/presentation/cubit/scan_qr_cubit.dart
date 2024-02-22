@@ -1,19 +1,20 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:barcode_scan2/barcode_scan2.dart';
-import 'package:bluetooth_thermal_printer/bluetooth_thermal_printer.dart';
 import 'package:equatable/equatable.dart';
-import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/domain/bluetooth_printer_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
+import 'package:thermal_printer/esc_pos_utils_platform/esc_pos_utils_platform.dart';
+import 'package:thermal_printer/thermal_printer.dart';
 
 part 'scan_qr_state.dart';
 
@@ -35,6 +36,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   bool connected = false;
   List availableBluetoothDevices = [];
   String connectedDeviceName = '';
+  var printerManager = PrinterManager.instance;
+  BluetoothPrinter? selectedPrinter;
 
   Future<void> parkCar({required int valetId, bool isGuest = false}) async {
     emit(ScanQrLoading());
@@ -48,7 +51,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           log('=================================== here ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
-        (success) {
+            (success) {
           log('=================================== here ${success.id}');
 
           emit(
@@ -175,64 +178,50 @@ class ScanQrCubit extends Cubit<ScanQrState> {
         : ColorManager.blackColor;
   }
 
-  Future<void> isPrinterConnected() async {
-    emit(SetValueLoading());
-    connected = bool.parse(
-        await BluetoothThermalPrinter.connectionStatus != '' &&
-                await BluetoothThermalPrinter.connectionStatus != 'false'
-            ? 'true'
-            : await BluetoothThermalPrinter.connectionStatus ?? 'false');
-    connectedDeviceName = connectedDeviceName.isEmpty
-        ? await CacheHelper.getValue(key: 'connectedDeviceName')
-        : connectedDeviceName;
-    emit(SetValueLoaded());
-  }
+  //Printer methods
 
-  Future<void> getBluetooth() async {
-    emit(SetValueLoading());
-    final List? bluetooth = await BluetoothThermalPrinter.getBluetooths;
-    log("Print $bluetooth");
-    availableBluetoothDevices = bluetooth!;
-    emit(SetValueLoaded());
-  }
-
-  Future<void> setConnect(String mac, String deviceName) async {
-    emit(SetValueLoading());
-    final String? result = await BluetoothThermalPrinter.connect(mac);
-    log("state connected $result");
-    if (result == "true") {
-      await CacheHelper.setValue(key: 'connectedDeviceName', value: deviceName);
-      connectedDeviceName = deviceName;
-      connected = true;
-    }
-    emit(SetValueLoaded());
-  }
-
-  Future<void> printGraphics(String qrString) async {
-    emit(SetValueLoading());
-    String? isConnected =
-        await BluetoothThermalPrinter.connectionStatus != '' &&
-                await BluetoothThermalPrinter.connectionStatus != 'false'
-            ? 'true'
-            : await BluetoothThermalPrinter.connectionStatus ?? 'false';
-    if (isConnected == "true") {
-      List<int> bytes = await getGraphicsTicket(qrString);
-      final result = await BluetoothThermalPrinter.writeBytes(bytes);
-      log("Print $result");
-    } else {
-      emit(const PrinterNotConnectedError(failure: 'No connected printer'));
-    }
-    emit(SetValueLoaded());
+  Future printQrForGuest(String qrData) async {
+    final profile = await CapabilityProfile.load(name: 'XP-N160I');
+    final generator = Generator(PaperSize.mm58, profile);
+    _printEscPos(await getGraphicsTicket(qrData), generator);
   }
 
   Future<List<int>> getGraphicsTicket(String qrString) async {
     List<int> bytes = [];
     CapabilityProfile profile = await CapabilityProfile.load();
-    final generator = Generator(PaperSize.mm58, profile);
+    final generator = Generator(PaperSize.mm80, profile);
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
     bytes += generator.text('\n' '');
     bytes += generator.cut();
     return bytes;
+  }
+
+  void _printEscPos(List<int> bytes, Generator generator) async {
+    var bluetoothPrinter = selectedPrinter!;
+    printerManager.send(type: bluetoothPrinter.typePrinter, bytes: bytes);
+  }
+
+  Future<void> connectDevice({bool isAutoConnect = false}) async {
+    emit(SetValueLoading());
+    connected = false;
+    await printerManager.connect(
+      type: PrinterType.bluetooth,
+      model: BluetoothPrinterInput(
+        name: selectedPrinter!.deviceName,
+        address: selectedPrinter!.address!,
+        autoConnect: true,
+      ),
+    );
+    connectedDeviceName = selectedPrinter!.deviceName ?? '';
+    emit(SetValueLoaded());
+  }
+
+  Future<void> disconnect() async {
+    emit(SetValueLoading());
+    PrinterManager.instance.disconnect(type: PrinterType.bluetooth);
+    connected = false;
+    connectedDeviceName = '';
+    emit(SetValueLoaded());
   }
 }
