@@ -16,9 +16,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    SplashCubit.get(context).getIsFirstTimeOpenTheApp();
-    SplashCubit.get(context).checkIfUserLogin();
-    SplashCubit.get(context).checkIsUser();
+    SplashCubit.get(context).isBlocked().then((_) {
+      SplashCubit.get(context).getIsFirstTimeOpenTheApp();
+      SplashCubit.get(context).checkIfUserLogin();
+      SplashCubit.get(context).checkIsUser();
+    });
     super.initState();
   }
 
@@ -27,32 +29,34 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<SplashCubit,SplashState>(
       listener: (context, state) async {
         if (state is SplashLoaded) {
-          if (SplashCubit.get(context).isFirstTime) {
-            Future.delayed(const Duration(seconds: 3)).then(
-              (_) => Navigator.pushReplacementNamed(
-                context,
-                Routes.welcomeScreen,
-              ),
-            );
-          } else {
-            if (state.isLogin) {
-              await HomeCubit.get(context).getUserData(context);
+          if (!SplashCubit.get(context).isUserBlocked) {
+            if (SplashCubit.get(context).isFirstTime) {
               Future.delayed(const Duration(seconds: 3)).then(
                 (_) => Navigator.pushReplacementNamed(
                   context,
-                  Routes.bottomNvBarScreen,
+                  Routes.welcomeScreen,
                 ),
               );
             } else {
-              Future.delayed(const Duration(seconds: 3)).then(
-                (_) => Navigator.pushReplacementNamed(
-                  context,
-                  Routes.loginScreen,
-                ),
-              );
+              if (state.isLogin) {
+                await HomeCubit.get(context).getUserData(context);
+                Future.delayed(const Duration(seconds: 3)).then(
+                  (_) => Navigator.pushReplacementNamed(
+                    context,
+                    Routes.bottomNvBarScreen,
+                  ),
+                );
+              } else {
+                Future.delayed(const Duration(seconds: 3)).then(
+                  (_) => Navigator.pushReplacementNamed(
+                    context,
+                    Routes.loginScreen,
+                  ),
+                );
+              }
             }
           }
-        }else if(state is SplashError){
+        } else if(state is SplashError){
           if(state.failure == Constants.internetFailure){
             HomeCubit.get(context).refreshAfterConnect = () {
               SplashCubit.get(context).getIsFirstTimeOpenTheApp();

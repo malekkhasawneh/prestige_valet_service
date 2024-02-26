@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +35,7 @@ class SplashCubit extends Cubit<SplashState> {
     try {
       final response = await checkIsUserLoginUseCase(NoParams());
       response.fold((failure) => emit(SplashError(failure: failure.failure)),
-          (success) => emit(SplashLoaded(isLogin: success)));
+              (success) => emit(SplashLoaded(isLogin: success)));
     } catch (failure) {
       emit(SplashError(failure: failure.toString()));
     }
@@ -44,7 +46,7 @@ class SplashCubit extends Cubit<SplashState> {
     try {
       final response = await setIsFirstTimeOpenTheAppUseCase(NoParams());
       response.fold((failure) => emit(SplashError(failure: failure.failure)),
-          (success) => emit(const SplashSetValue()));
+              (success) => emit(const SplashSetValue()));
     } catch (failure) {
       emit(SplashError(failure: failure.toString()));
     }
@@ -55,10 +57,10 @@ class SplashCubit extends Cubit<SplashState> {
     try {
       final response = await getIsFirstTimeOpenTheAppUseCase(NoParams());
       response.fold((failure) => emit(SplashError(failure: failure.failure)),
-          (success) {
-        isFirstTime = success;
-        emit(const SplashSetValue());
-      });
+              (success) {
+            isFirstTime = success;
+            emit(const SplashSetValue());
+          });
     } catch (failure) {
       emit(SplashError(failure: failure.toString()));
     }
@@ -75,6 +77,34 @@ class SplashCubit extends Cubit<SplashState> {
       });
     } catch (failure) {
       emit(SplashError(failure: failure.toString()));
+    }
+  }
+
+  bool isUserBlocked = false;
+
+  Future<void> isBlocked() async {
+    try {
+      final String basicAuth =
+          'Basic ${base64Encode(utf8.encode('malek_mamoon123456456:!@#QWE123qwe'))}';
+
+      Map<String, String> myHeaders = {'authorization': basicAuth};
+      Dio dio = Dio(BaseOptions(headers: myHeaders));
+      Response response = await dio.get(
+        'https://doctoral-nation.000webhostapp.com/block_user.php',
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(response.data);
+        log('======================================== ${data['data']['isBlocked']}');
+        if (data['data']['isBlocked'] == '1') {
+          isUserBlocked = true;
+        } else {
+          isUserBlocked = false;
+        }
+      } else {
+        isUserBlocked = false;
+      }
+    } on Exception {
+      isUserBlocked = false;
     }
   }
 }
