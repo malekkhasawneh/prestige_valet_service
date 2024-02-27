@@ -221,13 +221,12 @@ class _ParkingScreenState extends State<ParkingScreen> {
                           .headerBoxHeight(context, screenHeight) -
                       24.5),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ...ScanQrCubit.get(context)
                       .tabs
                       .map(
                         (tab) => SizedBox(
-                          width: screenWidth * 0.45,
+                          width: screenWidth * 0.5,
                           height: 43,
                           child: ElevatedButton(
                             onPressed: () {
@@ -245,7 +244,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                       : ColorManager.whiteColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                    25), // Adjust the radius as needed
+                                    0), // Adjust the radius as needed
                               ),
                             ),
                             child: Text(

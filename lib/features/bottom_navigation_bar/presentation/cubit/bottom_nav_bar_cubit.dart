@@ -1,8 +1,9 @@
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -211,8 +212,6 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   Future<void> onReceiveNotificationListenerOnApp(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((message) {
-      log('====================================== ${message.notification!.title}');
-      log('====================================== ${message.notification!.body}');
       if (SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
               Constants.toUserNotification) {
@@ -225,6 +224,25 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         NotificationHelper.sendLocalNotification(
             title: message.notification!.title!,
             body: message.notification!.body!);
+        AwesomeDialog(
+          context: context,
+          dismissOnBackKeyPress: false,
+          dismissOnTouchOutside: false,
+          animType: AnimType.scale,
+          dialogType: DialogType.success,
+          headerAnimationLoop: false,
+          title: '${message.notification!.title!}\n ',
+          body: Center(
+            child: Text(
+              '${message.notification!.body!}\n ',
+              style: const TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          btnOkOnPress: () {},
+          btnOkColor: Colors.green,
+          showCloseIcon: true,
+        ).show();
       }
       if (message.data[Constants.notificationDataType] ==
           Constants.carParkedNotificationAction) {
@@ -240,6 +258,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   Future<void> onReceiveNotificationListenerOnBackground(
       BuildContext context) async {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      AwesomeDialog(
+              context: context,
+              title: 'Malek For test',
+              dialogType: DialogType.success)
+          .show();
       log('====================================== ${message.notification!.title}');
       log('====================================== ${message.notification!.body}');
       if (message.data[Constants.notificationDataType] ==
