@@ -6,9 +6,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
-import 'package:prestige_valet_app/features/valet/domain/bluetooth_printer_entity.dart';
+import 'package:prestige_valet_app/features/valet/domain/entity/bluetooth_printer_entity.dart';
+import 'package:prestige_valet_app/features/valet/domain/entity/tab_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
@@ -38,6 +40,21 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   String connectedDeviceName = '';
   var printerManager = PrinterManager.instance;
   BluetoothPrinter? selectedPrinter;
+
+  int _selectedTabId = 1;
+
+  int get getSelectedTabId => _selectedTabId;
+
+  set setSelectedTabId(int id) {
+    emit(SetValueLoading());
+    _selectedTabId = id;
+    emit(SetValueLoaded());
+  }
+
+  List<TabEntity> tabs = [
+    TabEntity(id: 1, text: Strings.requests),
+    TabEntity(id: 2, text: Strings.history),
+  ];
 
   Future<void> parkCar({required int valetId, bool isGuest = false}) async {
     emit(ScanQrLoading());
@@ -125,6 +142,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
+  late ParkHistoryModel parkHistoryModel;
+
   Future<void> getValetHistory(
       {required int valetId, bool canLoading = true}) async {
     if (canLoading) emit(ScanQrLoading());
@@ -133,22 +152,29 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           GetValetHistoryUseCaseParams(valetId: valetId));
       response.fold(
         (failure) {
-          log('====================================== error ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
         (success) {
-          log('====================================== error ${success.content.first.id}');
-
+          parkHistoryModel = success;
+          if (_selectedTabId == 1) {
+            for (var _ in parkHistoryModel.content) {
+              parkHistoryModel.content.removeWhere((element) =>
+              element.parkingStatus != 'RETRIEVING' &&
+                  !(element.parkingStatus == 'PARKED' && element.isGuest));
+            }
+          } else {
+            for (var _ in parkHistoryModel.content) {
+              parkHistoryModel.content.removeWhere((element) =>
+                  element.parkingStatus == 'RETRIEVING' ||
+                  (element.parkingStatus == 'PARKED' && element.isGuest));
+            }
+          }
           emit(
-            GetValetHistoryLoaded(
-              valetHistoryModel: success,
-            ),
+            const GetValetHistoryLoaded(),
           );
         },
       );
     } catch (failure) {
-      log('====================================== error ${failure.toString()}');
-
       emit(ScanQrError(failure: failure.toString()));
     }
   }

@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
-import 'package:prestige_valet_app/features/valet/domain/bluetooth_printer_entity.dart';
+import 'package:prestige_valet_app/features/valet/domain/entity/bluetooth_printer_entity.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:thermal_printer/thermal_printer.dart';
 

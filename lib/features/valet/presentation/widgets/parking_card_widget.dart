@@ -76,7 +76,9 @@ class ParkingCardWidget extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                   '0${phone.split(',').last}',
+                  phone.split(',').last.isEmpty
+                        ? ''
+                        : '0${phone.split(',').last}',
                     style: const TextStyle(
                       fontFamily: Fonts.sourceSansPro,
                       fontSize: 13,
