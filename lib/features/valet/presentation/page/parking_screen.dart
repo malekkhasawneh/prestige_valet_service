@@ -11,7 +11,6 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/widgets/parking_card_widget.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
-
 class ParkingScreen extends StatefulWidget {
   const ParkingScreen({super.key});
 
@@ -140,15 +139,17 @@ class _ParkingScreenState extends State<ParkingScreen> {
                               itemBuilder: (context, index) {
                                 return ParkingCardWidget(
                                   phone: ScanQrCubit.get(context)
-                                          .parkHistoryModel
-                                          .content[index]
-                                          .isGuest
+                                              .parkHistoryModel
+                                              .content[index]
+                                              .user ==
+                                          null
                                       ? ''
                                       : ScanQrCubit.get(context)
-                                          .parkHistoryModel
-                                          .content[index]
-                                          .user!
-                                          .phone,
+                                              .parkHistoryModel
+                                              .content[index]
+                                              .user!
+                                              .phone ??
+                                          '',
                                   imageUrl: ScanQrCubit.get(context)
                                           .parkHistoryModel
                                           .content[index]
@@ -199,6 +200,11 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                       .parkHistoryModel
                                       .content[index]
                                       .retrievingGate,
+                                  washCar: ScanQrCubit.get(context)
+                                          .parkHistoryModel
+                                          .content[index]
+                                          .carWash ??
+                                      false,
                                 );
                               },
                             )

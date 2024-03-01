@@ -13,7 +13,6 @@ import 'package:prestige_valet_app/features/edit_profile/presentation/cubit/edit
 import 'package:prestige_valet_app/features/forget_password/presentation/cubit/forget_password_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
-import 'package:prestige_valet_app/features/payment_gateway/presentation/cubit/payment_gateway_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
@@ -49,9 +48,6 @@ class PrestigeValetApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PaymentGatewayCubit>(
-          create: (_) => di.sl(),
-        ),
         BlocProvider<BottomNavBarCubit>(
             create: (_) => di.sl<BottomNavBarCubit>()),
         BlocProvider<HomeCubit>(create: (_) => di.sl<HomeCubit>()),

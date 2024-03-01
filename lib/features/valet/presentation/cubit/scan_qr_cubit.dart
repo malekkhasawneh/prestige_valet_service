@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image/image.dart' as img;
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
@@ -15,6 +17,7 @@ import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_u
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
+import 'package:prestige_valet_app/image_utils.dart';
 import 'package:thermal_printer/esc_pos_utils_platform/esc_pos_utils_platform.dart';
 import 'package:thermal_printer/thermal_printer.dart';
 
@@ -52,8 +55,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   }
 
   List<TabEntity> tabs = [
-    TabEntity(id: 1, text: Strings.requests),
-    TabEntity(id: 2, text: Strings.history),
+    TabEntity(id: 1, text: Strings.inParking),
+    TabEntity(id: 2, text: Strings.retrieved),
   ];
 
   Future<void> parkCar({required int valetId, bool isGuest = false}) async {
@@ -158,15 +161,13 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           parkHistoryModel = success;
           if (_selectedTabId == 1) {
             for (var _ in parkHistoryModel.content) {
-              parkHistoryModel.content.removeWhere((element) =>
-              element.parkingStatus != 'RETRIEVING' &&
-                  !(element.parkingStatus == 'PARKED' && element.isGuest));
+              parkHistoryModel.content.removeWhere(
+                  (element) => element.parkingStatus == 'DELIVERED_TO_USER');
             }
           } else {
             for (var _ in parkHistoryModel.content) {
-              parkHistoryModel.content.removeWhere((element) =>
-                  element.parkingStatus == 'RETRIEVING' ||
-                  (element.parkingStatus == 'PARKED' && element.isGuest));
+              parkHistoryModel.content.removeWhere(
+                  (element) => element.parkingStatus != 'DELIVERED_TO_USER');
             }
           }
           emit(
@@ -205,7 +206,6 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   }
 
   //Printer methods
-
   Future printQrForGuest(String qrData) async {
     final profile = await CapabilityProfile.load(name: 'XP-N160I');
     final generator = Generator(PaperSize.mm58, profile);
@@ -214,8 +214,24 @@ class ScanQrCubit extends Cubit<ScanQrState> {
 
   Future<List<int>> getGraphicsTicket(String qrString) async {
     List<int> bytes = [];
+
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
+    final ByteData data =
+        await rootBundle.load('images/printer_header_logo.png');
+    if (data.lengthInBytes > 0) {
+      final Uint8List imageBytes = data.buffer.asUint8List();
+      final decodedImage = img.decodeImage(imageBytes)!;
+      img.Image thumbnail = img.copyResize(decodedImage, height: 200);
+      img.Image originalImg =
+          img.copyResize(decodedImage, width: 200, height: 200);
+      var padding = (originalImg.width - thumbnail.width) / 1;
+      drawImage(originalImg, thumbnail, dstX: padding.toInt());
+      var grayscaleImage = img.grayscale(originalImg);
+      bytes += generator.feed(1);
+      bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
+      bytes += generator.feed(1);
+    }
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
     bytes += generator.text('\n' '');

@@ -19,6 +19,7 @@ class ParkingCardWidget extends StatelessWidget {
     required this.imageUrl,
     required this.isGuest,
     required this.gate,
+    required this.washCar,
   });
 
   final String phone;
@@ -28,6 +29,7 @@ class ParkingCardWidget extends StatelessWidget {
   final int parkingId;
   final bool isGuest;
   final String gate;
+  final bool washCar;
 
   @override
   Widget build(BuildContext context) {
@@ -89,25 +91,43 @@ class ParkingCardWidget extends StatelessWidget {
                   height: 40,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: const EdgeInsets.only(left: 5, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        gate.isEmpty ? "" : Strings.gate,
-                        style: const TextStyle(
-                          fontFamily: Fonts.sourceSansPro,
-                          fontSize: 12,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            gate.isEmpty ? "" : Strings.gate,
+                            style: const TextStyle(
+                              fontFamily: Fonts.sourceSansPro,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            gate,
+                            style: const TextStyle(
+                              fontFamily: Fonts.sourceSansPro,
+                              fontSize: 14,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
                       ),
-                      Text(
-                        gate,
-                        style: const TextStyle(
-                          fontFamily: Fonts.sourceSansPro,
-                          fontSize: 14,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
+                     !washCar
+                          ? const SizedBox()
+                          : const Padding(
+                              padding: EdgeInsets.only(top: 12),
+                              child: Text(
+                                'Car wash requested',
+                                style: TextStyle(
+                                  fontFamily: Fonts.sourceSansPro,
+                                  fontSize: 12,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
                     ],
                   ),
                 )

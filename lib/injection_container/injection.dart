@@ -14,7 +14,6 @@ import 'package:prestige_valet_app/injection_container/edit_profile_injection.da
 import 'package:prestige_valet_app/injection_container/forget_password_injection.dart';
 import 'package:prestige_valet_app/injection_container/home_injection.dart';
 import 'package:prestige_valet_app/injection_container/login_injection.dart';
-import 'package:prestige_valet_app/injection_container/payment_gateway_injection.dart';
 import 'package:prestige_valet_app/injection_container/pick_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/sign_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/splash_injection.dart';
@@ -27,7 +26,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   //Injections
-  paymentGatewayInjection();
+  //paymentGatewayInjection();
   signUpInjection();
   loginInjection();
   homeInjection();

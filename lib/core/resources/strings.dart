@@ -158,6 +158,6 @@ class Strings {
 
   static String valetUserCanceled(String userName) =>
       'User $userName has requested to cancel their previous request to retrieve their car. Please review and process the cancellation';
-  static String requests = 'Requests';
-  static String history = 'History';
+  static String inParking = 'In Parking';
+  static String retrieved = 'Retrieved';
 }
