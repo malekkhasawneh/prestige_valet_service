@@ -236,7 +236,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
               ),
             ),
             Positioned(
-              bottom: 125,
+              bottom: 135,
               child: SizedBox(
                 width: screenWidth * 0.8,
                 child: ElevatedButton(

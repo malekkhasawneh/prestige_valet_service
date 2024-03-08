@@ -130,6 +130,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  List<ParkHistoryContent> userHistory = [];
+
   Future<void> getUserHistory({
     required int userId,
   }) async {
@@ -140,6 +142,11 @@ class HomeCubit extends Cubit<HomeState> {
       response.fold((failure) {
         emit(HomeError(failure: failure.failure));
       }, (success) {
+        for (var userHistoryItem in success.content) {
+          if (userHistoryItem.parkingStatus == Constants.carDelivered) {
+            userHistory.add(userHistoryItem);
+          }
+        }
         loop:
         for (var status in success.content) {
           if (status.parkingStatus == Constants.carParked) {
