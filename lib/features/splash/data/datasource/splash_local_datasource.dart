@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SplashLocalDataSource {
   Future<bool> checkIsUserLogin();
@@ -13,7 +16,6 @@ abstract class SplashLocalDataSource {
 
   Future<bool> isUser();
 
-  Future<bool> isFirstOpining();
 }
 
 class SplashLocalDataSourceImpl implements SplashLocalDataSource {
@@ -21,7 +23,7 @@ class SplashLocalDataSourceImpl implements SplashLocalDataSource {
   Future<bool> checkIsUserLogin() async {
     try {
       return await CacheHelper.getValue(
-              key: CacheConstants.userLoginFlag, nullHandler: '0') ==
+          key: CacheConstants.userLoginFlag, nullHandler: '0') ==
           '1';
     } on Exception {
       throw CacheException();
@@ -32,7 +34,7 @@ class SplashLocalDataSourceImpl implements SplashLocalDataSource {
   Future<bool> isFirstTimeOpenTheApp() async {
     try {
       return await CacheHelper.getValue(
-              key: CacheConstants.isFirstTimeOpenTheApp, nullHandler: '1') ==
+          key: CacheConstants.isFirstTimeOpenTheApp, nullHandler: '1') ==
           '1';
     } on Exception {
       throw CacheException();
@@ -59,19 +61,4 @@ class SplashLocalDataSourceImpl implements SplashLocalDataSource {
     }
   }
 
-  @override
-  Future<bool> isFirstOpining() async {
-    try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      if (preferences.getBool(CacheConstants.isFirstOpening) ?? true) {
-        CacheHelper.clear();
-        preferences.setBool(CacheConstants.isFirstOpening, false);
-        return true;
-      } else {
-        return false;
-      }
-    } on Exception {
-      throw CacheException();
-    }
-  }
 }

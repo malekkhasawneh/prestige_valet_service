@@ -38,12 +38,11 @@ class ScanQrLoaded extends ScanQrState {
 }
 
 class GetValetHistoryLoaded extends ScanQrState {
-  final ParkHistoryModel valetHistoryModel;
 
-  const GetValetHistoryLoaded({required this.valetHistoryModel});
+  const GetValetHistoryLoaded();
 
   @override
-  List<Object> get props => [valetHistoryModel];
+  List<Object> get props => [];
 }
 
 class ScanQrError extends ScanQrState {

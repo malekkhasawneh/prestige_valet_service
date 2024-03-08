@@ -1,17 +1,25 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
+import 'package:image/image.dart' as img;
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
+import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/domain/entity/bluetooth_printer_entity.dart';
+import 'package:prestige_valet_app/features/valet/domain/entity/tab_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
+import 'package:prestige_valet_app/image_utils.dart';
+import 'package:thermal_printer/esc_pos_utils_platform/esc_pos_utils_platform.dart';
+import 'package:thermal_printer/thermal_printer.dart';
 
 part 'scan_qr_state.dart';
 
@@ -33,6 +41,23 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   bool connected = false;
   List availableBluetoothDevices = [];
   String connectedDeviceName = '';
+  var printerManager = PrinterManager.instance;
+  BluetoothPrinter? selectedPrinter;
+
+  int _selectedTabId = 1;
+
+  int get getSelectedTabId => _selectedTabId;
+
+  set setSelectedTabId(int id) {
+    emit(SetValueLoading());
+    _selectedTabId = id;
+    emit(SetValueLoaded());
+  }
+
+  List<TabEntity> tabs = [
+    TabEntity(id: 1, text: Strings.inParking),
+    TabEntity(id: 2, text: Strings.retrieved),
+  ];
 
   Future<void> parkCar({required int valetId, bool isGuest = false}) async {
     emit(ScanQrLoading());
@@ -46,7 +71,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           log('=================================== here ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
-        (success) {
+            (success) {
           log('=================================== here ${success.id}');
 
           emit(
@@ -120,6 +145,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
+  late ParkHistoryModel parkHistoryModel;
+
   Future<void> getValetHistory(
       {required int valetId, bool canLoading = true}) async {
     if (canLoading) emit(ScanQrLoading());
@@ -128,22 +155,27 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           GetValetHistoryUseCaseParams(valetId: valetId));
       response.fold(
         (failure) {
-          log('====================================== error ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
         (success) {
-          log('====================================== error ${success.content.first.id}');
-
+          parkHistoryModel = success;
+          if (_selectedTabId == 1) {
+            for (var _ in parkHistoryModel.content) {
+              parkHistoryModel.content.removeWhere(
+                  (element) => element.parkingStatus == 'DELIVERED_TO_USER');
+            }
+          } else {
+            for (var _ in parkHistoryModel.content) {
+              parkHistoryModel.content.removeWhere(
+                  (element) => element.parkingStatus != 'DELIVERED_TO_USER');
+            }
+          }
           emit(
-            GetValetHistoryLoaded(
-              valetHistoryModel: success,
-            ),
+            const GetValetHistoryLoaded(),
           );
         },
       );
     } catch (failure) {
-      log('====================================== error ${failure.toString()}');
-
       emit(ScanQrError(failure: failure.toString()));
     }
   }
@@ -173,4 +205,65 @@ class ScanQrCubit extends Cubit<ScanQrState> {
         : ColorManager.blackColor;
   }
 
+  //Printer methods
+  Future printQrForGuest(String qrData) async {
+    final profile = await CapabilityProfile.load(name: 'XP-N160I');
+    final generator = Generator(PaperSize.mm58, profile);
+    _printEscPos(await getGraphicsTicket(qrData), generator);
+  }
+
+  Future<List<int>> getGraphicsTicket(String qrString) async {
+    List<int> bytes = [];
+
+    CapabilityProfile profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm80, profile);
+    final ByteData data =
+        await rootBundle.load('images/printer_header_logo.png');
+    if (data.lengthInBytes > 0) {
+      final Uint8List imageBytes = data.buffer.asUint8List();
+      final decodedImage = img.decodeImage(imageBytes)!;
+      img.Image thumbnail = img.copyResize(decodedImage, height: 200);
+      img.Image originalImg =
+          img.copyResize(decodedImage, width: 200, height: 200);
+      var padding = (originalImg.width - thumbnail.width) / 1;
+      drawImage(originalImg, thumbnail, dstX: padding.toInt());
+      var grayscaleImage = img.grayscale(originalImg);
+      bytes += generator.feed(1);
+      bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
+      bytes += generator.feed(1);
+    }
+    bytes +=
+        generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
+    bytes += generator.text('\n' '');
+    bytes += generator.cut();
+    return bytes;
+  }
+
+  void _printEscPos(List<int> bytes, Generator generator) async {
+    var bluetoothPrinter = selectedPrinter!;
+    printerManager.send(type: bluetoothPrinter.typePrinter, bytes: bytes);
+  }
+
+  Future<void> connectDevice({bool isAutoConnect = false}) async {
+    emit(SetValueLoading());
+    connected = false;
+    await printerManager.connect(
+      type: PrinterType.bluetooth,
+      model: BluetoothPrinterInput(
+        name: selectedPrinter!.deviceName,
+        address: selectedPrinter!.address!,
+        autoConnect: true,
+      ),
+    );
+    connectedDeviceName = selectedPrinter!.deviceName ?? '';
+    emit(SetValueLoaded());
+  }
+
+  Future<void> disconnect() async {
+    emit(SetValueLoading());
+    PrinterManager.instance.disconnect(type: PrinterType.bluetooth);
+    connected = false;
+    connectedDeviceName = '';
+    emit(SetValueLoaded());
+  }
 }

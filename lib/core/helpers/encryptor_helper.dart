@@ -30,7 +30,7 @@ class EncryptorHelper {
   static String decryptValue(String encryptedText) {
     try {
       final encryptor = encrypt.Encrypter(
-          encrypt.AES(_key, mode: encrypt.AESMode.gcm, padding: null));
+          encrypt.AES(_key, mode: encrypt.AESMode.gcm, padding: null,),);
       final decrypted = encryptor.decrypt64(
           encryptedText.padRight(
               encryptedText.length + (4 - encryptedText.length % 4) % 4, '='),

@@ -38,6 +38,7 @@ class Strings {
   static const String carReady = 'Your Car Is Ready For Pickup';
   static const String payWithCash = 'Pay with cash';
   static const String payWithCard = 'Pay with card';
+  static const String payWithSTC = 'STC pay';
   static const String seeYouSoon = 'See you soon!';
 
   //Profile
@@ -158,4 +159,7 @@ class Strings {
 
   static String valetUserCanceled(String userName) =>
       'User $userName has requested to cancel their previous request to retrieve their car. Please review and process the cancellation';
+  static String inParking = 'In Parking';
+  static String retrieved = 'Retrieved';
+  static String ok = 'Ok';
 }

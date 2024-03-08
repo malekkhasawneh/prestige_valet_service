@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -11,7 +14,6 @@ import 'package:prestige_valet_app/injection_container/edit_profile_injection.da
 import 'package:prestige_valet_app/injection_container/forget_password_injection.dart';
 import 'package:prestige_valet_app/injection_container/home_injection.dart';
 import 'package:prestige_valet_app/injection_container/login_injection.dart';
-import 'package:prestige_valet_app/injection_container/payment_gateway_injection.dart';
 import 'package:prestige_valet_app/injection_container/pick_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/sign_up_injection.dart';
 import 'package:prestige_valet_app/injection_container/splash_injection.dart';
@@ -24,7 +26,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   //Injections
-  paymentGatewayInjection();
+  //paymentGatewayInjection();
   signUpInjection();
   loginInjection();
   homeInjection();
@@ -49,4 +51,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => InternetConnectionChecker());
   await NotificationHelper.init();
+  if (Platform.isIOS) {
+    DartPingIOS.register();
+  }
 }

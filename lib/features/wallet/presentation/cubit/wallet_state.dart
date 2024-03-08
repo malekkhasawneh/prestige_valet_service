@@ -14,24 +14,10 @@ class WalletLoading extends WalletState {
   List<Object> get props => [];
 }
 
-class ExecutePaymentLoading extends WalletState {
-  @override
-  List<Object> get props => [];
-}
-
 class WalletLoaded extends WalletState {
   final List<WalletModel> model;
 
   const WalletLoaded({required this.model});
-
-  @override
-  List<Object> get props => [model];
-}
-
-class ExecutePaymentLoaded extends WalletState {
-  final MFDirectPaymentResponse model;
-
-  const ExecutePaymentLoaded({required this.model});
 
   @override
   List<Object> get props => [model];
@@ -44,4 +30,28 @@ class WalletError extends WalletState {
 
   @override
   List<Object> get props => [failure];
+}
+
+// Execute Payment States
+class ExecutePaymentLoading extends WalletState {
+  @override
+  List<Object> get props => [];
+}
+
+class ExecutePaymentLoaded extends WalletState {
+  final bool status;
+
+  const ExecutePaymentLoaded({required this.status});
+
+  @override
+  List<Object> get props => [status];
+}
+
+class ExecutePaymentError extends WalletState {
+  final String error;
+
+  const ExecutePaymentError({required this.error});
+
+  @override
+  List<Object> get props => [error];
 }

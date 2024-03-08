@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
+import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 
 class HistoryCardWidget extends StatelessWidget {
-  const HistoryCardWidget({super.key});
+  const HistoryCardWidget({super.key, required this.item});
+
+  final ParkHistoryContent item;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class HistoryCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         color: Colors.grey.withOpacity(0.1),
       ),
-      child: const Column(
+      child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
@@ -31,29 +34,29 @@ class HistoryCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Taj Mall',
-                    style: TextStyle(
+                    item.valet.location!.locationName!,
+                    style: const TextStyle(
                       fontFamily: Fonts.sourceSansPro,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text('12/10/2023  4:30 PM - 7:55 PM',style: TextStyle(fontSize: 10),),
+                  const Text('12/10/2023  4:30 PM - 7:55 PM',style: TextStyle(fontSize: 10),),
 
                 ],
               ),
-              SizedBox(height: 2,),
-              Text(
-                'Gate 3',
-                style: TextStyle(
+              const SizedBox(height: 2,),
+               Text(
+                item.retrievingGate,
+                style: const TextStyle(
                   fontFamily: Fonts.sourceSansPro,
                 ),
                 textAlign: TextAlign.start,
               ),
             ],
           ),
-          SizedBox(height: 20,),
-          Row(
+          const SizedBox(height: 20,),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(

@@ -14,6 +14,7 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/c
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
+import 'package:prestige_valet_app/features/valet/presentation/page/connect_printer_screen.dart';
 
 class ScanQrCodeScreen extends StatelessWidget {
   const ScanQrCodeScreen({super.key});
@@ -37,31 +38,14 @@ class ScanQrCodeScreen extends StatelessWidget {
                 body: Strings.userCarParked,
                 notificationType: Constants.carParkedNotificationAction,
                 notificationReceiver: Constants.toUserNotification);
-            AwesomeDialog(
-              context: context,
-              dismissOnBackKeyPress: false,
-              dismissOnTouchOutside: false,
-              animType: AnimType.scale,
-              dialogType: DialogType.success,
-              body: Center(
-                child: Text(
-                  "${state.parkedCarsModel.user!.firstName}'s car has been parked successfully\n ",
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              btnOkOnPress: () {},
-              btnOkColor: Colors.green,
-            ).show();
           } else {
-            ///Todo :: Here add print method
+            ScanQrCubit.get(context).printQrForGuest(
+                '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}');
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {
         if(state.failure == Constants.internetFailure){
           Navigator.pushNamed(context, Routes.noInternetScreen);
-        }else if(state.failure == Constants.serverFailure){
-          Navigator.pushReplacementNamed(context, Routes.loginScreen);
         }else {
           AwesomeDialog(
             context: context,
@@ -142,7 +126,12 @@ class ScanQrCodeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 10),
               child: GestureDetector(
                 onTap: () async {
-                  ///Todo :: navigate to printers devices screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ConnectPrinterScreen(),
+                    ),
+                  );
                 },
                 child: const Icon(
                   Icons.print,

@@ -17,6 +17,7 @@ abstract class ValetRemoteDataSource {
   Future<ParkedCarsModel> carDelivered({required int parkingId});
 
   Future<ParkHistoryModel> getValetHistory({required int valetId});
+
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
@@ -99,4 +100,5 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
       throw ServerException();
     }
   }
+
 }

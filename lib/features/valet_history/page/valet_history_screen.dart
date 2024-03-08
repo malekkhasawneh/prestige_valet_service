@@ -52,11 +52,20 @@ class ValetHistoryScreen extends StatelessWidget {
           ),
           SizedBox(
             height: HomeCubit.get(context).bodyBoxHeight(context, screenHeight),
-            child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, state) {
-                  return const HistoryCardWidget();
-                }),
+            child: HomeCubit.get(context).userHistory.isEmpty
+                ? const Center(
+                    child: Text(
+                      Strings.thereAreNoData,
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: HomeCubit.get(context).userHistory.length,
+                    itemBuilder: (context, index) {
+                      return HistoryCardWidget(
+                        item: HomeCubit.get(context).userHistory[index],
+                      );
+                    }),
           ),
         ],
       )),
