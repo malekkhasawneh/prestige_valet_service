@@ -36,8 +36,12 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
     emit(SetAndGetValueLoaded());
   }
 
-  Future<void> addNewCard(
-      {required bool isFromEdit}) async {
+  bool checkCvv() {
+    emit(SetAndGetValueLoading());
+    return cvvController.text.isNotEmpty && cvvController.text.length == 3;
+  }
+
+  Future<void> addNewCard({required bool isFromEdit}) async {
     try {
       final response = await addNewCardUseCase(AddNewCardUseCaseParams(
         walletId: walletId,
@@ -63,7 +67,7 @@ class AddCreditCardCubit extends Cubit<AddCreditCardState> {
   }
 
   bool isCardNumberCorrect() {
-    return cardNumberController.text.length == 14;
+    return cardNumberController.text.length == 16;
   }
 
   void resetValues(bool isFromEdit) {

@@ -145,7 +145,7 @@ class _AddCreditCardScreenState extends State<AddCreditCardScreen> {
                     textInputType: TextInputType.number,
                     mustCheck: AddCreditCardCubit.get(context).mustCheck &&
                         !AddCreditCardCubit.get(context).isCardNumberCorrect(),
-                    maxLength: 14,
+                    maxLength: 16,
                     errorText:
                         AddCreditCardCubit.get(context).isCardNumberCorrect()
                             ? Strings.textFieldError
