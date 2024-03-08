@@ -55,4 +55,6 @@ class NetworkConstants {
   static const String verifyOtp = 'auth/verifyToken';
 
   static const String isTokenValid = 'auth/token/validate';
+
+  static const String sendPayment = 'payment';
 }
