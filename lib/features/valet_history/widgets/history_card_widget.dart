@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
-import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
+import 'package:prestige_valet_app/features/home/data/model/payment_history_model.dart';
 
 class HistoryCardWidget extends StatelessWidget {
   const HistoryCardWidget({super.key, required this.item});
 
-  final ParkHistoryContent item;
+  final PaymentHistoryContent item;
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +35,22 @@ class HistoryCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    item.valet.location!.locationName!,
+                    item.locationName,
                     style: const TextStyle(
                       fontFamily: Fonts.sourceSansPro,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text('12/10/2023  4:30 PM - 7:55 PM',style: TextStyle(fontSize: 10),),
-
+                  Text(
+                    DateFormat("dd/M/yyyy hh:mm a").format(item.createdOn),
+                    style: const TextStyle(fontSize: 10),
+                  ),
                 ],
               ),
               const SizedBox(height: 2,),
                Text(
-                item.retrievingGate,
+                 item.gateName,
                 style: const TextStyle(
                   fontFamily: Fonts.sourceSansPro,
                 ),
@@ -56,19 +59,19 @@ class HistoryCardWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20,),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Paid in cash',
-                style: TextStyle(
+                item.type,
+                style: const TextStyle(
                   fontFamily: Fonts.sourceSansPro,
                 ),
                 textAlign: TextAlign.start,
               ),
               Text(
-                '5 JD',
-                style: TextStyle(
+                item.amount.toString(),
+                style: const TextStyle(
                   fontFamily: Fonts.sourceSansPro,
                 ),
                 textAlign: TextAlign.start,

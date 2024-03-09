@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:prestige_valet_app/core/errors/failures.dart';
+import 'package:prestige_valet_app/features/home/data/model/payment_history_model.dart';
 import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
@@ -27,5 +28,9 @@ abstract class HomeRepository {
     required String token,
   });
   Future<Either<Failures,void>> deleteUserAccountFomFirebase();
-  Future<Either<Failures,bool>> checkInternetConnection();
+
+  Future<Either<Failures, bool>> checkInternetConnection();
+
+  Future<Either<Failures, PaymentHistoryModel>> getParkingHistory(
+      {required int userId});
 }

@@ -55,3 +55,27 @@ class ExecutePaymentError extends WalletState {
   @override
   List<Object> get props => [error];
 }
+
+// Send Payment States
+class SendPaymentLoading extends WalletState {
+  @override
+  List<Object> get props => [];
+}
+
+class SendPaymentLoaded extends WalletState {
+  final bool status;
+
+  const SendPaymentLoaded({required this.status});
+
+  @override
+  List<Object> get props => [status];
+}
+
+class SendPaymentError extends WalletState {
+  final String error;
+
+  const SendPaymentError({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

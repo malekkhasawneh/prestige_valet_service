@@ -26,7 +26,7 @@ class CancelButtonWidget extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             HomeCubit.get(context).cancelCarRetrieving(
-                parkingId: HomeCubit.get(context).parkedCarModel.id);
+                parkingId: HomeCubit.get(context).parkedCarModel.parking.id);
           },
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(

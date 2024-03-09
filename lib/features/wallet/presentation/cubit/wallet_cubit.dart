@@ -8,6 +8,7 @@ import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/wallet/data/model/wallet_model.dart';
 import 'package:prestige_valet_app/features/wallet/domain/usecase/get_cards_usecase.dart';
+import 'package:prestige_valet_app/features/wallet/domain/usecase/send_payment_usecase.dart';
 
 part 'wallet_state.dart';
 
@@ -16,9 +17,11 @@ class WalletCubit extends Cubit<WalletState> {
 
   WalletCubit({
     required this.getCardsUseCase,
+    required this.sendPaymentUseCase,
   }) : super(WalletInitial());
 
   final GetCardsUseCase getCardsUseCase;
+  final SendPaymentUseCase sendPaymentUseCase;
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -130,6 +133,27 @@ class WalletCubit extends Cubit<WalletState> {
           .catchError((error) => emit(ExecutePaymentError(error: error)));
     } catch (error) {
       emit(ExecutePaymentError(error: error.toString()));
+    }
+  }
+
+  Future<void> sendPayment(
+      {required String type,
+      required String amount,
+      required int userId,
+      required int gateId,
+      required int parkingId}) async {
+    emit(SendPaymentLoading());
+    try {
+      final response = await sendPaymentUseCase(SendPaymentUseCaseParams(
+          type: type,
+          amount: amount,
+          userId: userId,
+          gateId: gateId,
+          parkingId: parkingId));
+      response.fold((l) => emit(SendPaymentError(error: l.failure)),
+          (r) => emit(SendPaymentLoaded(status: r)));
+    } catch (error) {
+      emit(SendPaymentError(error: error.toString()));
     }
   }
 }

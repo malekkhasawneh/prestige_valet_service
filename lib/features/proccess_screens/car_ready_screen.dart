@@ -7,9 +7,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfatoorah_flutter/myfatoorah_flutter.dart';
-import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
@@ -29,26 +29,10 @@ class CarReadyScreen extends StatefulWidget {
 }
 
 class _CarReadyScreenState extends State<CarReadyScreen> {
-  int totalPrice = 0;
-  int parkingPrice = 0;
-
   @override
   void initState() {
-    getValues();
     initiate();
     super.initState();
-  }
-
-  getValues() async {
-    parkingPrice = int.parse(await CacheHelper.getValue(
-      key: 'parkingPrice',
-    ));
-    totalPrice = int.parse(await CacheHelper.getValue(
-      key: 'totalPrice',
-    ));
-    setState(() {
-      amount = '5.0';
-    });
   }
 
   @override
@@ -60,23 +44,24 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
       listener: (context, state) {
         if (state is ExecutePaymentLoaded) {
           if (state.status) {
-            AwesomeDialog(
-              context: context,
-              animType: AnimType.topSlide,
-              dialogType: DialogType.success,
-              dismissOnTouchOutside: false,
-              dismissOnBackKeyPress: false,
-              body: const Center(
-                child: Text(
-                  'Payment done successfully\n ',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              btnOkOnPress: () {
-                Navigator.pushNamed(context, Routes.successScreen);
-              },
-            ).show();
+            WalletCubit.get(context).sendPayment(
+                type: selectedPaymentMethodIndex == 8
+                    ? 'CARD'
+                    : selectedPaymentMethodIndex == 5
+                        ? 'STC'
+                        : 'CASH',
+                amount: BottomNavBarCubit.get(context)
+                    .retrieveCarModel
+                    .totalPrice
+                    .toString(),
+                userId: BottomNavBarCubit.get(context)
+                    .retrieveCarModel
+                    .user!
+                    .id
+                    .toInt(),
+                gateId: BottomNavBarCubit.get(context).retrieveCarModel.gateId,
+                parkingId:
+                    BottomNavBarCubit.get(context).retrieveCarModel.id.toInt());
           } else {
             AwesomeDialog(
                     context: context,
@@ -97,7 +82,29 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
           }
         } else if (state is ExecutePaymentError) {
           if (state.error == Constants.paymentInternetError) {
-            HomeCubit.get(context).refreshAfterConnect = () {};
+            HomeCubit.get(context).refreshAfterConnect = () {
+              WalletCubit.get(context).sendPayment(
+                  type: selectedPaymentMethodIndex == 8
+                      ? 'CARD'
+                      : selectedPaymentMethodIndex == 5
+                          ? 'STC'
+                          : 'CASH',
+                  amount: BottomNavBarCubit.get(context)
+                      .retrieveCarModel
+                      .totalPrice
+                      .toString(),
+                  userId: BottomNavBarCubit.get(context)
+                      .retrieveCarModel
+                      .user!
+                      .id
+                      .toInt(),
+                  gateId:
+                      BottomNavBarCubit.get(context).retrieveCarModel.gateId,
+                  parkingId: BottomNavBarCubit.get(context)
+                      .retrieveCarModel
+                      .id
+                      .toInt());
+            };
             Navigator.pushNamed(context, Routes.noInternetScreen);
           } else {
             AwesomeDialog(
@@ -116,6 +123,31 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                     btnOkOnPress: () {},
                     btnOkColor: Colors.red)
                 .show();
+          }
+        } else if (state is SendPaymentLoaded) {
+          if (state.status) {
+            AwesomeDialog(
+              context: context,
+              animType: AnimType.topSlide,
+              dialogType: DialogType.success,
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              body: const Center(
+                child: Text(
+                  'Payment done successfully\n ',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              btnOkOnPress: () {
+                Navigator.pushNamed(context, Routes.successScreen);
+              },
+            ).show();
+          }
+        } else if (state is SendPaymentError) {
+          if (state.error == Constants.internetFailure) {
+            HomeCubit.get(context).refreshAfterConnect = () {};
+            Navigator.pushNamed(context, Routes.noInternetScreen);
           }
         }
       },
@@ -297,7 +329,10 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                     WalletCubit.get(context).executeRegularPayment(
                         paymentMethods[selectedPaymentMethodIndex]
                             .paymentMethodId!,
-                        amount);
+                        BottomNavBarCubit.get(context)
+                            .retrieveCarModel
+                            .totalPrice
+                            .toString());
                   },
                   child: const Row(
                     children: [
@@ -354,7 +389,10 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                           paymentMethods[selectedPaymentMethodIndex]
                               .paymentMethodId!,
                           false,
-                          amount);
+                          BottomNavBarCubit.get(context)
+                              .retrieveCarModel
+                              .totalPrice
+                              .toString());
                     }
                   },
                   child: const Row(
@@ -391,15 +429,8 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
 
   List<MFPaymentMethod> paymentMethods = [];
   List<bool> isSelected = [];
-  int selectedPaymentMethodIndex = 8;
+  int selectedPaymentMethodIndex = -1;
 
-  String cardNumber = "5453010000095489";
-  String expiryMonth = "05";
-  String expiryYear = "21";
-  String securityCode = "100";
-  String cardHolderName = "Test Account";
-
-  String amount = "5.0";
   bool visibilityObs = false;
 
   late MFCardPaymentView mfCardView;
@@ -446,7 +477,10 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
   // Send Payment
   sendPayment() async {
     var request = MFSendPaymentRequest(
-        invoiceValue: double.parse(amount),
+        invoiceValue: double.parse(BottomNavBarCubit.get(context)
+            .retrieveCarModel
+            .totalPrice
+            .toString()),
         customerName: "Customer name",
         notificationOption: MFNotificationOption.LINK);
     // var invoiceItem = MFInvoiceItem(itemName: "item1", quantity: 1, unitPrice: 1);
@@ -461,7 +495,10 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
   // Initiate Payment
   initiatePayment() async {
     var request = MFInitiatePaymentRequest(
-        invoiceAmount: double.parse(amount),
+        invoiceAmount: double.parse(BottomNavBarCubit.get(context)
+            .retrieveCarModel
+            .totalPrice
+            .toString()),
         currencyIso: MFCurrencyISO.SAUDIARABIA_SAR);
 
     await MFSDK
@@ -579,8 +616,13 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
     }
   }
 
-  updateAmounnt() {
-    if (Platform.isIOS) MFApplepay.updateAmount(double.parse(amount));
+  updateAmount() {
+    if (Platform.isIOS) {
+      MFApplepay.updateAmount(double.parse(BottomNavBarCubit.get(context)
+          .retrieveCarModel
+          .totalPrice
+          .toString()));
+    }
   }
 
   applePayPayment(MFInitiateSessionResponse session) async {

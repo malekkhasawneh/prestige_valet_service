@@ -63,3 +63,27 @@ class HomeError extends HomeState {
   @override
   List<Object> get props => [failure];
 }
+
+// Payment history states
+class GetPaymentHistoryLoading extends HomeState {
+  @override
+  List<Object> get props => [];
+}
+
+class GetPaymentHistoryLoaded extends HomeState {
+  final PaymentHistoryModel paymentHistoryModel;
+
+  const GetPaymentHistoryLoaded({required this.paymentHistoryModel});
+
+  @override
+  List<Object> get props => [paymentHistoryModel];
+}
+
+class GetPaymentHistoryError extends HomeState {
+  final String failure;
+
+  const GetPaymentHistoryError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
+}

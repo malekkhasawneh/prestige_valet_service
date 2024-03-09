@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -5,7 +8,9 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
+import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
@@ -14,6 +19,7 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/is_token_valid_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/must_reset_notification_token_usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/domain/usecase/update_notification_token_usecase.dart';
+import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/send_notification_usecase.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
@@ -61,11 +67,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   bool isLogout = false;
 
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
-        SplashCubit.get(context).isUser
-            ? (HomeCubit.get(context).isUserCarParked &&
-                    !HomeCubit.get(context).isUserCarInRetrieve)
-                ? const CarParkedHomeScreen()
-                : (!HomeCubit.get(context).isUserCarParked &&
+    SplashCubit.get(context).isUser
+        ? (HomeCubit.get(context).isUserCarParked &&
+        !HomeCubit.get(context).isUserCarInRetrieve)
+        ? const CarParkedHomeScreen()
+        : (!HomeCubit.get(context).isUserCarParked &&
                         HomeCubit.get(context).isUserCarInRetrieve)
                     ? const CarRequestScreen()
                     : const MainHomeScreen()
@@ -75,6 +81,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
             : const ParkingScreen(),
         const ProfileScreen(),
       ];
+
+  late RetrieveCarModel retrieveCarModel;
 
   Future<void> addNotificationToken({required int userId}) async {
     emit(BottomNavBarLoading());
@@ -86,11 +94,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {
         userNotificationToken = success.token;
-        tokenId = success.tokenId;
-        log('====================================== in add id ${success.tokenId}');
-        log('====================================== in add token ${success.token}');
-        emit(BottomNavBarLoaded());
-      });
+            tokenId = success.tokenId;
+            log('====================================== in add id ${success.tokenId}');
+            log('====================================== in add token ${success.token}');
+            emit(BottomNavBarLoaded());
+          });
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
     }
@@ -100,7 +108,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     emit(BottomNavBarLoading());
     try {
       final response =
-          await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
+      await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
         userId: userId,
       ));
       response.fold((failure) {
@@ -129,19 +137,19 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     try {
       final response = await updateNotificationTokenUseCase(
           UpdateNotificationTokenUseCaseParams(
-        userId: userId,
-        tokenId: tokenId,
-        token: isLogout ? Constants.userLoggedOut : await getTokenForUser(),
-      ));
+            userId: userId,
+            tokenId: tokenId,
+            token: isLogout ? Constants.userLoggedOut : await getTokenForUser(),
+          ));
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {
-        userNotificationToken = success.token;
-        tokenId = success.tokenId;
-        log('====================================== in update id ${success.tokenId}');
-        log('====================================== in update token ${success.token}');
-        emit(BottomNavBarLoaded());
-      });
+            userNotificationToken = success.token;
+            tokenId = success.tokenId;
+            log('====================================== in update id ${success.tokenId}');
+            log('====================================== in update token ${success.token}');
+            emit(BottomNavBarLoaded());
+          });
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
     }
@@ -163,12 +171,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     return isTrue;
   }
 
-  Future<void> sendNotification(
-      {required int userId,
-      required String title,
-      required String body,
-      required String notificationType,
-      required String notificationReceiver}) async {
+  Future<void> sendNotification({required int userId,
+    required String title,
+    required String body,
+    required String notificationType,
+    required String notificationReceiver}) async {
     emit(BottomNavBarLoading());
     try {
       await getNotificationTokenForUser(userId: userId);
@@ -180,8 +187,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
               token: userNotificationToken,
               notificationReceiver: notificationReceiver));
       response.fold(
-          (failure) => emit(BottomNavBarError(failure: failure.failure)),
-          (success) => emit(SendNotificationLoaded()));
+              (failure) => emit(BottomNavBarError(failure: failure.failure)),
+              (success) => emit(SendNotificationLoaded()));
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
     }
@@ -192,10 +199,10 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     try {
       final response = await isTokenValidUseCase(NoParams());
       response.fold(
-        (failure) => emit(
+            (failure) => emit(
           BottomNavBarError(failure: failure.failure),
         ),
-        (success) => emit(
+            (success) => emit(
           IsTokenValidLoaded(isValid: success),
         ),
       );
@@ -211,7 +218,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   }
 
   Future<void> onReceiveNotificationListenerOnApp(BuildContext context) async {
-    FirebaseMessaging.onMessage.listen((message) {
+    FirebaseMessaging.onMessage.listen((message) async{
       if (SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
               Constants.toUserNotification) {
@@ -250,19 +257,18 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
             context, Routes.parkedSuccessfullyScreen);
       } else if (message.data[Constants.notificationDataType] ==
           Constants.carDeliveredNotificationAction) {
+        retrieveCarModel = RetrieveCarModel.fromJson(
+          json.decode(
+              await CacheHelper.getValue(key: CacheConstants.retrievedCarModel),
+        ),
+      );
         Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });
   }
 
-  Future<void> onReceiveNotificationListenerOnBackground(
-      BuildContext context) async {
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      AwesomeDialog(
-              context: context,
-              title: 'Malek For test',
-              dialogType: DialogType.success)
-          .show();
+  Future<void> onReceiveNotificationListenerOnBackground(BuildContext context) async {
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       log('====================================== ${message.notification!.title}');
       log('====================================== ${message.notification!.body}');
       if (message.data[Constants.notificationDataType] ==
@@ -271,6 +277,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
             context, Routes.parkedSuccessfullyScreen);
       } else if (message.data[Constants.notificationDataType] ==
           Constants.carDeliveredNotificationAction) {
+        retrieveCarModel = RetrieveCarModel.fromJson(
+          json.decode(
+            await CacheHelper.getValue(key: CacheConstants.retrievedCarModel),
+          ),
+        );
         Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });

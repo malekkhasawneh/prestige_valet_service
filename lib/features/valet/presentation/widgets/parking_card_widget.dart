@@ -19,7 +19,7 @@ class ParkingCardWidget extends StatelessWidget {
     required this.imageUrl,
     required this.isGuest,
     required this.gate,
-    required this.washCar,
+
   });
 
   final String phone;
@@ -29,7 +29,6 @@ class ParkingCardWidget extends StatelessWidget {
   final int parkingId;
   final bool isGuest;
   final String gate;
-  final bool washCar;
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +114,7 @@ class ParkingCardWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                     !washCar
-                          ? const SizedBox()
-                          : const Padding(
-                              padding: EdgeInsets.only(top: 12),
-                              child: Text(
-                                'Car wash requested',
-                                style: TextStyle(
-                                  fontFamily: Fonts.sourceSansPro,
-                                  fontSize: 12,
-                                ),
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
+                      const SizedBox(),
                     ],
                   ),
                 )

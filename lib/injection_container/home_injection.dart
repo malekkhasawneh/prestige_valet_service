@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/features/home/data/repository/home_repository
 import 'package:prestige_valet_app/features/home/domain/repository/home_repository.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/check_internet_connction_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/get_parking_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
@@ -24,6 +25,7 @@ Future<void> homeInjection() async {
       cancelCarRetrievingUseCase: sl(),
       deleteFirebaseAccountUseCase: sl(),
       checkInternetConnectionUseCase: sl(),
+      getParkingHistoryUseCase: sl(),
     ),
   );
 
@@ -33,11 +35,12 @@ Future<void> homeInjection() async {
   sl.registerLazySingleton(() => WashCarUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetUserHistoryUseCase(repository: sl()));
   sl.registerLazySingleton(() => CancelCarRetrievingUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetParkingHistoryUseCase(repository: sl()));
+
   sl.registerLazySingleton(
       () => DeleteFirebaseAccountUseCase(repository: sl()));
   sl.registerLazySingleton(
       () => CheckInternetConnectionUseCase(repository: sl()));
-
   // Repository
   sl.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(

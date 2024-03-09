@@ -5,9 +5,9 @@ class ParkedCarsModel {
   String? updatedBy;
   int id;
   User? user;
-  User valet;
+  User? valet;
   String? parkingStatus;
-  bool washCar;
+
   bool isUserCanceled = false;
   bool isGuest;
   String? guestName;
@@ -21,22 +21,20 @@ class ParkedCarsModel {
     required this.user,
     required this.valet,
     required this.parkingStatus,
-    required this.washCar,
     required this.isGuest,
     required this.guestName,
     this.isUserCanceled = false,
   });
 
   factory ParkedCarsModel.fromJson(Map<String, dynamic> json) => ParkedCarsModel(
-    createdOn: DateTime.parse(json["createdOn"]),
+    createdOn: DateTime.parse(json["createdOn"] ?? DateTime.now().toString()),
         createdBy: json["createdBy"] ?? '',
-        updatedOn: DateTime.parse(json["updatedOn"]),
+        updatedOn: DateTime.parse(json["updatedOn"]?? DateTime.now().toString()),
         updatedBy: json["updatedBy"] ?? '',
-        id: json["id"],
+        id: json["id"] ?? -1,
         user: json["user"] == null?null: User.fromJson(json["user"]),
-        valet: User.fromJson(json["valet"]),
+        valet:json["valet"] ==null?null: User.fromJson(json["valet"]),
         parkingStatus: json["parkingStatus"]??'',
-        washCar: json['carWash'],
         isGuest: json["isGuest"] ?? false,
         guestName: json["guestName"] ?? '',
       );
@@ -49,9 +47,8 @@ class ParkedCarsModel {
         "updatedBy": updatedBy,
         "id": id,
         "user": user!.toJson(),
-        "valet": valet.toJson(),
+        "valet": valet!.toJson(),
         "parkingStatus": parkingStatus,
-        "carWash": washCar,
       };
 }
 
@@ -81,13 +78,13 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
+    id: json["id"]??-1,
     userUuid: json["userUuid"]??'',
     firstName: json["firstName"]??'',
     lastName: json["lastName"]??'',
     phone: json["phone"]??'',
     profileImg: json["profileImg"]??'',
-    socialProfile: json["socialProfile"],
+    socialProfile: json["socialProfile"]??'',
     location: json["location"] == null ? null : Location.fromJson(json["location"]),
     role: json["role"]??'',
     email: json["email"]??'',
@@ -131,14 +128,14 @@ class Location {
   });
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-    createdOn: DateTime.parse(json["createdOn"]),
+    createdOn: DateTime.parse(json["createdOn"] ?? DateTime.now().toString()),
     createdBy: json["createdBy"]??'',
-    updatedOn: DateTime.parse(json["updatedOn"]),
+    updatedOn: DateTime.parse(json["updatedOn"]?? DateTime.now().toString()),
     updatedBy: json["updatedBy"]??'',
-    id: json["id"],
+    id: json["id"]??-1,
     locationName: json["locationName"]??'',
     cityName: json["cityName"]??'',
-    price: json["price"],
+    price: json["price"]??0.0,
     availabilityStatus: json["availabilityStatus"]??'',
   );
 
