@@ -7,6 +7,7 @@ import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
+import 'package:prestige_valet_app/features/home/data/model/payment_history_model.dart';
 import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
@@ -31,6 +32,8 @@ abstract class HomeRemoteDataSource {
   Future<void> deleteUserAccountFomFirebase();
 
   Future<bool> checkInternetConnection();
+
+  Future<PaymentHistoryModel> getParkingHistory({required int userId});
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -75,11 +78,12 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     try {
       await DioHelper.addTokenHeader();
       final Response response =
-      await DioHelper.get(NetworkConstants.getUserHistory(
+          await DioHelper.get(NetworkConstants.getUserHistory(
         userId: userId,
       ));
+      log('=================================iii ${response.data}');
       ParkHistoryModel parkHistoryModel =
-      ParkHistoryModel.fromJson(response.data);
+          ParkHistoryModel.fromJson(response.data);
       return parkHistoryModel;
     } on Exception {
       throw ServerException();
@@ -149,6 +153,23 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       return true;
     } else {
       return false;
+    }
+  }
+
+  @override
+  Future<PaymentHistoryModel> getParkingHistory({required int userId}) async {
+    try {
+      Response response =
+          await DioHelper.get(NetworkConstants.getPaymentHistory(userId));
+      if (response.statusCode == 200) {
+        PaymentHistoryModel paymentHistoryModel =
+            PaymentHistoryModel.fromJson(response.data);
+        return paymentHistoryModel;
+      } else {
+        throw ServerException();
+      }
+    } on Exception {
+      throw ServerException();
     }
   }
 }

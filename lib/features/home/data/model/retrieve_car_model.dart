@@ -1,16 +1,15 @@
 class RetrieveCarModel {
-  double id;
-  double locationId;
-  User user;
-  User valet;
-  double retrieveAtGate;
+  int id;
+  int locationId;
+  User? user;
+  User? valet;
+  int retrieveAtGate;
   bool isGuest;
   String guestName;
   String parkingStatus;
-  bool carWash;
-  double carWashPrice;
   double parkingPrice;
   double totalPrice;
+  int gateId;
 
   RetrieveCarModel({
     required this.id,
@@ -21,46 +20,44 @@ class RetrieveCarModel {
     required this.isGuest,
     required this.guestName,
     required this.parkingStatus,
-    required this.carWash,
-    required this.carWashPrice,
     required this.parkingPrice,
     required this.totalPrice,
+    this.gateId = -1,
   });
 
   factory RetrieveCarModel.fromJson(Map<String, dynamic> json) => RetrieveCarModel(
-    id: json["id"].toDouble(),
-        locationId: json["locationId"].toDouble(),
-        user: User.fromJson(json["user"]),
-        valet: User.fromJson(json["valet"]),
-        retrieveAtGate: json["retrieveAtGate"].toDouble(),
-        isGuest: json["isGuest"],
+        id: json["id"] ?? 0,
+        locationId: json["locationId"] ?? 0,
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        valet: json["valet"] == null ? null : User.fromJson(json["valet"]),
+        retrieveAtGate: json["retrieveAtGate"] ?? 0,
+        isGuest: json["isGuest"] ?? false,
         guestName: json["guestName"] ?? '',
-        parkingStatus: json["parkingStatus"],
-        carWash: json["carWash"],
-        carWashPrice: json["carWashPrice"].toDouble(),
-        parkingPrice: json["parkingPrice"].toDouble(),
-        totalPrice: json["totalPrice"].toDouble(),
+        parkingStatus: json["parkingStatus"] ?? '',
+        parkingPrice: json["parkingPrice"] == null
+            ? 0.0
+            : json["parkingPrice"].toDouble() ?? 0.0,
+        totalPrice:
+            json["totalPrice"] == null ? 0.0 : json["totalPrice"].toDouble() ?? 0.0,
       );
 
   Map<String, dynamic> toJson() =>
       {
         "id": id,
         "locationId": locationId,
-        "user": user.toJson(),
-        "valet": valet.toJson(),
+        "user": user!.toJson(),
+        "valet": valet!.toJson(),
         "retrieveAtGate": retrieveAtGate,
         "isGuest": isGuest,
         "guestName": guestName,
         "parkingStatus": parkingStatus,
-        "carWash": carWash,
-        "carWashPrice": carWashPrice,
         "parkingPrice": parkingPrice,
         "totalPrice": totalPrice,
       };
 }
 
 class User {
-  double id;
+  int id;
   String userUuid;
   String firstName;
   String lastName;
@@ -87,19 +84,19 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"].toDouble(),
-        userUuid: json["userUuid"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        phone: json["phone"],
-        profileImg: json["profileImg"],
-        active: json["active"],
-        socialProfile: json["socialProfile"],
+        id: json["id"] ?? 0,
+        userUuid: json["userUuid"] ?? '',
+        firstName: json["firstName"] ?? '',
+        lastName: json["lastName"] ?? '',
+        phone: json["phone"] ?? '',
+        profileImg: json["profileImg"] ?? '',
+        active: json["active"] ?? false,
+        socialProfile: json["socialProfile"] ?? false,
         location: json["location"] == null
             ? null
             : Location.fromJson(json["location"]),
-        role: json["role"],
-        email: json["email"],
+        role: json["role"] ?? '',
+        email: json["email"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,11 +119,11 @@ class Location {
   String createdBy;
   DateTime updatedOn;
   String updatedBy;
-  double id;
+  int id;
   String locationName;
   double price;
-  Currency currency;
-  double countryId;
+  Currency? currency;
+  int countryId;
   String availabilityStatus;
 
   Location({
@@ -143,19 +140,24 @@ class Location {
   });
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-        createdOn: DateTime.parse(json["createdOn"]),
-        createdBy: json["createdBy"],
-        updatedOn: DateTime.parse(json["updatedOn"]),
-        updatedBy: json["updatedBy"],
-        id: json["id"].toDouble(),
-        locationName: json["locationName"],
-        price: json["price"].toDouble(),
-        currency: Currency.fromJson(json["currency"]),
-        countryId: json["countryId"].toDouble(),
-        availabilityStatus: json["availabilityStatus"],
+        createdOn:
+            DateTime.parse(json["createdOn"] ?? DateTime.now().toString()),
+        createdBy: json["createdBy"] ?? '',
+        updatedOn:
+            DateTime.parse(json["updatedOn"] ?? DateTime.now().toString()),
+        updatedBy: json["updatedBy"] ?? '',
+        id: json["id"] ?? 0,
+        locationName: json["locationName"] ?? '',
+        price: json["price"] == null ? 0.0 : json["price"].toDouble() ?? 0.0,
+        currency: json["currency"] == null
+            ? null
+            : Currency.fromJson(json["currency"]),
+        countryId: json["countryId"] ?? 0,
+        availabilityStatus: json["availabilityStatus"] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "createdOn": createdOn.toIso8601String(),
         "createdBy": createdBy,
         "updatedOn": updatedOn.toIso8601String(),
@@ -163,7 +165,7 @@ class Location {
         "id": id,
         "locationName": locationName,
         "price": price,
-        "currency": currency.toJson(),
+        "currency": currency!.toJson(),
         "countryId": countryId,
         "availabilityStatus": availabilityStatus,
       };
@@ -174,10 +176,10 @@ class Currency {
   String createdBy;
   DateTime updatedOn;
   String updatedBy;
-  double id;
+  int id;
   String currencySymbol;
   String currencyName;
-  Country country;
+  Country? country;
 
   Currency({
     required this.createdOn,
@@ -191,17 +193,21 @@ class Currency {
   });
 
   factory Currency.fromJson(Map<String, dynamic> json) => Currency(
-        createdOn: DateTime.parse(json["createdOn"]),
-        createdBy: json["createdBy"],
-        updatedOn: DateTime.parse(json["updatedOn"]),
-        updatedBy: json["updatedBy"],
-        id: json["id"].toDouble(),
-        currencySymbol: json["currencySymbol"],
-        currencyName: json["currencyName"],
-        country: Country.fromJson(json["country"]),
+        createdOn:
+            DateTime.parse(json["createdOn"] ?? DateTime.now().toString()),
+        createdBy: json["createdBy"] ?? '',
+        updatedOn:
+            DateTime.parse(json["updatedOn"] ?? DateTime.now().toString()),
+        updatedBy: json["updatedBy"] ?? '',
+        id: json["id"] ?? 0,
+        currencySymbol: json["currencySymbol"] ?? '',
+        currencyName: json["currencyName"] ?? '',
+        country:
+            json["country"] == null ? null : Country.fromJson(json["country"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "createdOn": createdOn.toIso8601String(),
         "createdBy": createdBy,
         "updatedOn": updatedOn.toIso8601String(),
@@ -209,7 +215,7 @@ class Currency {
         "id": id,
         "currencySymbol": currencySymbol,
         "currencyName": currencyName,
-        "country": country.toJson(),
+        "country": country!.toJson(),
       };
 }
 
@@ -218,7 +224,7 @@ class Country {
   String createdBy;
   DateTime updatedOn;
   String updatedBy;
-  double id;
+  int id;
   String name;
   String symbol;
 
@@ -233,13 +239,15 @@ class Country {
   });
 
   factory Country.fromJson(Map<String, dynamic> json) => Country(
-        createdOn: DateTime.parse(json["createdOn"]),
-        createdBy: json["createdBy"],
-        updatedOn: DateTime.parse(json["updatedOn"]),
-        updatedBy: json["updatedBy"],
-        id: json["id"].toDouble(),
-        name: json["name"],
-        symbol: json["symbol"],
+        createdOn:
+            DateTime.parse(json["createdOn"] ?? DateTime.now().toString()),
+        createdBy: json["createdBy"] ?? '',
+        updatedOn:
+            DateTime.parse(json["updatedOn"] ?? DateTime.now().toString()),
+        updatedBy: json["updatedBy"] ?? '',
+        id: json["id"] ?? 0,
+        name: json["name"] ?? '',
+        symbol: json["symbol"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

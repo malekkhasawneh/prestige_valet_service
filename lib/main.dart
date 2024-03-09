@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,21 +20,12 @@ import 'package:prestige_valet_app/features/splash/presentation/pages/splash_scr
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart' as di;
-import 'package:thermal_printer/thermal_printer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: Constants.envFileName);
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: dotenv.env[Constants.androidFirebaseApiKey]!,
-      appId: dotenv.env[Constants.androidAppId]!,
-      messagingSenderId: dotenv.env[Constants.androidMessagingSenderId]!,
-      projectId: dotenv.env[Constants.androidProjectId]!,
-    ),
-  );
-  await FirebaseMessagingHelper.initNotifications();
   await di.init();
+  await FirebaseMessagingHelper.initNotifications();
   runApp(
     const PrestigeValetApp(),
   );

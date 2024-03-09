@@ -57,4 +57,5 @@ class NetworkConstants {
   static const String isTokenValid = 'auth/token/validate';
 
   static const String sendPayment = 'payment';
+  static String getPaymentHistory(int userId) => 'payment/user/$userId';
 }

@@ -11,6 +11,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
 import 'package:prestige_valet_app/features/valet/domain/entity/bluetooth_printer_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/entity/tab_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
@@ -145,7 +146,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
-  late ParkHistoryModel parkHistoryModel;
+  late ValetHistoryModel valetHistoryModel;
 
   Future<void> getValetHistory(
       {required int valetId, bool canLoading = true}) async {
@@ -155,18 +156,19 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           GetValetHistoryUseCaseParams(valetId: valetId));
       response.fold(
         (failure) {
+          log('=================================== ii ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
         (success) {
-          parkHistoryModel = success;
+          valetHistoryModel = success;
           if (_selectedTabId == 1) {
-            for (var _ in parkHistoryModel.content) {
-              parkHistoryModel.content.removeWhere(
+            for (var _ in valetHistoryModel.content) {
+              valetHistoryModel.content.removeWhere(
                   (element) => element.parkingStatus == 'DELIVERED_TO_USER');
             }
           } else {
-            for (var _ in parkHistoryModel.content) {
-              parkHistoryModel.content.removeWhere(
+            for (var _ in valetHistoryModel.content) {
+              valetHistoryModel.content.removeWhere(
                   (element) => element.parkingStatus != 'DELIVERED_TO_USER');
             }
           }
@@ -176,6 +178,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
         },
       );
     } catch (failure) {
+      log('=================================== ii ${failure.toString()}');
+
       emit(ScanQrError(failure: failure.toString()));
     }
   }

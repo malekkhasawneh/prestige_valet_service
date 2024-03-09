@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
+import 'package:prestige_valet_app/features/home/data/model/payment_history_model.dart';
 import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/cancel_car_retrieving_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/check_internet_connction_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/delete_firebase_account_usecase.dart';
+import 'package:prestige_valet_app/features/home/domain/usecase/get_parking_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_data_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/get_user_history_usecase.dart';
 import 'package:prestige_valet_app/features/home/domain/usecase/retrieve_car_usecase.dart';
@@ -32,6 +34,7 @@ class HomeCubit extends Cubit<HomeState> {
     required this.cancelCarRetrievingUseCase,
     required this.deleteFirebaseAccountUseCase,
     required this.checkInternetConnectionUseCase,
+    required this.getParkingHistoryUseCase,
   }) : super(HomeInitial());
 
   final GetUserDataUseCase getUserDataUseCase;
@@ -41,6 +44,7 @@ class HomeCubit extends Cubit<HomeState> {
   final CancelCarRetrievingUseCase cancelCarRetrievingUseCase;
   final DeleteFirebaseAccountUseCase deleteFirebaseAccountUseCase;
   final CheckInternetConnectionUseCase checkInternetConnectionUseCase;
+  final GetParkingHistoryUseCase getParkingHistoryUseCase;
 
   double parkingPrice = 0;
   double washingPrice = 0;
@@ -122,15 +126,12 @@ class HomeCubit extends Cubit<HomeState> {
           WashCarUseCaseParams(parkingId: parkingId, washFlag: washFlag));
       response.fold((failure) => emit(HomeError(failure: failure.failure)),
           (success) {
-        parkedCarModel.carWash = success.washCar;
         emit(WashCarLoaded(parkedCarsModel: success));
       });
     } catch (failure) {
       emit(HomeError(failure: failure.toString()));
     }
   }
-
-  List<ParkHistoryContent> userHistory = [];
 
   Future<void> getUserHistory({
     required int userId,
@@ -140,20 +141,19 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await getUserHistoryUseCase(
           GetUserHistoryUseCaseParams(userId: userId));
       response.fold((failure) {
+        log('====================================== jhjvddd ${failure.failure}');
         emit(HomeError(failure: failure.failure));
       }, (success) {
-        for (var userHistoryItem in success.content) {
-          if (userHistoryItem.parkingStatus == Constants.carDelivered) {
-            userHistory.add(userHistoryItem);
-          }
-        }
         loop:
         for (var status in success.content) {
-          if (status.parkingStatus == Constants.carParked) {
+          log('====================================== success ${status.parking.parkingStatus}');
+          if (status.parking.parkingStatus == Constants.carParked) {
             parkedCarModel = status;
             isUserCarParked = true;
+
             break loop;
-          } else if (status.parkingStatus == Constants.carInRetrieving) {
+          } else if (status.parking.parkingStatus ==
+              Constants.carInRetrieving) {
             parkedCarModel = status;
             _isUserCarInRetrieve = true;
             break loop;
@@ -162,6 +162,8 @@ class HomeCubit extends Cubit<HomeState> {
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
       });
     } catch (failure) {
+      log('====================================== jhjvddd ${failure.toString()}');
+
       emit(HomeError(failure: failure.toString()));
     }
   }
@@ -177,6 +179,24 @@ class HomeCubit extends Cubit<HomeState> {
         emit(CancelCarRetrievingLoaded(parkedCarsModel: success));
       });
     } catch (failure) {
+      emit(HomeError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> getParkingHistory() async {
+    emit(GetPaymentHistoryLoading());
+    try {
+      final response = await getParkingHistoryUseCase(
+          GetParkingHistoryUseCaseParams(userId: userModel.user.id));
+      response.fold((failure) {
+        log('=================================== failure ${failure.failure}');
+
+        emit(HomeError(failure: failure.failure));
+      }, (success) {
+        emit(GetPaymentHistoryLoaded(paymentHistoryModel: success));
+      });
+    } catch (failure) {
+      log('=================================== failure ${failure.toString()}');
       emit(HomeError(failure: failure.toString()));
     }
   }

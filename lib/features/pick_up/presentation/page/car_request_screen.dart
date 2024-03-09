@@ -23,16 +23,16 @@ class CarRequestScreen extends StatelessWidget {
         if (state is CancelCarRetrievingLoaded) {
           if (state.parkedCarsModel.parkingStatus == Constants.carParked) {
             BottomNavBarCubit.get(context).sendNotification(
-                userId: state.parkedCarsModel.valet.id,
+                userId: state.parkedCarsModel.valet!.id,
                 title: Strings.notificationTitle(
-                    HomeCubit.get(context).parkedCarModel.valet.firstName),
+                    HomeCubit.get(context).parkedCarModel.parking.valet.firstName),
                 body: Strings.valetUserCanceled(
-                    HomeCubit.get(context).parkedCarModel.user!.firstName),
+                    HomeCubit.get(context).parkedCarModel.parking.user!.firstName),
                 notificationType:
                     Constants.cancelCarRetrievingNotificationAction,notificationReceiver:Constants.toValetNotification);
             NotificationHelper.sendLocalNotification(
                 title: Strings.notificationTitle(
-                    HomeCubit.get(context).parkedCarModel.user!.firstName),
+                    HomeCubit.get(context).parkedCarModel.parking.user!.firstName),
                 body: Strings.userCancelRetrieving);
             HomeCubit.get(context).isUserCarParked = true;
             HomeCubit.get(context).setSetGate = false;

@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
+import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/injection_container/add_card_injection.dart';
 import 'package:prestige_valet_app/injection_container/bottom_nav_injection.dart';
 import 'package:prestige_valet_app/injection_container/edit_profile_injection.dart';
@@ -53,5 +56,17 @@ Future<void> init() async {
   await NotificationHelper.init();
   if (Platform.isIOS) {
     DartPingIOS.register();
+  }
+  try {
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: dotenv.env[Constants.androidFirebaseApiKey]!,
+        appId: dotenv.env[Constants.androidAppId]!,
+        messagingSenderId: dotenv.env[Constants.androidMessagingSenderId]!,
+        projectId: dotenv.env[Constants.androidProjectId]!,
+      ),
+    );
+  } catch (error) {
+    await Firebase.initializeApp();
   }
 }

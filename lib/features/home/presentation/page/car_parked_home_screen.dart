@@ -21,20 +21,7 @@ class CarParkedHomeScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<HomeCubit, HomeState>(listener: (context, state) {
-      if (state is WashCarLoaded) {
-        BottomNavBarCubit.get(context).sendNotification(
-            userId: HomeCubit.get(context).parkedCarModel.valet.id,
-            title: Strings.notificationTitle(
-                HomeCubit.get(context).parkedCarModel.valet.firstName),
-            body: Strings.valetCarWashingRequest(
-                HomeCubit.get(context).parkedCarModel.user!.firstName),
-            notificationType: Constants.carWashNotificationAction,
-            notificationReceiver: Constants.toValetNotification);
-        NotificationHelper.sendLocalNotification(
-            title: Strings.notificationTitle(
-                HomeCubit.get(context).parkedCarModel.user!.firstName),
-            body: Strings.userCarWashRequest);
-      } else if (state is RetrieveCarLoaded) {
+      if (state is RetrieveCarLoaded) {
         HomeCubit.get(context).setIsUserCarInRetrieve = true;
       } else if (state is HomeError) {
         if (state.failure == Constants.internetFailure) {

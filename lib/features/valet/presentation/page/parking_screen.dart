@@ -41,7 +41,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
             notificationType: Constants.carDeliveredNotificationAction,
             notificationReceiver: Constants.toUserNotification);
         ScanQrCubit.get(context).getValetHistory(
-          valetId: state.parkedCarsModel.valet.id,
+          valetId: state.parkedCarsModel.valet!.id,
           canLoading: false,
         );
       } else if (state is RetrieveGuestCarLoadedError) {
@@ -128,83 +128,84 @@ class _ParkingScreenState extends State<ParkingScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.13, vertical: 0),
                       child: ScanQrCubit.get(context)
-                              .parkHistoryModel
+                              .valetHistoryModel
                               .content
                               .isNotEmpty
                           ? ListView.builder(
                               itemCount: ScanQrCubit.get(context)
-                                  .parkHistoryModel
+                                  .valetHistoryModel
                                   .content
                                   .length,
                               itemBuilder: (context, index) {
                                 return ParkingCardWidget(
                                   phone: ScanQrCubit.get(context)
-                                              .parkHistoryModel
+                                              .valetHistoryModel
                                               .content[index]
                                               .user ==
                                           null
                                       ? ''
                                       : ScanQrCubit.get(context)
-                                              .parkHistoryModel
-                                              .content[index]
-                                              .user!
-                                              .phone ??
-                                          '',
+                                          .valetHistoryModel
+                                          .content[index]
+                                          .user!
+                                          .phone,
                                   imageUrl: ScanQrCubit.get(context)
-                                          .parkHistoryModel
+                                          .valetHistoryModel
                                           .content[index]
                                           .isGuest
                                       ? ''
                                       : ScanQrCubit.get(context)
-                                          .parkHistoryModel
+                                          .valetHistoryModel
                                           .content[index]
                                           .user!
                                           .profileImg,
                                   name: ScanQrCubit.get(context)
-                                          .parkHistoryModel
+                                          .valetHistoryModel
                                           .content[index]
                                           .isGuest
                                       ? ScanQrCubit.get(context)
-                                          .parkHistoryModel
+                                          .valetHistoryModel
                                           .content[index]
-                                          .guestName
+                                          .guestName!
                                       : ScanQrCubit.get(context)
-                                              .parkHistoryModel
+                                              .valetHistoryModel
                                               .content[index]
                                               .user!
                                               .firstName +
-                                          ScanQrCubit.get(context)
-                                              .parkHistoryModel
+                                      ScanQrCubit.get(context)
+                                              .valetHistoryModel
                                               .content[index]
                                               .user!
                                               .lastName,
                                   status: ScanQrCubit.get(context).status(
                                     status: ScanQrCubit.get(context)
-                                        .parkHistoryModel
+                                        .valetHistoryModel
                                         .content[index]
                                         .parkingStatus,
                                     isGuest: ScanQrCubit.get(context)
-                                        .parkHistoryModel
+                                        .valetHistoryModel
                                         .content[index]
                                         .isGuest,
                                   ),
                                   parkingId: ScanQrCubit.get(context)
-                                      .parkHistoryModel
+                                      .valetHistoryModel
                                       .content[index]
                                       .id,
                                   isGuest: ScanQrCubit.get(context)
-                                      .parkHistoryModel
+                                      .valetHistoryModel
                                       .content[index]
                                       .isGuest,
                                   gate: ScanQrCubit.get(context)
-                                      .parkHistoryModel
-                                      .content[index]
-                                      .retrievingGate,
-                                  washCar: ScanQrCubit.get(context)
-                                          .parkHistoryModel
+                                              .valetHistoryModel
+                                              .content[index]
+                                              .retrieveAtGate ==
+                                          null
+                                      ? ''
+                                      : ScanQrCubit.get(context)
+                                          .valetHistoryModel
                                           .content[index]
-                                          .carWash ??
-                                      false,
+                                          .retrieveAtGate!
+                                          .gateName,
                                 );
                               },
                             )

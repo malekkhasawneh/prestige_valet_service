@@ -23,7 +23,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
   @override
   void initState() {
     PickUpCubit.get(context).getGates(
-        locationId: HomeCubit.get(context).parkedCarModel.valet.location!.id);
+        locationId: HomeCubit.get(context).parkedCarModel.parking.valet.location!.id);
     super.initState();
   }
 
@@ -37,7 +37,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
           if(state.failure == Constants.internetFailure){
             HomeCubit.get(context).refreshAfterConnect = () {
               PickUpCubit.get(context).getGates(
-                  locationId: HomeCubit.get(context).parkedCarModel.valet.location!.id);
+                  locationId: HomeCubit.get(context).parkedCarModel.parking.valet.location!.id);
             };
             Navigator.pushNamed(context, Routes.noInternetScreen);
           }
