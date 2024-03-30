@@ -150,7 +150,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                           .valetHistoryModel
                                           .content[index]
                                           .user!
-                                          .phone,
+                                          .phone!,
                                   imageUrl: ScanQrCubit.get(context)
                                           .valetHistoryModel
                                           .content[index]
@@ -160,7 +160,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                           .valetHistoryModel
                                           .content[index]
                                           .user!
-                                          .profileImg,
+                                          .profileImg!,
                                   name: ScanQrCubit.get(context)
                                           .valetHistoryModel
                                           .content[index]
@@ -173,12 +173,12 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                               .valetHistoryModel
                                               .content[index]
                                               .user!
-                                              .firstName +
+                                              .firstName! +
                                       ScanQrCubit.get(context)
                                               .valetHistoryModel
                                               .content[index]
                                               .user!
-                                              .lastName,
+                                              .lastName!,
                                   status: ScanQrCubit.get(context).status(
                                     status: ScanQrCubit.get(context)
                                         .valetHistoryModel
@@ -207,7 +207,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                           .valetHistoryModel
                                           .content[index]
                                           .retrieveAtGate!
-                                          .gateName,
+                                          .gateName!,
                                 );
                               },
                             )
