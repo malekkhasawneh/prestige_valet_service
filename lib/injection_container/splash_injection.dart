@@ -16,8 +16,7 @@ Future<void> splashInjection() async {
         checkIsUserLoginUseCase: sl(),
         setIsFirstTimeOpenTheAppUseCase: sl(),
         getIsFirstTimeOpenTheAppUseCase: sl(),
-        isUserUseCase: sl(),
-        isFirstOpeningUseCase: sl()),
+        isUserUseCase: sl(),),
   );
 
   // Use cases
