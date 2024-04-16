@@ -40,6 +40,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
             body: Strings.userCarRetrieving,
             notificationType: Constants.carDeliveredNotificationAction,
             notificationReceiver: Constants.toUserNotification);
+        ScanQrCubit.get(context)
+            .getCarsQueue(valetId: state.parkedCarsModel.valet!.id);
         ScanQrCubit.get(context).getValetHistory(
           valetId: state.parkedCarsModel.valet!.id,
           canLoading: false,
@@ -208,6 +210,10 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                           .content[index]
                                           .retrieveAtGate!
                                           .gateName!,
+                                  slotNumber: ScanQrCubit.get(context)
+                                      .valetHistoryModel
+                                      .content[index]
+                                      .slotNumber,
                                 );
                               },
                             )

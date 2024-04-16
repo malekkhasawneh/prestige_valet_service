@@ -58,4 +58,12 @@ class NetworkConstants {
 
   static const String sendPayment = 'payment';
   static String getPaymentHistory(int userId) => 'payment/user/$userId';
+
+  static String getSlotNumber(int valetId) => 'valet/slot?valetId=$valetId';
+
+  static String getCarsQueue(int valetId) =>
+      'valet/Parking/$valetId/retrieving-queue';
+
+  static String setCarStatusAsRetrieving(int valetId, int parkingId) =>
+      'valet/Parking/deliver-to-user?valetId=$valetId&parkingId=$parkingId';
 }

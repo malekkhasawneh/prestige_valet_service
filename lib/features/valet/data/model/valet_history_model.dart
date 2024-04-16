@@ -19,6 +19,7 @@ class Content {
   RetrieveAtGate? retrieveAtGate;
   bool isGuest;
   String? guestName;
+  int slotNumber;
   String parkingStatus;
 
   Content({
@@ -28,6 +29,7 @@ class Content {
     required this.retrieveAtGate,
     required this.isGuest,
     required this.guestName,
+    required this.slotNumber,
     required this.parkingStatus,
   });
 
@@ -38,9 +40,9 @@ class Content {
     retrieveAtGate: json["retrieveAtGate"] == null ? null : RetrieveAtGate.fromJson(json["retrieveAtGate"]),
     isGuest: json["isGuest"],
     guestName: json["guestName"] ?? '',
-    parkingStatus:json["parkingStatus"] ?? '',
-  );
-
+        slotNumber: json['slotNumber'] ?? 0,
+        parkingStatus: json["parkingStatus"] ?? '',
+      );
 }
 
 

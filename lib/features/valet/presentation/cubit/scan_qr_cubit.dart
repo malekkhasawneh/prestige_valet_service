@@ -9,15 +9,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
-import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
 import 'package:prestige_valet_app/features/valet/domain/entity/bluetooth_printer_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/entity/tab_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/get_cars_queue_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/get_slot_number_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/set_car_status_as_retrieving_usecase.dart';
 import 'package:prestige_valet_app/image_utils.dart';
 import 'package:thermal_printer/esc_pos_utils_platform/esc_pos_utils_platform.dart';
 import 'package:thermal_printer/thermal_printer.dart';
@@ -32,19 +35,24 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     required this.changeParkStatusUseCase,
     required this.carDeliveredUseCase,
     required this.getValetHistoryUseCase,
+    required this.getSlotNumberUseCase,
+    required this.getCarsQueueUseCase,
+    required this.setCarStatusAsRetrievingUseCase,
   }) : super(ScanQrInitial());
 
   final ParkCarUseCase parkCarUseCase;
   final ChangeParkStatusUseCase changeParkStatusUseCase;
   final CarDeliveredUseCase carDeliveredUseCase;
   final GetValetHistoryUseCase getValetHistoryUseCase;
+  final GetSlotNumberUseCase getSlotNumberUseCase;
+  final GetCarsQueueUseCase getCarsQueueUseCase;
+  final SetCarStatusAsRetrievingUseCase setCarStatusAsRetrievingUseCase;
 
   bool connected = false;
   List availableBluetoothDevices = [];
   String connectedDeviceName = '';
   var printerManager = PrinterManager.instance;
   BluetoothPrinter? selectedPrinter;
-
   int _selectedTabId = 1;
 
   int get getSelectedTabId => _selectedTabId;
@@ -184,6 +192,89 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
+  Future<String> getSlotNumber({
+    required int valetId,
+  }) async {
+    String slotNumber = '';
+    emit(SetValueLoading());
+    try {
+      final response = await getSlotNumberUseCase(
+          GetSlotNumberUseCaseParams(valetId: valetId));
+      response.fold(
+        (failure) {
+          log('=================================== iissss ${failure.failure}');
+          emit(ScanQrError(failure: failure.failure));
+        },
+        (slot) {
+          slotNumber = slot;
+          log('=================================== iisss $slot');
+          emit(SetValueLoaded());
+        },
+      );
+    } catch (failure) {
+      log('=================================== iissss ${failure.toString()}');
+
+      emit(ScanQrError(failure: failure.toString()));
+    }
+    return slotNumber;
+  }
+
+  Future<void> getCarsQueue({
+    required int valetId,
+  }) async {
+    emit(SetValueLoading());
+    try {
+      final response = await getCarsQueueUseCase(
+          GetCarsQueueUseCaseParams(valetId: valetId));
+      response.fold(
+        (failure) {
+          log('=================================== iissss ${failure.failure}');
+          emit(ScanQrError(failure: failure.failure));
+        },
+        (model) async {
+          log('=================================== iisss ${model.content.length}');
+          if (model.content.isNotEmpty) {
+            await setCarStatusAsRetrieving(
+                valetId: model.content.first.valet.id,
+                parkingId: model.content.first.id);
+          }
+
+          emit(GetCarsQueueLoaded(model: model));
+        },
+      );
+    } catch (failure) {
+      log('=================================== iissss ${failure.toString()}');
+
+      emit(ScanQrError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> setCarStatusAsRetrieving({
+    required int valetId,
+    required int parkingId,
+  }) async {
+    emit(SetValueLoading());
+    try {
+      final response = await setCarStatusAsRetrievingUseCase(
+          SetCarStatusAsRetrievingUseCaseParams(
+              valetId: valetId, parkingId: parkingId));
+      response.fold(
+        (failure) {
+          log('=================================== setCarStatusAsRetrieving ${failure.failure}');
+          emit(ScanQrError(failure: failure.failure));
+        },
+        (model) {
+          log('=================================== setCarStatusAsRetrieving success');
+          emit(SetValueLoaded());
+        },
+      );
+    } catch (failure) {
+      log('=================================== setCarStatusAsRetrieving ${failure.toString()}');
+
+      emit(ScanQrError(failure: failure.toString()));
+    }
+  }
+
   String status({required String status, required bool isGuest}) {
     switch (status) {
       case 'DELIVERED_TO_GATEKEEPER':
@@ -210,13 +301,13 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   }
 
   //Printer methods
-  Future printQrForGuest(String qrData) async {
+  Future printQrCode(String qrData, String slotNumber) async {
     final profile = await CapabilityProfile.load(name: 'XP-N160I');
     final generator = Generator(PaperSize.mm58, profile);
-    _printEscPos(await getGraphicsTicket(qrData), generator);
+    _printEscPos(await getGraphicsTicket(qrData, slotNumber), generator);
   }
 
-  Future<List<int>> getGraphicsTicket(String qrString) async {
+  Future<List<int>> getGraphicsTicket(String qrString, String slotNumber) async {
     List<int> bytes = [];
 
     CapabilityProfile profile = await CapabilityProfile.load();
@@ -236,10 +327,21 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
+    bytes += generator.text('Key Slot No.: $slotNumber',
+        styles: const PosStyles(align: PosAlign.left));
+
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
     bytes += generator.text('\n' '');
+    bytes += generator.text('\n' '');
+    bytes += generator.text('\n' '');
+    bytes += generator.text('\n' '');
+    bytes += generator.text('\n' '');
+    bytes += generator.text('\n' '');
+    bytes += generator.text('\n' '');
     bytes += generator.cut();
+    bytes += bytes;
+    bytes += bytes;
     return bytes;
   }
 

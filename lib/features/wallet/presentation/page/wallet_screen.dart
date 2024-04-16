@@ -201,7 +201,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       .bodyBoxHeight(context, screenHeight),
                                   child: const Center(
                                       child: Text(
-                                    Strings.thereAreNoData,
+                                    'No payment methods added',
                                   )),
                                 ),
                         ),

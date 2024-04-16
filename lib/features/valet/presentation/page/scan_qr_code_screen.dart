@@ -23,7 +23,8 @@ class ScanQrCodeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return BlocConsumer<ScanQrCubit, ScanQrState>(listener: (context, state) {
+    return BlocConsumer<ScanQrCubit, ScanQrState>(
+        listener: (context, state) async {
       if (state is ScanQrLoaded) {
         if (state.parkedCarsModel.parkingStatus ==
             Constants.deliveredToGateKeeper) {
@@ -38,9 +39,15 @@ class ScanQrCodeScreen extends StatelessWidget {
                 body: Strings.userCarParked,
                 notificationType: Constants.carParkedNotificationAction,
                 notificationReceiver: Constants.toUserNotification);
+            ScanQrCubit.get(context).printQrCode(
+                '${state.parkedCarsModel.user!.userUuid},${state.parkedCarsModel.user!.id}',
+                await (ScanQrCubit.get(context).getSlotNumber(
+                    valetId: HomeCubit.get(context).userModel.user.id)));
           } else {
-            ScanQrCubit.get(context).printQrForGuest(
-                '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}');
+            ScanQrCubit.get(context).printQrCode(
+                '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
+                await (ScanQrCubit.get(context).getSlotNumber(
+                    valetId: HomeCubit.get(context).userModel.user.id)));
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {

@@ -79,32 +79,32 @@ class MainHomeScreen extends StatelessWidget {
                                     .bodyBoxHeight(context, screenHeight) *
                                     0.005,
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text(
-                                  Strings.uniqueId,
-                                  style: TextStyle(
-                                    fontFamily: Fonts.sourceSansPro,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5),
-                                child: Text(
-                                  HomeCubit.get(context)
-                                      .userModel
-                                      .user
-                                      .userId
-                                      .split('-')
-                                      .first,
-                                  style: const TextStyle(
-                                    fontFamily: Fonts.sourceSansPro,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
+                              // const Padding(
+                              //   padding: EdgeInsets.only(left: 5),
+                              //   child: Text(
+                              //     Strings.uniqueId,
+                              //     style: TextStyle(
+                              //       fontFamily: Fonts.sourceSansPro,
+                              //       fontSize: 16,
+                              //     ),
+                              //     textAlign: TextAlign.start,
+                              //   ),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 5),
+                              //   child: Text(
+                              //     HomeCubit.get(context)
+                              //         .userModel
+                              //         .user
+                              //         .userId
+                              //         .split('-')
+                              //         .first,
+                              //     style: const TextStyle(
+                              //       fontFamily: Fonts.sourceSansPro,
+                              //     ),
+                              //     textAlign: TextAlign.start,
+                              //   ),
+                              // ),
                             ],
                           ),
                           SizedBox(

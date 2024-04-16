@@ -87,26 +87,26 @@ class CarParkedHomeScreen extends StatelessWidget {
                                           context, screenHeight) *
                                       0.03,
                                 ),
-                                const Text(
-                                  Strings.uniqueId,
-                                  style: TextStyle(
-                                    fontFamily: Fonts.sourceSansPro,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                                Text(
-                                  HomeCubit.get(context)
-                                      .userModel
-                                      .user
-                                      .userId
-                                      .split('-')
-                                      .first,
-                                  style: const TextStyle(
-                                    fontFamily: Fonts.sourceSansPro,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
+                                // const Text(
+                                //   Strings.uniqueId,
+                                //   style: TextStyle(
+                                //     fontFamily: Fonts.sourceSansPro,
+                                //     fontSize: 16,
+                                //   ),
+                                //   textAlign: TextAlign.start,
+                                // ),
+                                // Text(
+                                //   HomeCubit.get(context)
+                                //       .userModel
+                                //       .user
+                                //       .userId
+                                //       .split('-')
+                                //       .first,
+                                //   style: const TextStyle(
+                                //     fontFamily: Fonts.sourceSansPro,
+                                //   ),
+                                //   textAlign: TextAlign.start,
+                                // ),
                               ],
                             ),
                             SizedBox(
