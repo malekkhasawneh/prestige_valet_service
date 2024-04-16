@@ -68,7 +68,20 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       child: Scaffold(
-        body: Center(child: Image.asset(Images.splashLogo)),
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Center(child: Image.asset(Images.splashLogo)),
+            Positioned(
+                bottom: 0,
+                child: Image.asset(
+                  Images.poweredBy,
+                  fit: BoxFit.fill,
+                  width: 100,
+                  height: 70,
+                )),
+          ],
+        ),
       ),
     );
   }

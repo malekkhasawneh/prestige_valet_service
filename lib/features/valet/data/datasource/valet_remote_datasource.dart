@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
-import 'package:prestige_valet_app/features/valet/data/model/park_history_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
 
 abstract class ValetRemoteDataSource {
@@ -19,6 +19,12 @@ abstract class ValetRemoteDataSource {
 
   Future<ValetHistoryModel> getValetHistory({required int valetId});
 
+  Future<String> getSlotNumber({required int valetId});
+
+  Future<RetrieveCarQueueModel> getCarsQueue({required int valetId});
+
+  Future<void> setCarStatusAsRetrieving(
+      {required int valetId, required int parkingId});
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
@@ -103,4 +109,41 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
     }
   }
 
+  @override
+  Future<String> getSlotNumber({required int valetId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      final response =
+          await DioHelper.patch(NetworkConstants.getSlotNumber(valetId));
+      return response["slot"].toString();
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<RetrieveCarQueueModel> getCarsQueue({required int valetId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      final response =
+          await DioHelper.get(NetworkConstants.getCarsQueue(valetId));
+      RetrieveCarQueueModel retrieveCarQueueModel =
+          RetrieveCarQueueModel.fromJson(response.data);
+      return retrieveCarQueueModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<void> setCarStatusAsRetrieving(
+      {required int valetId, required int parkingId}) async {
+    try {
+      await DioHelper.addTokenHeader();
+      await DioHelper.patch(
+          NetworkConstants.setCarStatusAsRetrieving(valetId, parkingId));
+    } on Exception {
+      throw ServerException();
+    }
+  }
 }

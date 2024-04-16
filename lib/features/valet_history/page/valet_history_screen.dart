@@ -53,7 +53,7 @@ class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
                   left: screenWidth * 0.05,
                   top: HomeCubit.get(context)
                           .headerBoxHeight(context, screenHeight) *
-                      0.35,
+                      0.37,
                 ),
                 child: Text(
                   Strings.carParkedHiString(
@@ -80,8 +80,12 @@ class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
               SizedBox(
                 height:
                     HomeCubit.get(context).bodyBoxHeight(context, screenHeight),
-                child: ListView.builder(
-                    padding: EdgeInsets.zero,
+                child: state.paymentHistoryModel.content.isEmpty
+                    ? const Center(
+                        child: Text('No history'),
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.zero,
                     itemCount: state.paymentHistoryModel.content.length,
                     itemBuilder: (context, index) {
                       return HistoryCardWidget(

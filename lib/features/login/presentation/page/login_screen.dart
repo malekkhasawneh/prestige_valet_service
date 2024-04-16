@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ))
                 .then((_) async {
               BottomNavBarCubit.get(context).isLogout = false;
+
               SplashCubit.get(context).checkIsUser();
               await LoginCubit.get(context).setLoginFlag();
               // ignore: use_build_context_synchronously
@@ -56,12 +56,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacementNamed(
                     context, Routes.bottomNvBarScreen);
+                LoginCubit.get(context).passwordController.clear();
               });
             });
           } else if (state is LoginError) {
             if(state.error == Constants.internetFailure){
+              LoginCubit.get(context).passwordController.clear();
               Navigator.pushNamed(context, Routes.noInternetScreen);
             }else {
+              LoginCubit.get(context).passwordController.clear();
               AwesomeDialog(
                   context: context,
                   dismissOnBackKeyPress: false,

@@ -19,7 +19,7 @@ class ParkingCardWidget extends StatelessWidget {
     required this.imageUrl,
     required this.isGuest,
     required this.gate,
-
+    required this.slotNumber,
   });
 
   final String phone;
@@ -29,6 +29,7 @@ class ParkingCardWidget extends StatelessWidget {
   final int parkingId;
   final bool isGuest;
   final String gate;
+  final int slotNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +51,11 @@ class ParkingCardWidget extends StatelessWidget {
                 ListTile(
                   dense: true,
                   contentPadding: EdgeInsets.zero,
+                  trailing: Padding(
+                    padding:
+                        const EdgeInsetsDirectional.only(end: 10, bottom: 22),
+                    child: Text('Slot : $slotNumber'),
+                  ),
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.network(
@@ -115,6 +121,17 @@ class ParkingCardWidget extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(),
+                      status == 'Retrieve the car'
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Image.asset(
+                                Images.retrieveIcon,
+                                fit: BoxFit.fill,
+                                width: 30,
+                                height: 30,
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 )
@@ -149,7 +166,9 @@ class ParkingCardWidget extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  status,
+                  status == 'WAITING_TO_BE_RETRIEVE'
+                      ? 'Waiting to be retrieve'
+                      : status,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: ColorManager.whiteColor,

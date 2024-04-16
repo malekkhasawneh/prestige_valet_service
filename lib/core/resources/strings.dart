@@ -25,9 +25,9 @@ class Strings {
       'Hi $userName, Your Car Is\nParked Safely';
 
   static String mainScreenHiString({required String userName}) =>
-      'Hi $userName, Let the\ndoorman scan the QR\ncode in order to park';
+      'Hi $userName, please show your QR code to the valet attendant to process your car';
   static const String uniqueId = 'Unique Identifier';
-  static const String showYourHistory = 'Show Your History';
+  static const String showYourHistory = 'Car Parking History';
   static const String requestCar = 'Request Car';
   static const String washCar = 'Wash Car';
 
@@ -91,7 +91,7 @@ class Strings {
   static const String cancel = "Cancel";
   static const String carRequestTitle = "Your Car Will Be Ready\nShortly";
   static const String carRequestNotification =
-      "we will send you a notification when it's ready";
+      "We will send you a notification when your car arrives";
 
   // Login Screen
   static const String login = "Log in";
@@ -101,7 +101,7 @@ class Strings {
   static const String loginTitle = "Log in to your Prestige\nAccount";
   static const String forgetPassword = "Forgot your password?";
   static const String or = "or";
-  static const String loginError = "Please check E-mail and password";
+  static const String loginError = "Incorrect username or password, please try again!";
 
   // Sign Up Screen
   static const String signUp = "Sign Up";
@@ -139,7 +139,7 @@ class Strings {
   static const String gate = "Gate";
 
   static String parkingHiString(String valetName) =>
-      "Hi $valetName, This is Your\nParking History";
+      "Hi $valetName, this is your location’s parking history";
 
   // NotificationBody
   static String notificationTitle(String userName) => 'Hello $userName';
@@ -152,13 +152,13 @@ class Strings {
 
 //Valet
   static String valetCarRetrievingRequest(String userName) =>
-      'User $userName has submitted a request to restore their car. Please review and process accordingly';
+      '$userName has requested the retrieval of their car, key in slot number: XX';
 
   static String valetCarWashingRequest(String userName) =>
       'User $userName has submitted a request for a car wash. Please review and process accordingly';
 
   static String valetUserCanceled(String userName) =>
-      'User $userName has requested to cancel their previous request to retrieve their car. Please review and process the cancellation';
+      '$userName has cancelled their request to retrieve their car';
   static String inParking = 'In Parking';
   static String retrieved = 'Retrieved';
   static String ok = 'Ok';

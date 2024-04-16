@@ -23,6 +23,7 @@ class ItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: ListTile(
+        onTap: onPressed,
         leading: Container(
           width: ProfileCubit.get(context).isTablet(screenWidth)
               ? screenWidth * 0.1
@@ -41,15 +42,12 @@ class ItemWidget extends StatelessWidget {
           ),
         ),
         title: Text(title),
-        trailing: IconButton(
-          icon: const Icon(
+        trailing: const Icon(
             Icons.keyboard_arrow_right,
             color: Colors.grey,
             size: 20,
           ),
-          onPressed: onPressed,
         ),
-      ),
     );
   }
 }

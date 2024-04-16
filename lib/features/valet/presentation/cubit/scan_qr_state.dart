@@ -45,6 +45,15 @@ class GetValetHistoryLoaded extends ScanQrState {
   List<Object> get props => [];
 }
 
+class GetCarsQueueLoaded extends ScanQrState {
+  final RetrieveCarQueueModel model;
+
+  const GetCarsQueueLoaded({required this.model});
+
+  @override
+  List<Object> get props => [model];
+}
+
 class ScanQrError extends ScanQrState {
   final String failure;
 

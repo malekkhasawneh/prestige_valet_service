@@ -153,7 +153,7 @@ class HomeCubit extends Cubit<HomeState> {
 
             break loop;
           } else if (status.parking.parkingStatus ==
-              Constants.carInRetrieving) {
+              Constants.carInRetrieving || status.parking.parkingStatus == Constants.waitingToBeRetrieving) {
             parkedCarModel = status;
             _isUserCarInRetrieve = true;
             break loop;
