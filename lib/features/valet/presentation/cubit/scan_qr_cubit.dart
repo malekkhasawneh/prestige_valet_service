@@ -333,11 +333,15 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
     bytes += generator.text('\n' '');
+    bytes += generator.text('\n' 'Car Model:');
     bytes += generator.text('\n' '');
+    bytes += generator.text('\n' 'Plate No.:');
     bytes += generator.text('\n' '');
+    bytes += generator.text('\n' 'Color:');
     bytes += generator.text('\n' '');
+    bytes += generator.text('\n' 'Location:');
     bytes += generator.text('\n' '');
-    bytes += generator.text('\n' '');
+    bytes += generator.text('\n' 'Employee:');
     bytes += generator.text('\n' '');
     bytes += generator.cut();
     bytes += bytes;

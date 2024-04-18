@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -51,8 +53,12 @@ class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
               child: Padding(
                 padding: EdgeInsets.only(
                   left: screenWidth * 0.05,
-                  top: HomeCubit.get(context)
-                          .headerBoxHeight(context, screenHeight) *
+                  top: Platform.isIOS
+                      ? HomeCubit.get(context)
+                              .headerBoxHeight(context, screenHeight) *
+                          0.42
+                      : HomeCubit.get(context)
+                              .headerBoxHeight(context, screenHeight) *
                       0.37,
                 ),
                 child: Text(

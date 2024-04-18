@@ -17,35 +17,35 @@ class ProfileItemsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: ProfileCubit.get(context).isTablet(screenWidth)
-                ? screenWidth * 0.03
-                : screenWidth * 0.055,
-            vertical: 20,
-          ),
-          child: const Text(
-            Strings.editProfile,
-            style: TextStyle(
-              fontFamily: Fonts.montserrat,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.start,
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(
+        //     horizontal: ProfileCubit.get(context).isTablet(screenWidth)
+        //         ? screenWidth * 0.03
+        //         : screenWidth * 0.055,
+        //     vertical: 20,
+        //   ),
+        //   child: const Text(
+        //     Strings.editProfile,
+        //     style: TextStyle(
+        //       fontFamily: Fonts.montserrat,
+        //       fontSize: 16,
+        //     ),
+        //     textAlign: TextAlign.start,
+        //   ),
+        // ),
         const SizedBox(
           height: 3,
         ),
-        ItemWidget(
-          icon: Icons.person,
-          title: 'Account Settings',
-          onPressed: () {
-            Navigator.pushNamed(context, Routes.editProfileScreen);
-          },
-        ),
-        SizedBox(
-          height: ProfileCubit.get(context).isTablet(screenWidth) ? 25 : 0,
-        ),
+        // ItemWidget(
+        //   icon: Icons.person,
+        //   title: 'Account Settings',
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, Routes.editProfileScreen);
+        //   },
+        // ),
+        // SizedBox(
+        //   height: ProfileCubit.get(context).isTablet(screenWidth) ? 25 : 0,
+        // ),
         SplashCubit.get(context).isUser
             ?  ItemWidget(
           icon: Icons.money,
