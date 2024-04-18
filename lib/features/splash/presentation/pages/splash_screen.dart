@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Center(child: Image.asset(Images.splashLogo)),
             Positioned(
-                bottom: 0,
+                bottom: MediaQuery.of(context).padding.bottom,
                 child: Image.asset(
                   Images.poweredBy,
                   fit: BoxFit.fill,

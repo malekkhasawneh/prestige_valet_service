@@ -15,7 +15,7 @@ class LogoutButtonWidget extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
       return SizedBox(
-        width: screenWidth * 0.7,
+        width: screenWidth * 0.9,
         child: ElevatedButton(
           onPressed: (state is ProfileLoading)
               ? () {}
