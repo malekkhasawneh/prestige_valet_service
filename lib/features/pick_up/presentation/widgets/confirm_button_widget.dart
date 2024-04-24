@@ -36,7 +36,7 @@ class ConfirmButtonWidget extends StatelessWidget {
                 title: Strings.notificationTitle(
                     state.parkedCarsModel.valet!.firstName),
                 body: Strings.valetCarRetrievingRequest(
-                    state.parkedCarsModel.user!.firstName),
+                    state.parkedCarsModel.user!.firstName,state.parkedCarsModel.slotNumber.toString()),
                 notificationType: Constants.carInRetrievingNotificationAction,
                 notificationReceiver: Constants.toValetNotification);
             NotificationHelper.sendLocalNotification(

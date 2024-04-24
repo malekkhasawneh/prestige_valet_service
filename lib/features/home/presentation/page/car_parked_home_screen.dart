@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
-import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/qr_code_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/request_car_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/show_your_history_widget.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/page/pick_up_screen.dart';
+import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
 
 class CarParkedHomeScreen extends StatelessWidget {
   const CarParkedHomeScreen({super.key});
@@ -31,8 +30,10 @@ class CarParkedHomeScreen extends StatelessWidget {
     }, builder: (context, state) {
       return HomeCubit.get(context).setGate
           ? const PickUpScreen()
-          : Scaffold(
-              body: Stack(
+          : HomeCubit.get(context).getIsHistoryPage
+              ? const ValetHistoryScreen()
+              : Scaffold(
+                  body: Stack(
                 alignment: Alignment.topCenter,
                 children: [
                   Center(

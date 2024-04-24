@@ -75,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       '${Strings.loginError}\n ',
                       style: TextStyle(fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   btnOkOnPress: () {

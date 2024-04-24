@@ -22,7 +22,7 @@ class Strings {
 
   //Home Screen
   static String carParkedHiString(String userName) =>
-      'Hi $userName, Your Car Is\nParked Safely';
+      'Car Parking History';
 
   static String mainScreenHiString({required String userName}) =>
       'Hi $userName, please show your QR code to the valet attendant to process your car';
@@ -34,7 +34,7 @@ class Strings {
   //Process Screens
   static const String parkedSuccessfully =
       'Your car has been parked\n successfully!';
-  static const String goToHome = 'Go To Home Page';
+  static const String goToHome = 'Home Page';
   static const String carReady = 'Your Car Is Ready For Pickup';
   static const String payWithCash = 'Pay with cash';
   static const String payWithCard = 'Pay with card';
@@ -50,8 +50,8 @@ class Strings {
   static const String logout = 'Log Out';
 
   //Wallet Screen
-  static String walletHiString (String userName)=>
-      'Hi $userName, This is your\n saved payment methods';
+  static String walletHiString ()=>
+      'Payment Method';
   static const String addPaymentMethod = 'Add a new payment method';
   static const String addNewPaymentMethod = 'Add a new card';
   static const String creditCardOverView = 'Credit card overview';
@@ -151,8 +151,8 @@ class Strings {
   static const String userCarRetrieving = 'Your car is ready for pickup';
 
 //Valet
-  static String valetCarRetrievingRequest(String userName) =>
-      '$userName has requested the retrieval of their car, key in slot number: XX';
+  static String valetCarRetrievingRequest(String userName,String slotNo) =>
+      '$userName has requested the retrieval of their car, key in slot number: $slotNo';
 
   static String valetCarWashingRequest(String userName) =>
       'User $userName has submitted a request for a car wash. Please review and process accordingly';

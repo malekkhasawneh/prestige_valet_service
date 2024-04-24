@@ -211,7 +211,9 @@ class _ParkingScreenState extends State<ParkingScreen> {
                                   slotNumber: ScanQrCubit.get(context)
                                       .valetHistoryModel
                                       .content[index]
-                                      .slotNumber,
+                                      .slotNumber, price: ScanQrCubit.get(context)
+                                    .valetHistoryModel
+                                    .content[index].valet.location!.price.toString(),
                                 );
                               },
                             )

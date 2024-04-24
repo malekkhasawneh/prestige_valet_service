@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -20,6 +21,7 @@ class ParkingCardWidget extends StatelessWidget {
     required this.isGuest,
     required this.gate,
     required this.slotNumber,
+    required this.price,
   });
 
   final String phone;
@@ -30,6 +32,7 @@ class ParkingCardWidget extends StatelessWidget {
   final bool isGuest;
   final String gate;
   final int slotNumber;
+  final String price;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +154,25 @@ class ParkingCardWidget extends StatelessWidget {
                       }
                     : () {
                         if (isGuest) {
-                          ScanQrCubit.get(context).retrieveGuestCar();
+                          AwesomeDialog(
+                              context: context,
+                              dismissOnBackKeyPress: false,
+                              dismissOnTouchOutside: false,
+                              animType: AnimType.scale,
+                              dialogType: DialogType.error,
+                              body: const Center(
+                                child: Text(
+                                  'Please confirm,Customer has paid the amount of\n ',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              btnOkOnPress: () {
+                                ScanQrCubit.get(context).retrieveGuestCar();
+                                Navigator.pop(context);
+                              },
+                              btnOkColor: Colors.red)
+                              .show();
                         } else {
                           ScanQrCubit.get(context)
                               .carDelivered(parkingId: parkingId);

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -10,6 +8,7 @@ import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/qr_code_widget.dart';
 import 'package:prestige_valet_app/features/home/presentation/widget/show_your_history_widget.dart';
+import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
 
 class MainHomeScreen extends StatelessWidget {
   const MainHomeScreen({super.key});
@@ -29,8 +28,10 @@ class MainHomeScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            body: Center(
+      return HomeCubit.get(context).getIsHistoryPage
+          ? const ValetHistoryScreen()
+          : Scaffold(
+              body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
 class ShowYourHistoryWidget extends StatelessWidget {
   const ShowYourHistoryWidget({super.key});
@@ -21,7 +22,8 @@ class ShowYourHistoryWidget extends StatelessWidget {
       ),
       child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, Routes.valetHistoryScreen);
+            //Navigator.pushNamed(context, Routes.valetHistoryScreen);
+            HomeCubit.get(context).setIsHistoryPage = true;
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
