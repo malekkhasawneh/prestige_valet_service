@@ -314,6 +314,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
         await rootBundle.load('images/printer_header_logo.png');
+
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -327,25 +328,180 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
-    bytes += generator.text('Key Slot No.: $slotNumber',
+
+    // Print Slot Number next to app logo
+    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
         styles: const PosStyles(align: PosAlign.left));
 
+    // Print QR Code
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
-    bytes += generator.text('\n' '');
-    bytes += generator.text('\n' 'Car Model:');
-    bytes += generator.text('\n' '');
-    bytes += generator.text('\n' 'Plate No.:');
-    bytes += generator.text('\n' '');
-    bytes += generator.text('\n' 'Color:');
-    bytes += generator.text('\n' '');
-    bytes += generator.text('\n' 'Location:');
-    bytes += generator.text('\n' '');
-    bytes += generator.text('\n' 'Employee:');
-    bytes += generator.text('\n' '');
+
+    // Print other details under QR Code
+    bytes += generator.text('\nCar Model:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nPlate No:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nColor:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nLocation:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nEmployee:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\n');
     bytes += generator.cut();
-    bytes += bytes;
-    bytes += bytes;
+
+    if (data.lengthInBytes > 0) {
+      final Uint8List imageBytes = data.buffer.asUint8List();
+      final decodedImage = img.decodeImage(imageBytes)!;
+      img.Image thumbnail = img.copyResize(decodedImage, height: 200);
+      img.Image originalImg =
+      img.copyResize(decodedImage, width: 200, height: 200);
+      var padding = (originalImg.width - thumbnail.width) / 1;
+      drawImage(originalImg, thumbnail, dstX: padding.toInt());
+      var grayscaleImage = img.grayscale(originalImg);
+      bytes += generator.feed(1);
+      bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
+      bytes += generator.feed(1);
+    }
+
+    // Print Slot Number next to app logo
+    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
+
+    // Print QR Code
+    bytes +=
+        generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
+
+    // Print other details under QR Code
+    bytes += generator.text('\nCar Model:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nPlate No:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nColor:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nLocation:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nEmployee:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\n');
+    bytes += generator.cut();
+
+    return bytes;
+  }
+
+  //Printer methods
+  Future printGuestQrCode(String qrData, String slotNumber) async {
+    final profile = await CapabilityProfile.load(name: 'XP-N160I');
+    final generator = Generator(PaperSize.mm58, profile);
+    _printEscPos(await getGraphicsTicketForGuest(qrData, slotNumber), generator);
+  }
+
+  Future<List<int>> getGraphicsTicketForGuest(
+      String qrString, String slotNumber) async {
+    List<int> bytes = [];
+    CapabilityProfile profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm80, profile);
+    final ByteData data =
+    await rootBundle.load('images/printer_header_logo.png');
+
+    if (data.lengthInBytes > 0) {
+      final Uint8List imageBytes = data.buffer.asUint8List();
+      final decodedImage = img.decodeImage(imageBytes)!;
+      img.Image thumbnail = img.copyResize(decodedImage, height: 200);
+      img.Image originalImg =
+      img.copyResize(decodedImage, width: 200, height: 200);
+      var padding = (originalImg.width - thumbnail.width) / 1;
+      drawImage(originalImg, thumbnail, dstX: padding.toInt());
+      var grayscaleImage = img.grayscale(originalImg);
+      bytes += generator.feed(1);
+      bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
+      bytes += generator.feed(1);
+    }
+
+    // Print Slot Number next to app logo
+    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
+
+    // Print QR Code
+    bytes +=
+        generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
+
+    // Print other details under QR Code
+    bytes += generator.text('\nCar Model:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nPlate No:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nColor:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nLocation:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nEmployee:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\n');
+    bytes += generator.cut();
+
+    if (data.lengthInBytes > 0) {
+      final Uint8List imageBytes = data.buffer.asUint8List();
+      final decodedImage = img.decodeImage(imageBytes)!;
+      img.Image thumbnail = img.copyResize(decodedImage, height: 200);
+      img.Image originalImg =
+      img.copyResize(decodedImage, width: 200, height: 200);
+      var padding = (originalImg.width - thumbnail.width) / 1;
+      drawImage(originalImg, thumbnail, dstX: padding.toInt());
+      var grayscaleImage = img.grayscale(originalImg);
+      bytes += generator.feed(1);
+      bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
+      bytes += generator.feed(1);
+    }
+
+    // Print Slot Number next to app logo
+    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
+
+    // Print QR Code
+    bytes +=
+        generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
+
+    // Print other details under QR Code
+    bytes += generator.text('\nCar Model:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nPlate No:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nColor:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nLocation:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\nEmployee:');
+    bytes += generator.text('------------------------');
+    bytes += generator.text('\n');
+    bytes += generator.cut();
+
+    if (data.lengthInBytes > 0) {
+      final Uint8List imageBytes = data.buffer.asUint8List();
+      final decodedImage = img.decodeImage(imageBytes)!;
+      img.Image thumbnail = img.copyResize(decodedImage, height: 200);
+      img.Image originalImg =
+          img.copyResize(decodedImage, width: 200, height: 200);
+      var padding = (originalImg.width - thumbnail.width) / 1;
+      drawImage(originalImg, thumbnail, dstX: padding.toInt());
+      var grayscaleImage = img.grayscale(originalImg);
+      bytes += generator.feed(1);
+      bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
+      bytes += generator.feed(1);
+    }
+
+    // Print Slot Number next to app logo
+    bytes += generator.text(
+        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
+
+    // Print QR Code
+    bytes +=
+        generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
+
+    bytes += generator.cut();
+
     return bytes;
   }
 

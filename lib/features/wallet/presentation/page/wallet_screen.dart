@@ -154,8 +154,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               0.35,
                         ),
                         child: Text(
-                          Strings.carParkedHiString(
-                              HomeCubit.get(context).userModel.user.firstName),
+                          Strings.walletHiString(),
                           style: const TextStyle(
                               fontFamily: Fonts.sourceSansPro,
                               fontSize: 26,

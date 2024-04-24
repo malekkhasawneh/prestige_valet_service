@@ -78,6 +78,17 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoaded());
   }
 
+  bool _isHistoryPage = false;
+
+  bool get getIsHistoryPage => _isHistoryPage;
+
+  set setIsHistoryPage(bool value) {
+    emit(HomeLoading());
+    _isHistoryPage = value;
+    emit(HomeLoaded());
+  }
+
+
   late ParkHistoryContent parkedCarModel;
 
   Future<void> getUserData(BuildContext context) async {

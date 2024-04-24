@@ -10,7 +10,7 @@ class RetrieveCarModel {
   double parkingPrice;
   double totalPrice;
   int gateId;
-
+int slotNumber;
   RetrieveCarModel({
     required this.id,
     required this.locationId,
@@ -22,6 +22,7 @@ class RetrieveCarModel {
     required this.parkingStatus,
     required this.parkingPrice,
     required this.totalPrice,
+    required this.slotNumber,
     this.gateId = -1,
   });
 
@@ -39,6 +40,8 @@ class RetrieveCarModel {
             : json["parkingPrice"].toDouble() ?? 0.0,
         totalPrice:
             json["totalPrice"] == null ? 0.0 : json["totalPrice"].toDouble() ?? 0.0,
+    slotNumber: json['slotNumber'] ?? 0,
+
       );
 
   Map<String, dynamic> toJson() =>

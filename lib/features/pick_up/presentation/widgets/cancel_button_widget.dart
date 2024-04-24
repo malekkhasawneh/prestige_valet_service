@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
-import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 
@@ -37,7 +36,7 @@ class CancelButtonWidget extends StatelessWidget {
               backgroundColor: ColorManager.whiteColor,
               elevation: 0.5),
           child: Text(
-            Strings.cancel,
+            'Cancel Car Retrieval',
             style: TextStyle(
               color: ColorManager.blackColor,
               fontFamily: Fonts.sourceSansPro,

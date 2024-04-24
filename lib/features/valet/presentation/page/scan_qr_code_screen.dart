@@ -44,7 +44,7 @@ class ScanQrCodeScreen extends StatelessWidget {
                 await (ScanQrCubit.get(context).getSlotNumber(
                     valetId: HomeCubit.get(context).userModel.user.id)));
           } else {
-            ScanQrCubit.get(context).printQrCode(
+            ScanQrCubit.get(context).printGuestQrCode(
                 '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
                 await (ScanQrCubit.get(context).getSlotNumber(
                     valetId: HomeCubit.get(context).userModel.user.id)));

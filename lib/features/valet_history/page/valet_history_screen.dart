@@ -9,8 +9,9 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/valet_history/widgets/history_card_widget.dart';
 
 class ValetHistoryScreen extends StatefulWidget {
-  const ValetHistoryScreen({super.key});
+  const ValetHistoryScreen({super.key, this.isFromProfile = false});
 
+  final bool isFromProfile;
   @override
   State<ValetHistoryScreen> createState() => _ValetHistoryScreenState();
 }
@@ -27,81 +28,92 @@ class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: ColorManager.whiteColor,
-            ),
-          ),
-          backgroundColor: ColorManager.primaryColor,
-        ),
-        extendBodyBehindAppBar: true,
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height:
-                  HomeCubit.get(context).headerBoxHeight(context, screenHeight),
-              width: screenWidth,
-              color: ColorManager.primaryColor,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: screenWidth * 0.05,
-                  top: Platform.isIOS
-                      ? HomeCubit.get(context)
-                              .headerBoxHeight(context, screenHeight) *
-                          0.42
-                      : HomeCubit.get(context)
-                              .headerBoxHeight(context, screenHeight) *
-                      0.37,
-                ),
-                child: Text(
-                  Strings.carParkedHiString(
-                      HomeCubit.get(context).userModel.user.firstName),
-                  style: const TextStyle(
-                      fontFamily: Fonts.sourceSansPro,
-                      fontSize: 26,
-                      color: ColorManager.whiteColor,
-                      fontWeight: FontWeight.bold),
-                ),
+      return WillPopScope(
+        onWillPop: () async {
+          widget.isFromProfile
+              ? Navigator.pop(context)
+              : HomeCubit.get(context).setIsHistoryPage = false;
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                // Navigator.pop(context);
+                widget.isFromProfile
+                    ? Navigator.pop(context)
+                    : HomeCubit.get(context).setIsHistoryPage = false;
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+                color: ColorManager.whiteColor,
               ),
             ),
-            if (state is GetPaymentHistoryLoading) ...[
-              SizedBox(
-                height:
-                    HomeCubit.get(context).bodyBoxHeight(context, screenHeight),
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    color: ColorManager.primaryColor,
+            backgroundColor: ColorManager.primaryColor,
+          ),
+          extendBodyBehindAppBar: true,
+          body: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: HomeCubit.get(context)
+                    .headerBoxHeight(context, screenHeight),
+                width: screenWidth,
+                color: ColorManager.primaryColor,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: screenWidth * 0.05,
+                    top: Platform.isIOS
+                        ? HomeCubit.get(context)
+                                .headerBoxHeight(context, screenHeight) *
+                            0.42
+                        : HomeCubit.get(context)
+                                .headerBoxHeight(context, screenHeight) *
+                            0.37,
+                  ),
+                  child: Text(
+                    Strings.carParkedHiString(
+                        HomeCubit.get(context).userModel.user.firstName),
+                    style: const TextStyle(
+                        fontFamily: Fonts.sourceSansPro,
+                        fontSize: 26,
+                        color: ColorManager.whiteColor,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-              )
-            ] else if (state is GetPaymentHistoryLoaded) ...[
-              SizedBox(
-                height:
-                    HomeCubit.get(context).bodyBoxHeight(context, screenHeight),
-                child: state.paymentHistoryModel.content.isEmpty
-                    ? const Center(
-                        child: Text('No history'),
-                      )
-                    : ListView.builder(
-                        padding: EdgeInsets.zero,
-                    itemCount: state.paymentHistoryModel.content.length,
-                    itemBuilder: (context, index) {
-                      return HistoryCardWidget(
-                        item: state.paymentHistoryModel.content[index],
-                      );
-                    }),
               ),
-            ]
-          ],
-        )),
+              if (state is GetPaymentHistoryLoading) ...[
+                SizedBox(
+                  height: HomeCubit.get(context)
+                      .bodyBoxHeight(context, screenHeight),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: ColorManager.primaryColor,
+                    ),
+                  ),
+                )
+              ] else if (state is GetPaymentHistoryLoaded) ...[
+                SizedBox(
+                  height: HomeCubit.get(context)
+                      .bodyBoxHeight(context, screenHeight),
+                  child: state.paymentHistoryModel.content.isEmpty
+                      ? const Center(
+                          child: Text('No history'),
+                        )
+                      : ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: state.paymentHistoryModel.content.length,
+                          itemBuilder: (context, index) {
+                            return HistoryCardWidget(
+                              item: state.paymentHistoryModel.content[index],
+                            );
+                          }),
+                ),
+              ]
+            ],
+          )),
+        ),
       );
     });
   }
