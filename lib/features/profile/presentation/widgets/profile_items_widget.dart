@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/item_widget.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
-import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
 class ProfileItemsWidget extends StatelessWidget {
@@ -65,12 +65,7 @@ class ProfileItemsWidget extends StatelessWidget {
           title: 'History',
           onPressed: () {
             SplashCubit.get(context).isUser
-                ? Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const ValetHistoryScreen(
-                              isFromProfile: true,
-                            )))
+                ? HomeCubit.get(context).setIsHistoryPage = true
                 : BottomNavBarCubit.get(context).setIndex = 1;
           },
         ),

@@ -314,7 +314,10 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
         await rootBundle.load('images/printer_header_logo.png');
-
+    // Print Slot Number next to app logo
+    bytes += generator.text(
+        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -329,28 +332,21 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.feed(1);
     }
 
-    // Print Slot Number next to app logo
-    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
-
     // Print QR Code
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
 
-    // Print other details under QR Code
-    bytes += generator.text('\nCar Model:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nPlate No:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nColor:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nLocation:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nEmployee:');
-    bytes += generator.text('------------------------');
+    bytes += generator.text('\nCar Model: --------------------------------');
+    bytes += generator.text('\nPlate No.: --------------------------------');
+    bytes += generator.text('\nColor: --------------------------------');
+    bytes += generator.text('\nLocation: --------------------------------');
+    bytes += generator.text('\nEmployee: --------------------------------');
     bytes += generator.text('\n');
     bytes += generator.cut();
-
+    // Print Slot Number next to app logo
+    bytes += generator.text(
+        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -365,25 +361,16 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.feed(1);
     }
 
-    // Print Slot Number next to app logo
-    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
-
     // Print QR Code
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
 
     // Print other details under QR Code
-    bytes += generator.text('\nCar Model:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nPlate No:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nColor:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nLocation:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nEmployee:');
-    bytes += generator.text('------------------------');
+    bytes += generator.text('\nCar Model: --------------------------------');
+    bytes += generator.text('\nPlate No.: --------------------------------');
+    bytes += generator.text('\nColor: --------------------------------');
+    bytes += generator.text('\nLocation: --------------------------------');
+    bytes += generator.text('\nEmployee: --------------------------------');
     bytes += generator.text('\n');
     bytes += generator.cut();
 
@@ -404,7 +391,10 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
     await rootBundle.load('images/printer_header_logo.png');
-
+    // Print Slot Number next to app logo
+    bytes += generator.text(
+        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -419,25 +409,15 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.feed(1);
     }
 
-    // Print Slot Number next to app logo
-    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
-
     // Print QR Code
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
 
-    // Print other details under QR Code
-    bytes += generator.text('\nCar Model:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nPlate No:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nColor:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nLocation:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nEmployee:');
-    bytes += generator.text('------------------------');
+    bytes += generator.text('\nCar Model: --------------------------------');
+    bytes += generator.text('\nPlate No.: --------------------------------');
+    bytes += generator.text('\nColor: --------------------------------');
+    bytes += generator.text('\nLocation: --------------------------------');
+    bytes += generator.text('\nEmployee: --------------------------------');
     bytes += generator.text('\n');
     bytes += generator.cut();
 
@@ -455,28 +435,21 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.feed(1);
     }
 
-    // Print Slot Number next to app logo
-    bytes += generator.text('Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
-
     // Print QR Code
     bytes +=
         generator.qrcode(qrString, size: const QRSize(9), cor: QRCorrection.H);
 
-    // Print other details under QR Code
-    bytes += generator.text('\nCar Model:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nPlate No:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nColor:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nLocation:');
-    bytes += generator.text('------------------------');
-    bytes += generator.text('\nEmployee:');
-    bytes += generator.text('------------------------');
+    bytes += generator.text('\nCar Model: --------------------------------');
+    bytes += generator.text('\nPlate No.: --------------------------------');
+    bytes += generator.text('\nColor: --------------------------------');
+    bytes += generator.text('\nLocation: --------------------------------');
+    bytes += generator.text('\nEmployee: --------------------------------');
     bytes += generator.text('\n');
     bytes += generator.cut();
-
+    // Print Slot Number next to app logo
+    bytes += generator.text(
+        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
+        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -490,11 +463,6 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
-
-    // Print Slot Number next to app logo
-    bytes += generator.text(
-        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
 
     // Print QR Code
     bytes +=
