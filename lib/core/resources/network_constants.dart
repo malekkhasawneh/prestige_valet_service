@@ -64,6 +64,8 @@ class NetworkConstants {
   static String getCarsQueue(int valetId) =>
       'valet/Parking/$valetId/retrieving-queue';
 
+  static String getGuestPrice (int valetId)=>'valet/location/$valetId/price';
+
   static String setCarStatusAsRetrieving(int valetId, int parkingId) =>
       'valet/Parking/deliver-to-user?valetId=$valetId&parkingId=$parkingId';
 }

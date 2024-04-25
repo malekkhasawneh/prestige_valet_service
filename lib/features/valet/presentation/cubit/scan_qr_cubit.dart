@@ -17,6 +17,7 @@ import 'package:prestige_valet_app/features/valet/domain/entity/tab_entity.dart'
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/change_park_status_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_cars_queue_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/get_guest_price_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_slot_number_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
@@ -38,6 +39,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     required this.getSlotNumberUseCase,
     required this.getCarsQueueUseCase,
     required this.setCarStatusAsRetrievingUseCase,
+    required this.getGuestPriceUseCase,
   }) : super(ScanQrInitial());
 
   final ParkCarUseCase parkCarUseCase;
@@ -47,7 +49,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   final GetSlotNumberUseCase getSlotNumberUseCase;
   final GetCarsQueueUseCase getCarsQueueUseCase;
   final SetCarStatusAsRetrievingUseCase setCarStatusAsRetrievingUseCase;
-
+  final GetGuestPriceUseCase getGuestPriceUseCase;
   bool connected = false;
   List availableBluetoothDevices = [];
   String connectedDeviceName = '';
@@ -219,6 +221,33 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     return slotNumber;
   }
 
+  Future<double> getGuestPrice({
+    required int valetId,
+  }) async {
+    double slotNumber = 0;
+    emit(SetValueLoading());
+    try {
+      final response = await getGuestPriceUseCase(
+          GetGuestPriceUseCaseParams(valetId: valetId));
+      response.fold(
+            (failure) {
+          log('=================================== iissss ${failure.failure}');
+          emit(ScanQrError(failure: failure.failure));
+        },
+            (price) {
+          slotNumber = price;
+          log('=================================== iisss $price');
+          emit(SetValueLoaded());
+        },
+      );
+    } catch (failure) {
+      log('=================================== iissss ${failure.toString()}');
+
+      emit(ScanQrError(failure: failure.toString()));
+    }
+    return slotNumber;
+  }
+
   Future<void> getCarsQueue({
     required int valetId,
   }) async {
@@ -309,15 +338,13 @@ class ScanQrCubit extends Cubit<ScanQrState> {
 
   Future<List<int>> getGraphicsTicket(String qrString, String slotNumber) async {
     List<int> bytes = [];
-
+    int mainSlotNumber =
+        int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1;
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
         await rootBundle.load('images/printer_header_logo.png');
     // Print Slot Number next to app logo
-    bytes += generator.text(
-        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -328,6 +355,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
+      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+          styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
@@ -343,10 +372,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     bytes += generator.text('\nEmployee: --------------------------------');
     bytes += generator.text('\n');
     bytes += generator.cut();
-    // Print Slot Number next to app logo
-    bytes += generator.text(
-        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
+
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -357,6 +383,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
+      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+          styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
@@ -387,14 +415,12 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   Future<List<int>> getGraphicsTicketForGuest(
       String qrString, String slotNumber) async {
     List<int> bytes = [];
+    int mainSlotNumber =
+        int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1;
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
     await rootBundle.load('images/printer_header_logo.png');
-    // Print Slot Number next to app logo
-    bytes += generator.text(
-        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -405,6 +431,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
+      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+          styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
@@ -431,6 +459,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
+      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+          styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
@@ -446,10 +476,6 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     bytes += generator.text('\nEmployee: --------------------------------');
     bytes += generator.text('\n');
     bytes += generator.cut();
-    // Print Slot Number next to app logo
-    bytes += generator.text(
-        'Key Slot No.: ${int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1}',
-        styles: const PosStyles(align: PosAlign.left));
     if (data.lengthInBytes > 0) {
       final Uint8List imageBytes = data.buffer.asUint8List();
       final decodedImage = img.decodeImage(imageBytes)!;
@@ -460,6 +486,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
+      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+          styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
     }
