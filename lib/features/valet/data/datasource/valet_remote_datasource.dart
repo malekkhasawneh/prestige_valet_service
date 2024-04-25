@@ -25,6 +25,8 @@ abstract class ValetRemoteDataSource {
 
   Future<void> setCarStatusAsRetrieving(
       {required int valetId, required int parkingId});
+
+  Future<double> getGuestPrice(int valetId);
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
@@ -142,6 +144,18 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
       await DioHelper.addTokenHeader();
       await DioHelper.patch(
           NetworkConstants.setCarStatusAsRetrieving(valetId, parkingId));
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<double> getGuestPrice(int valetId) async {
+    try {
+      await DioHelper.addTokenHeader();
+      final response =
+          await DioHelper.get(NetworkConstants.getGuestPrice(valetId));
+      return response.data['locationPrice'];
     } on Exception {
       throw ServerException();
     }

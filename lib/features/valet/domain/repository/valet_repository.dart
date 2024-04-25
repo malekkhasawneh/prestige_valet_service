@@ -17,5 +17,6 @@ abstract class ValetRepository {
   Future<Either<Failures, RetrieveCarQueueModel>> getCarsQueue({required int valetId});
   Future<Either<Failures, void>> setCarStatusAsRetrieving(
       {required int valetId, required int parkingId});
+  Future<Either<Failures,double>> getGuestPrice(int valetId);
 
 }

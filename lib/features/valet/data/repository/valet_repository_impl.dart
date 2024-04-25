@@ -122,4 +122,18 @@ class ValetRepositoryImpl implements ValetRepository {
       return const Left(InternetFailure(failure: Constants.internetFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, double>> getGuestPrice(int valetId) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.getGuestPrice(valetId);
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }

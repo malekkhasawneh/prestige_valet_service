@@ -152,20 +152,19 @@ class ParkingCardWidget extends StatelessWidget {
                     ? () {
                         log('======================================== View only');
                       }
-                    : () {
+                    : () async {
                         if (isGuest) {
                           AwesomeDialog(
                               context: context,
-                              dismissOnBackKeyPress: false,
-                              dismissOnTouchOutside: false,
                               animType: AnimType.scale,
                               dialogType: DialogType.error,
-                              body: const Center(
-                                child: Text(
-                                  'Please confirm,Customer has paid the amount of\n ',
-                                  style: TextStyle(fontStyle: FontStyle.italic),
-                                  textAlign: TextAlign.center,
-                                ),
+                                  body: Center(
+                                    child: Text(
+                                      'Please confirm, Customer has paid the amount of ${await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)} SAR',
+                                      style: const TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                      textAlign: TextAlign.center,
+                                    ),
                               ),
                               btnOkOnPress: () {
                                 ScanQrCubit.get(context).retrieveGuestCar();
