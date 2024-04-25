@@ -5,10 +5,12 @@ import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/logout_button_widget.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/profile_items_widget.dart';
 import 'package:prestige_valet_app/features/profile/presentation/widgets/user_info_widget.dart';
+import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -30,43 +32,46 @@ class ProfileScreen extends StatelessWidget {
         }
       }
     }, builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: ColorManager.transparent,
-          elevation: 0,
-          title: const Text(
-            Strings.profile,
-            style: TextStyle(
-              fontFamily: Fonts.sourceSansPro,
-              fontSize: 26,
-              color: ColorManager.blackColor,
-            ),
-          ),
-          leading: const SizedBox(
-            width: 30,
-          ),
+return BlocBuilder<HomeCubit,HomeState>(builder: (context,state){
+  return HomeCubit.get(context).getIsHistoryPage?const ValetHistoryScreen(): Scaffold(
+    appBar: AppBar(
+      backgroundColor: ColorManager.transparent,
+      elevation: 0,
+      title: const Text(
+        Strings.profile,
+        style: TextStyle(
+          fontFamily: Fonts.sourceSansPro,
+          fontSize: 26,
+          color: ColorManager.blackColor,
         ),
-        body: SizedBox(
-          height: screenHeight,
-          width: screenWidth,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              ListView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.03,
-                ),
-                children: const <Widget>[
-                  UserInfoWidget(),
-                  ProfileItemsWidget(),
-                  //DisCountCardWidget(),
-                ],
-              ),
-              const Positioned(bottom: 10, child: LogoutButtonWidget()),
+      ),
+      leading: const SizedBox(
+        width: 30,
+      ),
+    ),
+    body: SizedBox(
+      height: screenHeight,
+      width: screenWidth,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.03,
+            ),
+            children: const <Widget>[
+              UserInfoWidget(),
+              ProfileItemsWidget(),
+              //DisCountCardWidget(),
             ],
           ),
-        ),
-      );
+          const Positioned(bottom: 10, child: LogoutButtonWidget()),
+        ],
+      ),
+    ),
+  );
+
+},);
     });
   }
 }

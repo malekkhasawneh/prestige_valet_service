@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -37,7 +39,12 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
           key: CacheConstants.appToken, value: userModel.token);
       await CacheHelper.setValue(
           key: CacheConstants.userRole, value: userModel.user.role);
-      return userModel;
+     if(userModel.user.id != -1){
+       return userModel;
+     }else{
+       throw ServerException();
+     }
+
     } on Exception {
       throw ServerException();
     }
