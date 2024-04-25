@@ -160,7 +160,7 @@ class ParkingCardWidget extends StatelessWidget {
                               dialogType: DialogType.error,
                                   body: Center(
                                     child: Text(
-                                      'Please confirm, Customer has paid the amount of ${await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)} SAR',
+                                      'Please confirm receiving ${await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)} SAR from customer',
                                       style: const TextStyle(
                                           fontStyle: FontStyle.italic),
                                       textAlign: TextAlign.center,
@@ -168,7 +168,7 @@ class ParkingCardWidget extends StatelessWidget {
                               ),
                               btnOkOnPress: () {
                                 ScanQrCubit.get(context).retrieveGuestCar();
-                                Navigator.pop(context);
+                                //Navigator.pop(context);
                               },
                               btnOkColor: Colors.red)
                               .show();
