@@ -41,13 +41,11 @@ class ScanQrCodeScreen extends StatelessWidget {
                 notificationReceiver: Constants.toUserNotification);
             ScanQrCubit.get(context).printQrCode(
                 '${state.parkedCarsModel.user!.userUuid},${state.parkedCarsModel.user!.id}',
-                await (ScanQrCubit.get(context).getSlotNumber(
-                    valetId: HomeCubit.get(context).userModel.user.id)));
+                state.parkedCarsModel.slotNumber.toString());
           } else {
             ScanQrCubit.get(context).printGuestQrCode(
                 '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
-                await (ScanQrCubit.get(context).getSlotNumber(
-                    valetId: HomeCubit.get(context).userModel.user.id)));
+                state.parkedCarsModel.slotNumber.toString());
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {

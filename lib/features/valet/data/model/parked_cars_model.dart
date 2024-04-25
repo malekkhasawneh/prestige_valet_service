@@ -11,7 +11,7 @@ class ParkedCarsModel {
   bool isUserCanceled = false;
   bool isGuest;
   String? guestName;
-
+  int slotNumber;
   ParkedCarsModel({
     required this.createdOn,
     required this.createdBy,
@@ -23,6 +23,7 @@ class ParkedCarsModel {
     required this.parkingStatus,
     required this.isGuest,
     required this.guestName,
+    required this.slotNumber,
     this.isUserCanceled = false,
   });
 
@@ -37,6 +38,7 @@ class ParkedCarsModel {
         parkingStatus: json["parkingStatus"]??'',
         isGuest: json["isGuest"] ?? false,
         guestName: json["guestName"] ?? '',
+        slotNumber: json['slotNumber'],
       );
 
   Map<String, dynamic> toJson() =>

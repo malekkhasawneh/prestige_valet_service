@@ -194,37 +194,37 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
-  Future<String> getSlotNumber({
-    required int valetId,
-  }) async {
-    String slotNumber = '';
-    emit(SetValueLoading());
-    try {
-      final response = await getSlotNumberUseCase(
-          GetSlotNumberUseCaseParams(valetId: valetId));
-      response.fold(
-        (failure) {
-          log('=================================== iissss ${failure.failure}');
-          emit(ScanQrError(failure: failure.failure));
-        },
-        (slot) {
-          slotNumber = slot;
-          log('=================================== iisss $slot');
-          emit(SetValueLoaded());
-        },
-      );
-    } catch (failure) {
-      log('=================================== iissss ${failure.toString()}');
-
-      emit(ScanQrError(failure: failure.toString()));
-    }
-    return slotNumber;
-  }
+  // Future<String> getSlotNumber({
+  //   required int valetId,
+  // }) async {
+  //   String slotNumber = '';
+  //   emit(SetValueLoading());
+  //   try {
+  //     final response = await getSlotNumberUseCase(
+  //         GetSlotNumberUseCaseParams(valetId: valetId));
+  //     response.fold(
+  //       (failure) {
+  //         log('=================================== iissss ${failure.failure}');
+  //         emit(ScanQrError(failure: failure.failure));
+  //       },
+  //       (slot) {
+  //         slotNumber = slot;
+  //         log('=================================== iisss $slot');
+  //         emit(SetValueLoaded());
+  //       },
+  //     );
+  //   } catch (failure) {
+  //     log('=================================== iissss ${failure.toString()}');
+  //
+  //     emit(ScanQrError(failure: failure.toString()));
+  //   }
+  //   return slotNumber;
+  // }
 
   Future<double> getGuestPrice({
     required int valetId,
   }) async {
-    double slotNumber = 0;
+    double prices = 0;
     emit(SetValueLoading());
     try {
       final response = await getGuestPriceUseCase(
@@ -235,7 +235,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           emit(ScanQrError(failure: failure.failure));
         },
             (price) {
-          slotNumber = price;
+              prices = price;
           log('=================================== iisss $price');
           emit(SetValueLoaded());
         },
@@ -245,7 +245,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
 
       emit(ScanQrError(failure: failure.toString()));
     }
-    return slotNumber;
+    return prices;
   }
 
   Future<void> getCarsQueue({
@@ -338,8 +338,6 @@ class ScanQrCubit extends Cubit<ScanQrState> {
 
   Future<List<int>> getGraphicsTicket(String qrString, String slotNumber) async {
     List<int> bytes = [];
-    int mainSlotNumber =
-        int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1;
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
@@ -355,7 +353,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
-      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+      bytes += generator.text('Key Slot No.: $slotNumber',
           styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
@@ -383,7 +381,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
-      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+      bytes += generator.text('Key Slot No.: $slotNumber',
           styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
@@ -415,8 +413,6 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   Future<List<int>> getGraphicsTicketForGuest(
       String qrString, String slotNumber) async {
     List<int> bytes = [];
-    int mainSlotNumber =
-        int.parse(slotNumber) - 1 == 0 ? 100 : int.parse(slotNumber) - 1;
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
     final ByteData data =
@@ -431,7 +427,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
-      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+      bytes += generator.text('Key Slot No.: $slotNumber',
           styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
@@ -459,7 +455,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
-      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+      bytes += generator.text('Key Slot No.: $slotNumber',
           styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
@@ -486,7 +482,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       drawImage(originalImg, thumbnail, dstX: padding.toInt());
       var grayscaleImage = img.grayscale(originalImg);
       bytes += generator.feed(1);
-      bytes += generator.text('Key Slot No.: $mainSlotNumber',
+      bytes += generator.text('Key Slot No.: $slotNumber',
           styles: const PosStyles(align: PosAlign.left));
       bytes += generator.imageRaster(grayscaleImage, align: PosAlign.right);
       bytes += generator.feed(1);
