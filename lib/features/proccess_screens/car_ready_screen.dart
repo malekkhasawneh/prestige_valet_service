@@ -228,7 +228,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Parking'),
-                      Text('${HomeCubit.get(context).parkingPrice} JD'),
+                      Text('${HomeCubit.get(context).totalPrice} JD'),
                     ],
                   ),
                   const SizedBox(
@@ -257,7 +257,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'Total           ${HomeCubit.get(context).totalPrice} JD',
+                      'Total           ${HomeCubit.get(context).totalPrice} SAR',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

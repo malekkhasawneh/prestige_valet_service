@@ -10,7 +10,7 @@ class RetrieveCarModel {
   double parkingPrice;
   double totalPrice;
   int gateId;
-int slotNumber;
+  int slotNumber;
   RetrieveCarModel({
     required this.id,
     required this.locationId,
