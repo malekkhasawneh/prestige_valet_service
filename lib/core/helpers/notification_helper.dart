@@ -9,6 +9,7 @@ class NotificationHelper {
     await AwesomeNotifications().initialize('', [
       NotificationChannel(
           channelKey: Constants.baseNotificationChannelKey,
+
           channelName: Constants.baseNotificationChannelName,
           channelDescription: Constants.baseNotificationChannelDesc,
           playSound: true,

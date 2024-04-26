@@ -157,7 +157,7 @@ class ParkingCardWidget extends StatelessWidget {
                           AwesomeDialog(
                               context: context,
                               animType: AnimType.scale,
-                              dialogType: DialogType.error,
+                              dialogType: DialogType.info,
                                   body: Center(
                                     child: Text(
                                       'Please confirm receiving ${await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)} SAR from customer',
@@ -169,8 +169,7 @@ class ParkingCardWidget extends StatelessWidget {
                               btnOkOnPress: () {
                                 ScanQrCubit.get(context).retrieveGuestCar();
                                 //Navigator.pop(context);
-                              },
-                              btnOkColor: Colors.red)
+                              },)
                               .show();
                         } else {
                           ScanQrCubit.get(context)
