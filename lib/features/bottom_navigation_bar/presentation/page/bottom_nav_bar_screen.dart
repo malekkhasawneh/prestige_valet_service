@@ -114,6 +114,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
               selectedItemColor: ColorManager.primaryColor,
               unselectedItemColor: ColorManager.blackColor,
               onTap: (int index) {
+                HomeCubit.get(context).setIsHistoryPage = false;
                 BottomNavBarCubit.get(context).setIndex = index;
                 setState(() {});
               },

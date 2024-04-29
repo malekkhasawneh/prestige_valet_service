@@ -73,8 +73,7 @@ class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
                             0.37,
                   ),
                   child: Text(
-                    Strings.carParkedHiString(
-                        HomeCubit.get(context).userModel.user.firstName),
+                    Strings.userValetHiString,
                     style: const TextStyle(
                         fontFamily: Fonts.sourceSansPro,
                         fontSize: 26,

@@ -81,7 +81,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           await DioHelper.get(NetworkConstants.getUserHistory(
         userId: userId,
       ));
-      log('=================================iii ${response.data}');
+      log('=================================iiiddddddd ${response.data}');
       ParkHistoryModel parkHistoryModel =
           ParkHistoryModel.fromJson(response.data);
       return parkHistoryModel;

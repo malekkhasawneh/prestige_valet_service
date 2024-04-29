@@ -49,6 +49,7 @@ class HomeCubit extends Cubit<HomeState> {
   double parkingPrice = 0;
   double washingPrice = 0;
   double totalPrice = 0;
+  String currency = '';
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;

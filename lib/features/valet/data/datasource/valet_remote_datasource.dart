@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
+import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
@@ -26,7 +27,7 @@ abstract class ValetRemoteDataSource {
   Future<void> setCarStatusAsRetrieving(
       {required int valetId, required int parkingId});
 
-  Future<double> getGuestPrice(int valetId);
+  Future<GuestPriceModel> getGuestPrice(int valetId);
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
@@ -150,7 +151,7 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
   }
 
   @override
-  Future<double> getGuestPrice(int valetId) async {
+  Future<GuestPriceModel> getGuestPrice(int valetId) async {
     try {
       await DioHelper.addTokenHeader();
       final response =

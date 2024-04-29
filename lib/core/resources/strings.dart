@@ -22,7 +22,8 @@ class Strings {
 
   //Home Screen
   static String carParkedHiString(String userName) =>
-      'Car Parking History';
+      'Hi $userName, your car is parked safely';
+  static String userValetHiString = 'Car Parking History';
 
   static String mainScreenHiString({required String userName}) =>
       'Hi $userName, please show your QR code to the valet attendant to process your car';
@@ -34,7 +35,7 @@ class Strings {
   //Process Screens
   static const String parkedSuccessfully =
       'Your car has been parked\n successfully!';
-  static const String goToHome = 'Home Page';
+  static const String goToHome = 'HomePage';
   static const String carReady = 'Your Car Is Ready For Pickup';
   static const String payWithCash = 'Pay with cash';
   static const String payWithCard = 'Pay with card';

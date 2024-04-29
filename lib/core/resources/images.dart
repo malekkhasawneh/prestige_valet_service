@@ -10,5 +10,5 @@ class Images{
   static const String qrCodeScanner = '${images}qr_code_scanner.json';
   static const String noInternetConnection = '${images}no_internet.json';
   static const String retrieveIcon = '${images}retrieve_icon.png';
-  static const String poweredBy = '${images}powered_by.png';
+  static const String poweredBy = '${images}powered_by.svg';
 }
