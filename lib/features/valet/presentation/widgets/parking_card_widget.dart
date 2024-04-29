@@ -160,8 +160,8 @@ class ParkingCardWidget extends StatelessWidget {
                               dialogType: DialogType.info,
                                   body: Center(
                                     child: Text(
-                                      'Please confirm receiving ${await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)} SAR from customer',
-                                      style: const TextStyle(
+                                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price} from customer',
+                                style: const TextStyle(
                                           fontStyle: FontStyle.italic),
                                       textAlign: TextAlign.center,
                                     ),

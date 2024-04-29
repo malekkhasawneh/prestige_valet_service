@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
@@ -221,10 +222,10 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   //   return slotNumber;
   // }
 
-  Future<double> getGuestPrice({
+  Future<GuestPriceModel> getGuestPrice({
     required int valetId,
   }) async {
-    double prices = 0;
+  late  GuestPriceModel prices;
     emit(SetValueLoading());
     try {
       final response = await getGuestPriceUseCase(

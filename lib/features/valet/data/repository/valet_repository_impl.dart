@@ -4,6 +4,7 @@ import 'package:prestige_valet_app/core/errors/failures.dart';
 import 'package:prestige_valet_app/core/network/network_info.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/features/valet/data/datasource/valet_remote_datasource.dart';
+import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
@@ -124,7 +125,7 @@ class ValetRepositoryImpl implements ValetRepository {
   }
 
   @override
-  Future<Either<Failures, double>> getGuestPrice(int valetId) async {
+  Future<Either<Failures, GuestPriceModel>> getGuestPrice(int valetId) async {
     if (await networkInfo.checkConnection()) {
       try {
         final response = await remoteDataSource.getGuestPrice(valetId);

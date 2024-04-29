@@ -31,6 +31,7 @@ class ConfirmButtonWidget extends StatelessWidget {
             log('=================================== parking ${state.parkedCarsModel.totalPrice}');
             HomeCubit.get(context).parkingPrice = state.parkedCarsModel.parkingPrice;
             HomeCubit.get(context).totalPrice = state.parkedCarsModel.totalPrice;
+            HomeCubit.get(context).currency = state.parkedCarsModel.currency;
             BottomNavBarCubit.get(context).sendNotification(
                 userId: state.parkedCarsModel.valet!.id.toInt(),
                 title: Strings.notificationTitle(
