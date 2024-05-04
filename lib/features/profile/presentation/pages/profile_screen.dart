@@ -63,7 +63,7 @@ return BlocBuilder<HomeCubit,HomeState>(builder: (context,state){
               //DisCountCardWidget(),
             ],
           ),
-          const Positioned(bottom: 10, child: LogoutButtonWidget()),
+           Positioned(bottom: 10, child: LogoutButtonWidget()),
         ],
       ),
     ),

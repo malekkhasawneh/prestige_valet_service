@@ -102,7 +102,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     try {
       log('================================== notifications sent to $token');
       DioHelper.firebaseHeaders();
-      dynamic map = {
+      Response response =
+          await DioHelper.dio.post(NetworkConstants.sendNotification, data: {
         "notification": {"title": title, "body": body},
         "priority": "high",
         "data": {
@@ -110,10 +111,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           Constants.notificationReceiverType: notificationReceiver,
         },
         "to": token
-      };
-      log('============================================= Map $map');
-      Response response = await DioHelper.dio
-          .post(NetworkConstants.sendNotification, data: map);
+      });
+      log('==================================== Fcm send response ${response.data}');
       if (response.statusCode == 200) {
         return true;
       } else {

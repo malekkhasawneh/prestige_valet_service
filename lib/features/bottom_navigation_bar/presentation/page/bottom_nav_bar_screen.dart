@@ -25,6 +25,11 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     BottomNavBarCubit.get(context)
         .onReceiveNotificationListenerOnBackground(context);
     HomeCubit.get(context).deleteFirebaseAccount();
+    BottomNavBarCubit.get(context).isTokenUpdated = false;
+    BottomNavBarCubit.get(context).setIsLogout = false;
+    BottomNavBarCubit.get(context).updateUserNotificationToken(
+        userId: HomeCubit.get(context).userModel.user.id,
+        tokenId: BottomNavBarCubit.get(context).tokenId);
     super.initState();
   }
 
@@ -35,18 +40,27 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           listener: (context, state) {
         if (state is GetUserTokenError) {
           if (state.failure == Constants.internetFailure) {
+            HomeCubit.get(context).refreshAfterConnect = () {
+              BottomNavBarCubit.get(context)
+                  .onReceiveNotificationListenerOnApp(context);
+              BottomNavBarCubit.get(context)
+                  .onReceiveNotificationListenerOnBackground(context);
+              BottomNavBarCubit.get(context).isTokenValid();
+              HomeCubit.get(context).deleteFirebaseAccount();
+              BottomNavBarCubit.get(context).updateUserNotificationToken(
+                  userId: HomeCubit.get(context).userModel.user.id,
+                  tokenId: BottomNavBarCubit.get(context).tokenId);
+            };
             Navigator.pushNamed(context, Routes.noInternetScreen);
           } else if (state.failure == Constants.noElement) {
             BottomNavBarCubit.get(context).addNotificationToken(
                 userId: HomeCubit.get(context).userModel.user.id);
           }
         } else if (state is BottomNavBarLoaded) {
-          if (BottomNavBarCubit.get(context).userNotificationToken ==
-              Constants.userLoggedOut) {
+          if( BottomNavBarCubit.get(context).isTokenUpdated){
             BottomNavBarCubit.get(context).updateUserNotificationToken(
                 userId: HomeCubit.get(context).userModel.user.id,
-                tokenId: BottomNavBarCubit.get(context).tokenId);
-          }
+                tokenId: BottomNavBarCubit.get(context).tokenId);}
         } else if (state is BottomNavBarError) {
           if (state.failure == Constants.internetFailure) {
             HomeCubit.get(context).refreshAfterConnect = () {
@@ -56,6 +70,9 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
                   .onReceiveNotificationListenerOnBackground(context);
               BottomNavBarCubit.get(context).isTokenValid();
               HomeCubit.get(context).deleteFirebaseAccount();
+              BottomNavBarCubit.get(context).updateUserNotificationToken(
+                  userId: HomeCubit.get(context).userModel.user.id,
+                  tokenId: BottomNavBarCubit.get(context).tokenId);
             };
             Navigator.pushNamed(context, Routes.noInternetScreen);
           }
