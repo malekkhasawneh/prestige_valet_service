@@ -33,14 +33,14 @@ class WalletRemoteDataSourceImpl extends WalletRemoteDataSource {
       log('========================================== parkingId $parkingId');
       Response response =
           await DioHelper.post(NetworkConstants.sendPayment, data: {
-        "type": "CASH",
-        "amount": 3,
-        "currency": "SAU",
+        "type": type,
+        "amount": amount,
+        "currency": currency,
         "paymentDescription": "",
         "recipientEmail": "",
-        "created": "2024-05-02T22:55:04.796Z",
-        "userId": 102,
-        "gateId": 1,
+        "created": '',
+        "userId": userId,
+        "gateId": gateId,
         "parkingId": parkingId
       });
       if (response.statusCode == 202) {
