@@ -139,6 +139,7 @@ class WalletCubit extends Cubit<WalletState> {
   Future<void> sendPayment(
       {required String type,
       required String amount,
+      required String currency,
       required int userId,
       required int gateId,
       required int parkingId}) async {
@@ -149,10 +150,20 @@ class WalletCubit extends Cubit<WalletState> {
           amount: amount,
           userId: userId,
           gateId: gateId,
-          parkingId: parkingId));
-      response.fold((l) => emit(SendPaymentError(error: l.failure)),
-          (r) => emit(SendPaymentLoaded(status: r)));
+          parkingId: parkingId,
+          currency: currency));
+      response.fold((l) {
+        log('======================================= failure ${l.failure}');
+        emit(SendPaymentError(error: l.failure));
+      },
+          (r) {
+            log('======================================= failure $r');
+
+            emit(SendPaymentLoaded(status: r));
+          });
     } catch (error) {
+      log('======================================= failure ${error.toString()}');
+
       emit(SendPaymentError(error: error.toString()));
     }
   }

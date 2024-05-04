@@ -70,7 +70,7 @@ class HistoryCardWidget extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
               Text(
-                item.amount.toString(),
+                '${item.amount} ${item.currency}',
                 style: const TextStyle(
                   fontFamily: Fonts.sourceSansPro,
                 ),

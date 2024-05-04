@@ -26,6 +26,7 @@ abstract class HomeRepository {
     required String notificationType,
     required String notificationReceiver,
     required String token,
+
   });
   Future<Either<Failures,void>> deleteUserAccountFomFirebase();
 

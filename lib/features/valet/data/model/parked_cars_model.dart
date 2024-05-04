@@ -7,7 +7,6 @@ class ParkedCarsModel {
   User? user;
   User? valet;
   String? parkingStatus;
-
   bool isUserCanceled = false;
   bool isGuest;
   String? guestName;

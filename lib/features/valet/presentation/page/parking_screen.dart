@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +41,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
                 state.parkedCarsModel.user!.firstName!),
             body: Strings.userCarRetrieving,
             notificationType: Constants.carDeliveredNotificationAction,
-            notificationReceiver: Constants.toUserNotification);
+            notificationReceiver: Constants.toUserNotification,
+          );
         ScanQrCubit.get(context)
             .getCarsQueue(valetId: state.parkedCarsModel.valet!.id);
         ScanQrCubit.get(context).getValetHistory(

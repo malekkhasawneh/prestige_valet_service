@@ -8,6 +8,7 @@ abstract class WalletRepository{
   Future<Either<Failures, bool>> sendPayment(
       {required String type,
       required String amount,
+        required String currency,
       required int userId,
       required int gateId,
       required int parkingId});

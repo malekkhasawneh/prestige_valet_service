@@ -35,7 +35,7 @@ class SendNotificationUseCaseParams extends Equatable {
       required this.body,
       required this.notificationType,
       required this.notificationReceiver,
-      required this.token});
+      required this.token,});
 
   @override
   List<Object?> get props => [

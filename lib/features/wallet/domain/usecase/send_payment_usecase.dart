@@ -14,6 +14,7 @@ class SendPaymentUseCase extends UseCase<bool, SendPaymentUseCaseParams> {
     return await repository.sendPayment(
         type: params.type,
         amount: params.amount,
+        currency: params.currency,
         userId: params.userId,
         gateId: params.gateId,
         parkingId: params.parkingId);
@@ -23,13 +24,15 @@ class SendPaymentUseCase extends UseCase<bool, SendPaymentUseCaseParams> {
 class SendPaymentUseCaseParams extends Equatable {
   final String type;
   final String amount;
+  final String currency;
   final int userId;
   final int gateId;
   final int parkingId;
 
   const SendPaymentUseCaseParams(
       {required this.type,
-      required this.amount,
+        required this.amount,
+        required this.currency,
       required this.userId,
       required this.gateId,
       required this.parkingId});
