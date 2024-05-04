@@ -25,7 +25,7 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/page/car_request_screen.dart';
-import 'package:prestige_valet_app/features/proccess_screens/car_ready_screen.dart';
+import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
@@ -66,7 +66,15 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   String userNotificationToken = '';
   int tokenId = -1;
-  bool isLogout = false;
+  bool _isLogout = false;
+
+  bool get getIsLogout => _isLogout;
+
+  set setIsLogout(bool value){
+    emit(SetAndGetValueLoading());
+    _isLogout = value;
+    emit(SetAndGetValueLoaded());
+  }
 
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
     SplashCubit.get(context).isUser
@@ -75,7 +83,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         ? const CarParkedHomeScreen()
         : (!HomeCubit.get(context).isUserCarParked &&
                         HomeCubit.get(context).isUserCarInRetrieve)
-                    ? const CarReadyScreen()
+                    ? const CarRequestScreen()
                     : const MainHomeScreen()
             : const ScanQrCodeScreen(),
         SplashCubit.get(context).isUser
@@ -130,7 +138,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           failure: failure.toString().split(':').last.trim()));
     }
   }
-
+bool isTokenUpdated = false;
   Future<void> updateUserNotificationToken({
     required int userId,
     required int tokenId,
@@ -141,7 +149,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           UpdateNotificationTokenUseCaseParams(
             userId: userId,
             tokenId: tokenId,
-            token: isLogout ? Constants.userLoggedOut : await getTokenForUser(),
+            token: _isLogout ? Constants.userLoggedOut : await getTokenForUser(),
           ));
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
@@ -150,6 +158,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
             tokenId = success.tokenId;
             log('====================================== in update id ${success.tokenId}');
             log('====================================== in update token ${success.token}');
+            isTokenUpdated = true;
             emit(BottomNavBarLoaded());
           });
     } catch (failure) {
