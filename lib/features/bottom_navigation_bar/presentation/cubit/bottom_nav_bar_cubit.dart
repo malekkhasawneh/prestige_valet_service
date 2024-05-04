@@ -27,6 +27,7 @@ import 'package:prestige_valet_app/features/home/presentation/page/main_home_scr
 import 'package:prestige_valet_app/features/pick_up/presentation/page/car_request_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/presentation/page/parking_screen.dart';
 import 'package:prestige_valet_app/features/valet/presentation/page/scan_qr_code_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
@@ -175,7 +176,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     required String title,
     required String body,
     required String notificationType,
-    required String notificationReceiver}) async {
+      required String notificationReceiver,}) async {
     emit(BottomNavBarLoading());
     try {
       await getNotificationTokenForUser(userId: userId);
@@ -185,7 +186,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
               body: body,
               notificationType: notificationType,
               token: userNotificationToken,
-              notificationReceiver: notificationReceiver));
+              notificationReceiver: notificationReceiver,));
       response.fold(
               (failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) => emit(SendNotificationLoaded()));
@@ -216,6 +217,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   Future<String> getTokenForUser() async {
     return await FirebaseMessaging.instance.getToken() ?? '';
   }
+
+  late ParkedCarsModel parkedCarsModel;
 
   Future<void> onReceiveNotificationListenerOnApp(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((message) async{
@@ -262,6 +265,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
               await CacheHelper.getValue(key: CacheConstants.retrievedCarModel),
         ),
       );
+
         Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });

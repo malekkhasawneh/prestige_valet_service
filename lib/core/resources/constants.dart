@@ -29,6 +29,7 @@ class Constants {
   static const String userLoggedOut = "user logged out";
   static const String notificationDataType = "click_action";
   static const String notificationReceiverType = "receiver type";
+  static const String notificationRetrievingMap = "retrieving_map";
   static const String toUserNotification = "to user";
   static const String toValetNotification = "to valet";
   static const String carParkedNotificationAction = "CAR_PARKED";

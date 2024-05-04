@@ -35,6 +35,7 @@ class WalletRepositoryImpl implements WalletRepository {
       required String amount,
       required int userId,
       required int gateId,
+        required String currency,
       required int parkingId}) async {
     if (await networkInfo.checkConnection()) {
       final response = await remoteDataSource.sendPayment(
@@ -42,6 +43,7 @@ class WalletRepositoryImpl implements WalletRepository {
           amount: amount,
           userId: userId,
           gateId: gateId,
+          currency: currency,
           parkingId: parkingId);
       return Right(response);
     } else {

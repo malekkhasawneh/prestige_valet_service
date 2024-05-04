@@ -50,7 +50,7 @@ class RetrieveAtGate {
   int id;
   String? gateName;
   String description;
-  double price;
+  double? price;
   int countryId;
   String status;
 
@@ -125,7 +125,7 @@ class Valet {
 class Location {
   int id;
   String locationName;
-  double price;
+  double? price;
 
   Location({
     required this.id,
@@ -136,7 +136,7 @@ class Location {
   factory Location.fromJson(Map<String, dynamic> json) => Location(
     id: json["id"],
     locationName: json["locationName"],
-    price: json["price"],
+    price: json["price"] ?? 0,
   );
 
 }

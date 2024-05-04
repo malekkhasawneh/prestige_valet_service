@@ -156,7 +156,10 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
       await DioHelper.addTokenHeader();
       final response =
           await DioHelper.get(NetworkConstants.getGuestPrice(valetId));
-      return response.data['locationPrice'];
+      GuestPriceModel guestPriceModel = GuestPriceModel.fromJson(response.data);
+      log('====================================== ppp ${guestPriceModel.price}');
+      log('====================================== ppp ${guestPriceModel.currency}');
+      return guestPriceModel;
     } on Exception {
       throw ServerException();
     }

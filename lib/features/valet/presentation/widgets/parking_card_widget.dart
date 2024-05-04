@@ -160,7 +160,7 @@ class ParkingCardWidget extends StatelessWidget {
                               dialogType: DialogType.info,
                                   body: Center(
                                     child: Text(
-                                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price} from customer',
+                                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price.toString()} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).currency} from customer',
                                 style: const TextStyle(
                                           fontStyle: FontStyle.italic),
                                       textAlign: TextAlign.center,
@@ -169,7 +169,8 @@ class ParkingCardWidget extends StatelessWidget {
                               btnOkOnPress: () {
                                 ScanQrCubit.get(context).retrieveGuestCar();
                                 //Navigator.pop(context);
-                              },)
+                              },
+                          btnOkColor: Colors.blue)
                               .show();
                         } else {
                           ScanQrCubit.get(context)

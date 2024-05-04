@@ -54,6 +54,9 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                     .retrieveCarModel
                     .totalPrice
                     .toString(),
+                currency: BottomNavBarCubit.get(context)
+                    .retrieveCarModel
+                    .currency,
                 userId: BottomNavBarCubit.get(context)
                     .retrieveCarModel
                     .user!
@@ -93,6 +96,9 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                       .retrieveCarModel
                       .totalPrice
                       .toString(),
+                  currency: BottomNavBarCubit.get(context)
+                      .retrieveCarModel
+                      .currency,
                   userId: BottomNavBarCubit.get(context)
                       .retrieveCarModel
                       .user!
@@ -283,8 +289,19 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                     elevation: 0.2,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.successScreen);
+                    WalletCubit.get(context).sendPayment(
+                        type: 'CASH',
+                        amount: BottomNavBarCubit.get(context)
+                            .retrieveCarModel
+                            .totalPrice
+                            .toString(),
+                        currency: BottomNavBarCubit.get(context)
+                            .retrieveCarModel
+                            .currency,
+                        userId: HomeCubit.get(context).userModel.user.id,
+                        gateId: BottomNavBarCubit.get(context).retrieveCarModel.retrieveAtGate,
+                        parkingId:
+                        BottomNavBarCubit.get(context).retrieveCarModel.id.toInt());
                   },
                   child: const Row(
                     children: [

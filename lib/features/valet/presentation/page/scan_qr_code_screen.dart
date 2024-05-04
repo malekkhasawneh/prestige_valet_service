@@ -38,14 +38,14 @@ class ScanQrCodeScreen extends StatelessWidget {
                     state.parkedCarsModel.user!.firstName!),
                 body: Strings.userCarParked,
                 notificationType: Constants.carParkedNotificationAction,
-                notificationReceiver: Constants.toUserNotification);
+                notificationReceiver: Constants.toUserNotification,);
             ScanQrCubit.get(context).printQrCode(
                 '${state.parkedCarsModel.user!.userUuid},${state.parkedCarsModel.user!.id}',
                 state.parkedCarsModel.slotNumber.toString());
           } else {
-            ScanQrCubit.get(context).printGuestQrCode(
-                '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
-                state.parkedCarsModel.slotNumber.toString());
+            // ScanQrCubit.get(context).printGuestQrCode(
+            //     '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
+            //     state.parkedCarsModel.slotNumber.toString());
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {
@@ -200,29 +200,29 @@ class ScanQrCodeScreen extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (ScanQrCubit.get(context).connected) {
+                    // if (ScanQrCubit.get(context).connected) {
                       ScanQrCubit.get(context).parkCar(
                         valetId: HomeCubit.get(context).userModel.user.id,
                         isGuest: true,
                       );
-                    } else {
-                      AwesomeDialog(
-                        context: context,
-                        dismissOnBackKeyPress: false,
-                        dismissOnTouchOutside: false,
-                        animType: AnimType.scale,
-                        dialogType: DialogType.error,
-                        body: const Center(
-                          child: Text(
-                            'No connected printer\n ',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        btnOkOnPress: () {},
-                        btnOkColor: Colors.red,
-                      ).show();
-                    }
+                    // } else {
+                    //   AwesomeDialog(
+                    //     context: context,
+                    //     dismissOnBackKeyPress: false,
+                    //     dismissOnTouchOutside: false,
+                    //     animType: AnimType.scale,
+                    //     dialogType: DialogType.error,
+                    //     body: const Center(
+                    //       child: Text(
+                    //         'No connected printer\n ',
+                    //         style: TextStyle(fontStyle: FontStyle.italic),
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //     ),
+                    //     btnOkOnPress: () {},
+                    //     btnOkColor: Colors.red,
+                    //   ).show();
+                    // }
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

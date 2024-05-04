@@ -27,6 +27,7 @@ abstract class HomeRemoteDataSource {
     required String notificationType,
     required String notificationReceiver,
     required String token,
+
   });
 
   Future<void> deleteUserAccountFomFirebase();
@@ -101,8 +102,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     try {
       log('================================== notifications sent to $token');
       DioHelper.firebaseHeaders();
-      Response response =
-      await DioHelper.dio.post(NetworkConstants.sendNotification, data: {
+      dynamic map = {
         "notification": {"title": title, "body": body},
         "priority": "high",
         "data": {
@@ -110,7 +110,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           Constants.notificationReceiverType: notificationReceiver,
         },
         "to": token
-      });
+      };
+      log('============================================= Map $map');
+      Response response = await DioHelper.dio
+          .post(NetworkConstants.sendNotification, data: map);
       if (response.statusCode == 200) {
         return true;
       } else {

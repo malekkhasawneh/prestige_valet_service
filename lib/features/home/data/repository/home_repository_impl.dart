@@ -86,7 +86,9 @@ class HomeRepositoryImpl implements HomeRepository {
       required String body,
       required String notificationType,
         required String notificationReceiver,
-      required String token}) async {
+      required String token,
+
+      }) async {
     if (await networkInfo.checkConnection()) {
       try {
         final response = await remoteDataSource.sendNotification(
@@ -94,7 +96,8 @@ class HomeRepositoryImpl implements HomeRepository {
             body: body,
             notificationType: notificationType,
             notificationReceiver: notificationReceiver,
-            token: token);
+            token: token,
+        );
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

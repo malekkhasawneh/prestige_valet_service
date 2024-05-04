@@ -12,6 +12,7 @@ class RetrieveCarModel {
   int gateId;
   int slotNumber;
   String currency;
+
   RetrieveCarModel({
     required this.id,
     required this.locationId,
@@ -43,7 +44,7 @@ class RetrieveCarModel {
         totalPrice:
             json["totalPrice"] == null ? 0.0 : json["totalPrice"].toDouble() ?? 0.0,
     slotNumber: json['slotNumber'] ?? 0,
-          currency: json["currency"]);
+          currency: json["currency"] ?? '');
 
   Map<String, dynamic> toJson() =>
       {

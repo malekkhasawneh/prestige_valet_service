@@ -232,7 +232,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           GetGuestPriceUseCaseParams(valetId: valetId));
       response.fold(
             (failure) {
-          log('=================================== iissss ${failure.failure}');
+          log('=================================== iissssfailure ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
             (price) {
@@ -242,7 +242,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
         },
       );
     } catch (failure) {
-      log('=================================== iissss ${failure.toString()}');
+      log('=================================== iissssError ${failure.toString()}');
 
       emit(ScanQrError(failure: failure.toString()));
     }
