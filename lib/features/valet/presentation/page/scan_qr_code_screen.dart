@@ -43,9 +43,9 @@ class ScanQrCodeScreen extends StatelessWidget {
                 '${state.parkedCarsModel.user!.userUuid},${state.parkedCarsModel.user!.id}',
                 state.parkedCarsModel.slotNumber.toString());
           } else {
-            // ScanQrCubit.get(context).printGuestQrCode(
-            //     '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
-            //     state.parkedCarsModel.slotNumber.toString());
+            ScanQrCubit.get(context).printGuestQrCode(
+                '${state.parkedCarsModel.guestName}${DateTime.now().microsecondsSinceEpoch},${state.parkedCarsModel.id}',
+                state.parkedCarsModel.slotNumber.toString());
           }
         }
       } else if (state is RetrieveGuestCarLoadedError) {
@@ -200,29 +200,29 @@ class ScanQrCodeScreen extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    // if (ScanQrCubit.get(context).connected) {
+                    if (ScanQrCubit.get(context).connected) {
                       ScanQrCubit.get(context).parkCar(
                         valetId: HomeCubit.get(context).userModel.user.id,
                         isGuest: true,
                       );
-                    // } else {
-                    //   AwesomeDialog(
-                    //     context: context,
-                    //     dismissOnBackKeyPress: false,
-                    //     dismissOnTouchOutside: false,
-                    //     animType: AnimType.scale,
-                    //     dialogType: DialogType.error,
-                    //     body: const Center(
-                    //       child: Text(
-                    //         'No connected printer\n ',
-                    //         style: TextStyle(fontStyle: FontStyle.italic),
-                    //         textAlign: TextAlign.center,
-                    //       ),
-                    //     ),
-                    //     btnOkOnPress: () {},
-                    //     btnOkColor: Colors.red,
-                    //   ).show();
-                    // }
+                    } else {
+                      AwesomeDialog(
+                        context: context,
+                        dismissOnBackKeyPress: false,
+                        dismissOnTouchOutside: false,
+                        animType: AnimType.scale,
+                        dialogType: DialogType.error,
+                        body: const Center(
+                          child: Text(
+                            'No connected printer\n ',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        btnOkOnPress: () {},
+                        btnOkColor: Colors.red,
+                      ).show();
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -253,8 +253,25 @@ class ScanQrCodeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    ScanQrCubit.get(context).retrieveGuestCar();
+                  onPressed: () async {
+                    AwesomeDialog(
+                            context: context,
+                            animType: AnimType.scale,
+                            dialogType: DialogType.info,
+                            body: Center(
+                              child: Text(
+                                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price.toString()} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).currency} from customer',
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            btnOkOnPress: () {
+                              ScanQrCubit.get(context).retrieveGuestCar();
+                              //Navigator.pop(context);
+                            },
+                            btnOkColor: Colors.blue)
+                        .show();
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
