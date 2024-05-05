@@ -154,24 +154,7 @@ class ParkingCardWidget extends StatelessWidget {
                       }
                     : () async {
                         if (isGuest) {
-                          AwesomeDialog(
-                              context: context,
-                              animType: AnimType.scale,
-                              dialogType: DialogType.info,
-                                  body: Center(
-                                    child: Text(
-                                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price.toString()} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).currency} from customer',
-                                style: const TextStyle(
-                                          fontStyle: FontStyle.italic),
-                                      textAlign: TextAlign.center,
-                                    ),
-                              ),
-                              btnOkOnPress: () {
-                                ScanQrCubit.get(context).retrieveGuestCar();
-                                //Navigator.pop(context);
-                              },
-                          btnOkColor: Colors.blue)
-                              .show();
+                          ScanQrCubit.get(context).retrieveGuestCar();
                         } else {
                           ScanQrCubit.get(context)
                               .carDelivered(parkingId: parkingId);

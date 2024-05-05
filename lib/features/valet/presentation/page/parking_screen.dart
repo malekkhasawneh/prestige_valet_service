@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +31,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocConsumer<ScanQrCubit, ScanQrState>(listener: (context, state) {
+    return BlocConsumer<ScanQrCubit, ScanQrState>(
+        listener: (context, state) async {
       if (state is ScanQrLoaded) {
         BottomNavBarCubit.get(context).sendNotification(
             userId: state.parkedCarsModel.user!.id,
@@ -80,6 +79,23 @@ class _ParkingScreenState extends State<ParkingScreen> {
             btnOkColor: Colors.red,
           ).show();
         }
+      } else if (state is RetrieveGuestCarLoaded) {
+        AwesomeDialog(
+                context: context,
+                animType: AnimType.scale,
+                dialogType: DialogType.info,
+                body: Center(
+                  child: Text(
+                    'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price.toString()} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).currency} from customer',
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                btnOkOnPress: () {
+                  //Navigator.pop(context);
+                },
+                btnOkColor: Colors.blue)
+            .show();
       } else if (state is ScanQrError) {
         if (state.failure == Constants.internetFailure) {
           Navigator.pushNamed(context, Routes.noInternetScreen);

@@ -71,21 +71,23 @@ class ScanQrCodeScreen extends StatelessWidget {
         }
       } else if (state is RetrieveGuestCarLoaded) {
         AwesomeDialog(
-          context: context,
-          dismissOnBackKeyPress: false,
-          dismissOnTouchOutside: false,
-          animType: AnimType.scale,
-          dialogType: DialogType.success,
-          body: const Center(
-            child: Text(
-              'Process Completed Successfully\n ',
-              style: TextStyle(fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
+            context: context,
+            animType: AnimType.scale,
+            dialogType: DialogType.info,
+            body: Center(
+              child: Text(
+                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price.toString()} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).currency} from customer',
+                style: const TextStyle(
+                    fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          btnOkOnPress: () {},
-          btnOkColor: Colors.green,
-        ).show();
+            btnOkOnPress: () {
+
+              //Navigator.pop(context);
+            },
+            btnOkColor: Colors.blue)
+            .show();
       } else if (state is ScanQrError) {
         if (state.failure == Constants.internetFailure) {
           Navigator.pushNamed(context, Routes.noInternetScreen);
@@ -254,24 +256,8 @@ class ScanQrCodeScreen extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    AwesomeDialog(
-                            context: context,
-                            animType: AnimType.scale,
-                            dialogType: DialogType.info,
-                            body: Center(
-                              child: Text(
-                                'Please confirm receiving ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).price.toString()} ${(await ScanQrCubit.get(context).getGuestPrice(valetId: HomeCubit.get(context).userModel.user.id)).currency} from customer',
-                                style: const TextStyle(
-                                    fontStyle: FontStyle.italic),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            btnOkOnPress: () {
-                              ScanQrCubit.get(context).retrieveGuestCar();
-                              //Navigator.pop(context);
-                            },
-                            btnOkColor: Colors.blue)
-                        .show();
+                    ScanQrCubit.get(context).retrieveGuestCar();
+
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
