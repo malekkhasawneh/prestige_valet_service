@@ -20,7 +20,7 @@ class DatabaseHelper {
   static Future<Database> initDatabase() async {
     String path = await getDatabasesPath();
     return await openDatabase(
-      join(path, 'wallet.db'),
+      join(path, 'prestigeApp.db'),
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE myCards (
@@ -28,6 +28,17 @@ class DatabaseHelper {
             cardHolderName TEXT,
             cardNumber TEXT,
             expiryDate TEXT
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE payment (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            amount TEXT,
+            currency TEXT,
+            valetId TEXT,
+            valetName TEXT,
+            gateName TEXT,
+            retrieveCarModel TEXT
           )
         ''');
       },
@@ -49,5 +60,44 @@ class DatabaseHelper {
     final db = await database;
     return await db
         .update('myCards', card, where: 'id = $cardId');
+  }
+
+  static Future<Map<String, dynamic>> getPayment() async {
+    final db = await database;
+    return (await db.rawQuery("SELECT * FROM payment")).isEmpty
+        ? {}
+        : (await db.rawQuery("SELECT * FROM payment")).last;
+  }
+
+  static Future<void> deletePaymentTableRecords() async {
+    final db = await database;
+    await db.rawDelete('DELETE FROM `payment`');
+  }
+
+  static Future<void> insertPayment({
+    required String amount,
+    required String currency,
+    required String valetId,
+    required String valetName,
+    required String gateName,
+    required String retrieveCarModel,
+  }) async {
+    final db = await database;
+    await db.insert(
+      'payment',
+      {
+        'amount': amount,
+        'currency': currency,
+        'valetId': valetId,
+        'valetName': valetName,
+        'gateName': gateName,
+        'retrieveCarModel': retrieveCarModel,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  static Future<bool> checkIfTableExist() async {
+    return (await getPayment()).isNotEmpty;
   }
 }

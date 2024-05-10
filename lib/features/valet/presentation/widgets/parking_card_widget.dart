@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
@@ -150,7 +147,6 @@ class ParkingCardWidget extends StatelessWidget {
                             .retrieveButtonColor(status: status) ==
                         ColorManager.blackColor
                     ? () {
-                        log('======================================== View only');
                       }
                     : () async {
                         if (isGuest) {

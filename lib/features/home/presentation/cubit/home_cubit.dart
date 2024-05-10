@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
@@ -46,10 +48,7 @@ class HomeCubit extends Cubit<HomeState> {
   final CheckInternetConnectionUseCase checkInternetConnectionUseCase;
   final GetParkingHistoryUseCase getParkingHistoryUseCase;
 
-  double parkingPrice = 0;
-  double washingPrice = 0;
-  double totalPrice = 0;
-  String currency = '';
+
 
   double bodyBoxHeight(BuildContext context, double screenHeight) =>
       (screenHeight * 0.7) - 56;
@@ -242,4 +241,6 @@ class HomeCubit extends Cubit<HomeState> {
       }
     });
   }
+
+
 }

@@ -91,9 +91,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                btnOkOnPress: () {
-                  //Navigator.pop(context);
-                },
+                btnOkOnPress: () {},
                 btnOkColor: Colors.blue)
             .show();
       } else if (state is ScanQrError) {

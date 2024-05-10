@@ -34,6 +34,7 @@ class Constants {
   static const String toValetNotification = "to valet";
   static const String carParkedNotificationAction = "CAR_PARKED";
   static const String carInRetrievingNotificationAction = "CAR_IN_RETRIEVING";
+  static const String cashPaymentValueNotificationAction = "cashPaymentValet";
   static const String cancelCarRetrievingNotificationAction =
       "CANCEL CAR RETRIEVING";
   static const String carDeliveredNotificationAction = "DELIVERED_TO_USER";

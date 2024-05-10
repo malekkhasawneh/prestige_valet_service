@@ -25,6 +25,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     BottomNavBarCubit.get(context)
         .onReceiveNotificationListenerOnBackground(context);
     HomeCubit.get(context).deleteFirebaseAccount();
+    BottomNavBarCubit.get(context).getIsPaymentRequired();
     super.initState();
   }
 
@@ -81,6 +82,27 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
               btnOkColor: Colors.red,
             ).show();
           }
+        }
+        if (BottomNavBarCubit.get(context).showAlertDialog) {
+          AwesomeDialog(
+                  context: context,
+                  animType: AnimType.topSlide,
+                  dialogType: DialogType.info,
+                  dismissOnTouchOutside: false,
+                  dismissOnBackKeyPress: false,
+                  body: const Center(
+                    child: Text(
+                      'There is an outstanding amount for last car parking process\n ',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  btnOkOnPress: () {
+                    Navigator.pop(context);
+                    BottomNavBarCubit.get(context).navigateToPaymentScreen();
+                  },
+                  btnOkColor: Colors.blue)
+              .show();
         }
       }, builder: (context, state) {
         // ignore: deprecated_member_use

@@ -22,9 +22,7 @@ class PickUpCubit extends Cubit<PickUpState> {
       screenHeight * 0.3;
 
   int selectedGateId = 0;
-
-
-
+  String gateName = '';
 
   Future<void> getGates({required int locationId}) async {
     emit(PickUpLoading());

@@ -35,7 +35,7 @@ class Strings {
   //Process Screens
   static const String parkedSuccessfully =
       'Your car has been parked\n successfully!';
-  static const String goToHome = 'HomePage';
+  static const String goToHome = 'Homepage';
   static const String carReady = 'Your Car Is Ready For Pickup';
   static const String payWithCash = 'Pay with cash';
   static const String payWithCard = 'Pay with card';
@@ -152,8 +152,13 @@ class Strings {
   static const String userCarRetrieving = 'Your car is ready for pickup';
 
 //Valet
-  static String valetCarRetrievingRequest(String userName,String slotNo) =>
-      '$userName has requested the retrieval of their car, key in slot number: $slotNo';
+  static String valetCarRetrievingRequest(
+          String userName, String slotNo, String gateName) =>
+      '$userName has requested the retrieval of their car from gate $gateName, key in slot number: $slotNo';
+
+  static payWithCashNotification(String amount,String currency){
+    return 'Please confirm receiving $amount $currency from customer';
+  }
 
   static String valetCarWashingRequest(String userName) =>
       'User $userName has submitted a request for a car wash. Please review and process accordingly';

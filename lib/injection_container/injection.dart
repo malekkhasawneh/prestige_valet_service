@@ -54,6 +54,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => InternetConnectionChecker());
   await NotificationHelper.init();
+  await DatabaseHelper.initDatabase();
   if (Platform.isIOS) {
     DartPingIOS.register();
   }
