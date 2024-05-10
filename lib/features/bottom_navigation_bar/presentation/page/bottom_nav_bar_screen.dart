@@ -25,11 +25,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     BottomNavBarCubit.get(context)
         .onReceiveNotificationListenerOnBackground(context);
     HomeCubit.get(context).deleteFirebaseAccount();
-    BottomNavBarCubit.get(context).isTokenUpdated = false;
-    BottomNavBarCubit.get(context).setIsLogout = false;
-    BottomNavBarCubit.get(context).updateUserNotificationToken(
-        userId: HomeCubit.get(context).userModel.user.id,
-        tokenId: BottomNavBarCubit.get(context).tokenId);
+    BottomNavBarCubit.get(context).getIsPaymentRequired();
     super.initState();
   }
 
@@ -40,27 +36,18 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           listener: (context, state) {
         if (state is GetUserTokenError) {
           if (state.failure == Constants.internetFailure) {
-            HomeCubit.get(context).refreshAfterConnect = () {
-              BottomNavBarCubit.get(context)
-                  .onReceiveNotificationListenerOnApp(context);
-              BottomNavBarCubit.get(context)
-                  .onReceiveNotificationListenerOnBackground(context);
-              BottomNavBarCubit.get(context).isTokenValid();
-              HomeCubit.get(context).deleteFirebaseAccount();
-              BottomNavBarCubit.get(context).updateUserNotificationToken(
-                  userId: HomeCubit.get(context).userModel.user.id,
-                  tokenId: BottomNavBarCubit.get(context).tokenId);
-            };
             Navigator.pushNamed(context, Routes.noInternetScreen);
           } else if (state.failure == Constants.noElement) {
             BottomNavBarCubit.get(context).addNotificationToken(
                 userId: HomeCubit.get(context).userModel.user.id);
           }
         } else if (state is BottomNavBarLoaded) {
-          if( BottomNavBarCubit.get(context).isTokenUpdated){
+          if (BottomNavBarCubit.get(context).userNotificationToken ==
+              Constants.userLoggedOut) {
             BottomNavBarCubit.get(context).updateUserNotificationToken(
                 userId: HomeCubit.get(context).userModel.user.id,
-                tokenId: BottomNavBarCubit.get(context).tokenId);}
+                tokenId: BottomNavBarCubit.get(context).tokenId);
+          }
         } else if (state is BottomNavBarError) {
           if (state.failure == Constants.internetFailure) {
             HomeCubit.get(context).refreshAfterConnect = () {
@@ -70,13 +57,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
                   .onReceiveNotificationListenerOnBackground(context);
               BottomNavBarCubit.get(context).isTokenValid();
               HomeCubit.get(context).deleteFirebaseAccount();
-              BottomNavBarCubit.get(context).updateUserNotificationToken(
-                  userId: HomeCubit.get(context).userModel.user.id,
-                  tokenId: BottomNavBarCubit.get(context).tokenId);
             };
             Navigator.pushNamed(context, Routes.noInternetScreen);
-          }else if(state.failure == Constants.serverFailure){
-            Navigator.pushReplacementNamed(context, Routes.loginScreen);
           }
         } else if (state is IsTokenValidLoaded) {
           if (!state.isValid) {
@@ -100,6 +82,27 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
               btnOkColor: Colors.red,
             ).show();
           }
+        }
+        if (BottomNavBarCubit.get(context).showAlertDialog) {
+          AwesomeDialog(
+                  context: context,
+                  animType: AnimType.topSlide,
+                  dialogType: DialogType.info,
+                  dismissOnTouchOutside: false,
+                  dismissOnBackKeyPress: false,
+                  body: const Center(
+                    child: Text(
+                      'There is an outstanding amount for last car parking process\n ',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  btnOkOnPress: () {
+                    Navigator.pop(context);
+                    BottomNavBarCubit.get(context).navigateToPaymentScreen();
+                  },
+                  btnOkColor: Colors.blue)
+              .show();
         }
       }, builder: (context, state) {
         // ignore: deprecated_member_use

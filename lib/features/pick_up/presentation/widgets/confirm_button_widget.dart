@@ -29,16 +29,20 @@ class ConfirmButtonWidget extends StatelessWidget {
               Constants.carInRetrieving) {
             log('=================================== parking ${state.parkedCarsModel.parkingPrice}');
             log('=================================== parking ${state.parkedCarsModel.totalPrice}');
-            HomeCubit.get(context).parkingPrice = state.parkedCarsModel.parkingPrice;
-            HomeCubit.get(context).totalPrice = state.parkedCarsModel.totalPrice;
-            HomeCubit.get(context).currency = state.parkedCarsModel.currency;
+            BottomNavBarCubit.get(context).parkingPrice = state.parkedCarsModel.parkingPrice;
+            BottomNavBarCubit.get(context).totalPrice = state.parkedCarsModel.totalPrice;
+            BottomNavBarCubit.get(context).currency = state.parkedCarsModel.currency;
+            BottomNavBarCubit.get(context).valetId = state.parkedCarsModel.valet!.id;
+            BottomNavBarCubit.get(context).valetName = state.parkedCarsModel.valet!.firstName;
             BottomNavBarCubit.get(context).sendNotification(
                 userId: state.parkedCarsModel.valet!.id.toInt(),
                 title: Strings.notificationTitle(
                     state.parkedCarsModel.valet!.firstName),
                 body: Strings.valetCarRetrievingRequest(
-                    state.parkedCarsModel.user!.firstName,state.parkedCarsModel.slotNumber.toString()),
-                notificationType: Constants.carInRetrievingNotificationAction,
+                  state.parkedCarsModel.user!.firstName,
+                  state.parkedCarsModel.slotNumber.toString(),
+                  PickUpCubit.get(context).gateName),
+              notificationType: Constants.carInRetrievingNotificationAction,
                 notificationReceiver: Constants.toValetNotification,);
             NotificationHelper.sendLocalNotification(
                 title: Strings.notificationTitle(

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:equatable/equatable.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/helpers/cache_helper.dart';
+import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/helpers/notification_helper.dart';
 import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -25,6 +27,7 @@ import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.d
 import 'package:prestige_valet_app/features/home/presentation/page/car_parked_home_screen.dart';
 import 'package:prestige_valet_app/features/home/presentation/page/main_home_screen.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/page/car_request_screen.dart';
+import 'package:prestige_valet_app/features/proccess_screens/car_ready_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
@@ -66,7 +69,12 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   String userNotificationToken = '';
   int tokenId = -1;
   bool isLogout = false;
-
+  double parkingPrice = 0;
+  double washingPrice = 0;
+  double totalPrice = 0;
+  String currency = '';
+  String valetName = '';
+  int valetId = -1;
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
     SplashCubit.get(context).isUser
         ? (HomeCubit.get(context).isUserCarParked &&
@@ -75,7 +83,9 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         : (!HomeCubit.get(context).isUserCarParked &&
                         HomeCubit.get(context).isUserCarInRetrieve)
                     ? const CarRequestScreen()
-                    : const MainHomeScreen()
+                    : isPaymentRequired
+                        ? const CarReadyScreen()
+                        : const MainHomeScreen()
             : const ScanQrCodeScreen(),
         SplashCubit.get(context).isUser
             ? const WalletScreen()
@@ -253,15 +263,48 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       if (SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
               Constants.toUserNotification) {
-        NotificationHelper.sendLocalNotification(
-            title: message.notification!.title!,
-            body: message.notification!.body!);
+        if (Platform.isAndroid) {
+          NotificationHelper.sendLocalNotification(
+              title: message.notification!.title!,
+              body: message.notification!.body!);
+        }
       } else if (!SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
               Constants.toValetNotification) {
-        NotificationHelper.sendLocalNotification(
-            title: message.notification!.title!,
-            body: message.notification!.body!);
+        if (Platform.isAndroid) {
+          NotificationHelper.sendLocalNotification(
+              title: message.notification!.title!,
+              body: message.notification!.body!);
+        }
+        AwesomeDialog(
+          context: context,
+          dismissOnBackKeyPress: false,
+          dismissOnTouchOutside: false,
+          animType: AnimType.scale,
+          dialogType: DialogType.success,
+          headerAnimationLoop: false,
+          title: '${message.notification!.title!}\n ',
+          body: Center(
+            child: Text(
+              '${message.notification!.body!}\n ',
+              style: const TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          btnOkOnPress: () {},
+          btnOkColor: Colors.green,
+          showCloseIcon: true,
+        ).show();
+      } else if (!SplashCubit.get(context).isUser &&
+          message.data[Constants.notificationReceiverType] ==
+              Constants.toValetNotification &&
+          message.data[Constants.notificationDataType] ==
+              Constants.cashPaymentValueNotificationAction) {
+        if (Platform.isAndroid) {
+          NotificationHelper.sendLocalNotification(
+              title: message.notification!.title!,
+              body: message.notification!.body!);
+        }
         AwesomeDialog(
           context: context,
           dismissOnBackKeyPress: false,
@@ -317,5 +360,33 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });
+  }
+
+  bool isPaymentRequired = false;
+  bool showAlertDialog = false;
+
+  Future<void> getIsPaymentRequired() async {
+    emit(SetAndGetValueLoading());
+    if (await DatabaseHelper.checkIfTableExist()) {
+      initValueFromLocal();
+      showAlertDialog = true;
+    }
+    emit(SetAndGetValueLoaded());
+  }
+
+  void navigateToPaymentScreen() async {
+    emit(SetAndGetValueLoading());
+    isPaymentRequired = true;
+    showAlertDialog = false;
+    emit(SetAndGetValueLoaded());
+  }
+
+  Future<void> initValueFromLocal() async {
+    totalPrice = double.parse((await DatabaseHelper.getPayment())['amount']);
+    currency = (await DatabaseHelper.getPayment())['currency'];
+    valetId = int.parse((await DatabaseHelper.getPayment())['valetId']);
+    valetName = (await DatabaseHelper.getPayment())['valetName'];
+    retrieveCarModel = RetrieveCarModel.fromJson(
+        json.decode((await DatabaseHelper.getPayment())['retrieveCarModel']));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
@@ -7,8 +8,19 @@ import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/c
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 
-class SuccessScreen extends StatelessWidget {
+class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});
+
+  @override
+  State<SuccessScreen> createState() => _SuccessScreenState();
+}
+
+class _SuccessScreenState extends State<SuccessScreen> {
+  @override
+  void initState() {
+    DatabaseHelper.deletePaymentTableRecords();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +70,8 @@ class SuccessScreen extends StatelessWidget {
                   BottomNavBarCubit.get(context).setIndex = 0;
                   HomeCubit.get(context).setIsUserCarInRetrieve = false;
                   HomeCubit.get(context).isUserCarParked = false;
+                  BottomNavBarCubit.get(context).showAlertDialog = false;
+                  BottomNavBarCubit.get(context).isPaymentRequired = false;
                   HomeCubit.get(context).getUserData(context);
                   Navigator.pushReplacementNamed(
                       context, Routes.bottomNvBarScreen);

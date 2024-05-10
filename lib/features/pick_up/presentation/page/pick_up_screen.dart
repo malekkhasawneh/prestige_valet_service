@@ -98,6 +98,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
                                     onTap: () {
                                       PickUpCubit.get(context).selectedGateId =
                                           state.gatesModel.content[index].id;
+                                      PickUpCubit.get(context).gateName =  state.gatesModel.content[index].gateName;
                                       for (var gate in state.gatesModel.content) {
                                         gate.isSelected = false;
                                       }

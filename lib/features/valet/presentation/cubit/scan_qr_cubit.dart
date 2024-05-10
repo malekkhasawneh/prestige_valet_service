@@ -525,4 +525,13 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     connectedDeviceName = '';
     emit(SetValueLoaded());
   }
+
+  bool isJordanCurrency(String currency) {
+    log('=================================================== oooo ${currency.toLowerCase()}');
+    if (currency.toLowerCase() == 'jod') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
