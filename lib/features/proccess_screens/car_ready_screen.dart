@@ -289,7 +289,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
             Positioned(
               bottom: ScanQrCubit.get(context)
                       .isJordanCurrency(BottomNavBarCubit.get(context).currency)
-                  ? 135
+                  ? 80
                   : 135,
               child: SizedBox(
                 width: screenWidth * 0.8,
@@ -355,10 +355,10 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                 ),
               ),
             ),
-            // ScanQrCubit.get(context)
-            //         .isJordanCurrency(BottomNavBarCubit.get(context).currency)
-            //     ? const SizedBox()
-            //     :
+             ScanQrCubit.get(context)
+                     .isJordanCurrency(BottomNavBarCubit.get(context).currency)
+                 ? const SizedBox()
+                 :
         Positioned(
                     bottom: 80,
                     child: SizedBox(
