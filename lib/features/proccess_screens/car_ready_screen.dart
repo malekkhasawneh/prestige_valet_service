@@ -289,7 +289,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
             Positioned(
               bottom: ScanQrCubit.get(context)
                       .isJordanCurrency(BottomNavBarCubit.get(context).currency)
-                  ? 80
+                  ? 135
                   : 135,
               child: SizedBox(
                 width: screenWidth * 0.8,
@@ -355,10 +355,11 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                 ),
               ),
             ),
-            ScanQrCubit.get(context)
-                    .isJordanCurrency(BottomNavBarCubit.get(context).currency)
-                ? const SizedBox()
-                : Positioned(
+            // ScanQrCubit.get(context)
+            //         .isJordanCurrency(BottomNavBarCubit.get(context).currency)
+            //     ? const SizedBox()
+            //     :
+        Positioned(
                     bottom: 80,
                     child: SizedBox(
                       width: screenWidth * 0.8,
@@ -503,11 +504,13 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
     // TODO, don't forget to init the MyFatoorah Plugin with the following line
     await MFSDK.init(testAPIKey, MFCountry.SAUDIARABIA, MFEnvironment.TEST);
     // (Optional) un comment the following lines if you want to set up properties of AppBar.
-    MFSDK.setUpActionBar(
+    if(Platform.isAndroid) {
+      MFSDK.setUpActionBar(
         toolBarTitle: 'Prestige valet service',
         toolBarTitleColor: '#ffffffff',
-        toolBarBackgroundColor: '#ffffffff',
+        toolBarBackgroundColor: '#00000000',
         isShowToolBar: true);
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await initSession();
