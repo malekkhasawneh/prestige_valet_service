@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               state.userModel.toJson(),
             ))
                 .then((_) async {
-              BottomNavBarCubit.get(context).setIsLogout = false;
+             // BottomNavBarCubit.get(context).setIsLogout = false;
               SplashCubit.get(context).checkIsUser();
               await LoginCubit.get(context).setLoginFlag();
               // ignore: use_build_context_synchronously
