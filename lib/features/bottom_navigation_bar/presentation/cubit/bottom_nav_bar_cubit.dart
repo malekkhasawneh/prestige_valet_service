@@ -82,7 +82,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         ? const CarParkedHomeScreen()
         : (!HomeCubit.get(context).isUserCarParked &&
                         HomeCubit.get(context).isUserCarInRetrieve)
-                    ? const CarReadyScreen()
+                    ? const CarRequestScreen()
                     : isPaymentRequired
                         ? const CarReadyScreen()
                         : const MainHomeScreen()
