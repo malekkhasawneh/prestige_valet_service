@@ -113,7 +113,7 @@ class User {
   String firstName;
   String lastName;
   String phone;
-  String profileImg;
+  String? profileImg;
   bool active;
   bool socialProfile;
   Location? location;
@@ -140,7 +140,7 @@ class User {
         firstName: json["firstName"],
         lastName: json["lastName"],
         phone: json["phone"],
-        profileImg: json["profileImg"],
+        profileImg: json["profileImg"] ?? '',
         active: json["active"],
         socialProfile: json["socialProfile"],
         location: json["location"] == null

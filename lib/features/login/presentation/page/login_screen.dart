@@ -47,15 +47,19 @@ class _LoginScreenState extends State<LoginScreen> {
               state.userModel.toJson(),
             ))
                 .then((_) async {
-             // BottomNavBarCubit.get(context).setIsLogout = false;
+              BottomNavBarCubit.get(context).isLogout = false;
               SplashCubit.get(context).checkIsUser();
               await LoginCubit.get(context).setLoginFlag();
-              // ignore: use_build_context_synchronously
-              await HomeCubit.get(context).getUserData(context).then((value) {
-                // ignore: use_build_context_synchronously
-                Navigator.pushReplacementNamed(
-                    context, Routes.bottomNvBarScreen);
-                LoginCubit.get(context).passwordController.clear();
+              await HomeCubit.get(context)
+                  .getUserData(context)
+                  .then((value) async {
+                await BottomNavBarCubit.get(context)
+                    .addNotificationToken(userId: state.userModel.user.id)
+                    .then((_) {
+                  Navigator.pushReplacementNamed(
+                      context, Routes.bottomNvBarScreen);
+                  LoginCubit.get(context).passwordController.clear();
+                });
               });
             });
           } else if (state is LoginError) {

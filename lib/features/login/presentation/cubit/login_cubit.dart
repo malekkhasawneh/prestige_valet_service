@@ -55,13 +55,18 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
     try {
       final response = await loginUseCase(LoginUseCaseParams(
-          email: emailController.text, password: passwordController.text));
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      );
       response.fold((failure) {
         emit(LoginError(error: failure.failure));
       },
           (success) => emit(LoginLoaded(
                 userModel: success,
-              )));
+          ),
+        ),
+      );
     } catch (error) {
       emit(LoginError(error: error.toString()));
     }

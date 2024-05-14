@@ -76,11 +76,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   String valetName = '';
   int valetId = -1;
   List<Widget> widgetOptions(BuildContext context) => <Widget>[
-        SplashCubit.get(context).isUser
-            ? (HomeCubit.get(context).isUserCarParked &&
-                    !HomeCubit.get(context).isUserCarInRetrieve)
-                ? const CarParkedHomeScreen()
-                : (!HomeCubit.get(context).isUserCarParked &&
+    SplashCubit.get(context).isUser
+        ? (HomeCubit.get(context).isUserCarParked &&
+        !HomeCubit.get(context).isUserCarInRetrieve)
+        ? const CarParkedHomeScreen()
+        : (!HomeCubit.get(context).isUserCarParked &&
                         HomeCubit.get(context).isUserCarInRetrieve)
                     ? const CarRequestScreen()
                     : isPaymentRequired
@@ -95,21 +95,22 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   late RetrieveCarModel retrieveCarModel;
 
-  Future<void> addNotificationToken({required int userId}) async {
+  Future<void> addNotificationToken(
+      {required int userId, bool isLogout = false}) async {
     emit(BottomNavBarLoading());
     try {
       final response = await addNotificationTokenUseCase(
           AddNotificationTokenUseCaseParams(
-              userId: userId, token: await getTokenForUser()));
+              userId: userId, token: isLogout ? ' ' : await getTokenForUser()));
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {
         userNotificationToken = success.token;
-        tokenId = success.tokenId;
-        log('====================================== in add id ${success.tokenId}');
-        log('====================================== in add token ${success.token}');
-        emit(BottomNavBarLoaded());
-      });
+            tokenId = success.tokenId;
+            log('====================================== in add id ${success.tokenId}');
+            log('====================================== in add token ${success.token}');
+            emit(BottomNavBarLoaded());
+          });
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
     }
@@ -119,7 +120,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     emit(BottomNavBarLoading());
     try {
       final response =
-          await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
+      await getNotificationTokenUseCase(GetNotificationTokenUseCaseParams(
         userId: userId,
       ));
       response.fold((failure) {
@@ -144,7 +145,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     required int userId,
     required int tokenId,
   }) async {
-    if (!isLogout) {
+
       emit(BottomNavBarLoading());
       try {
         final response = await updateNotificationTokenUseCase(
@@ -165,33 +166,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       } catch (failure) {
         emit(BottomNavBarError(failure: failure.toString()));
       }
-    }
-  }
 
-  Future<void> updateUserNotificationTokenLogout({
-    required int userId,
-    required int tokenId,
-  }) async {
-    emit(BottomNavBarLoading());
-    try {
-      final response = await updateNotificationTokenUseCase(
-          UpdateNotificationTokenUseCaseParams(
-        userId: userId,
-        tokenId: tokenId,
-        token: Constants.userLoggedOut,
-      ));
-      response
-          .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
-              (success) {
-        userNotificationToken = success.token;
-        tokenId = success.tokenId;
-        log('====================================== in update id ${success.tokenId}');
-        log('====================================== in update token ${success.token}');
-        emit(BottomNavBarLoaded());
-      });
-    } catch (failure) {
-      emit(BottomNavBarError(failure: failure.toString()));
-    }
+
   }
 
   Future<bool> mustResetNotificationToken() async {
@@ -210,27 +186,24 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     return isTrue;
   }
 
-  Future<void> sendNotification({
-    required int userId,
+  Future<void> sendNotification({required int userId,
     required String title,
     required String body,
     required String notificationType,
-    required String notificationReceiver,
-  }) async {
+      required String notificationReceiver,}) async {
     emit(BottomNavBarLoading());
     try {
       await getNotificationTokenForUser(userId: userId);
-      final response =
-          await sendNotificationUseCase(SendNotificationUseCaseParams(
-        title: title,
-        body: body,
-        notificationType: notificationType,
-        token: userNotificationToken,
-        notificationReceiver: notificationReceiver,
-      ));
+      final response = await sendNotificationUseCase(
+          SendNotificationUseCaseParams(
+              title: title,
+              body: body,
+              notificationType: notificationType,
+              token: userNotificationToken,
+              notificationReceiver: notificationReceiver,));
       response.fold(
-          (failure) => emit(BottomNavBarError(failure: failure.failure)),
-          (success) => emit(SendNotificationLoaded()));
+              (failure) => emit(BottomNavBarError(failure: failure.failure)),
+              (success) => emit(SendNotificationLoaded()));
     } catch (failure) {
       emit(BottomNavBarError(failure: failure.toString()));
     }
@@ -241,10 +214,10 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     try {
       final response = await isTokenValidUseCase(NoParams());
       response.fold(
-        (failure) => emit(
+            (failure) => emit(
           BottomNavBarError(failure: failure.failure),
         ),
-        (success) => emit(
+            (success) => emit(
           IsTokenValidLoaded(isValid: success),
         ),
       );
@@ -262,7 +235,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   late ParkedCarsModel parkedCarsModel;
 
   Future<void> onReceiveNotificationListenerOnApp(BuildContext context) async {
-    FirebaseMessaging.onMessage.listen((message) async {
+    FirebaseMessaging.onMessage.listen((message) async{
       if (SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
               Constants.toUserNotification) {
@@ -336,17 +309,16 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           Constants.carDeliveredNotificationAction) {
         retrieveCarModel = RetrieveCarModel.fromJson(
           json.decode(
-            await CacheHelper.getValue(key: CacheConstants.retrievedCarModel),
-          ),
-        );
+              await CacheHelper.getValue(key: CacheConstants.retrievedCarModel),
+        ),
+      );
 
         Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });
   }
 
-  Future<void> onReceiveNotificationListenerOnBackground(
-      BuildContext context) async {
+  Future<void> onReceiveNotificationListenerOnBackground(BuildContext context) async {
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       log('====================================== ${message.notification!.title}');
       log('====================================== ${message.notification!.body}');

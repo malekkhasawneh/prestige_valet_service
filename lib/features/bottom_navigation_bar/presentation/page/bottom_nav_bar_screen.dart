@@ -37,16 +37,6 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
         if (state is GetUserTokenError) {
           if (state.failure == Constants.internetFailure) {
             Navigator.pushNamed(context, Routes.noInternetScreen);
-          } else if (state.failure == Constants.noElement) {
-            BottomNavBarCubit.get(context).addNotificationToken(
-                userId: HomeCubit.get(context).userModel.user.id);
-          }
-        } else if (state is BottomNavBarLoaded) {
-          if (BottomNavBarCubit.get(context).userNotificationToken ==
-              Constants.userLoggedOut) {
-            BottomNavBarCubit.get(context).updateUserNotificationToken(
-                userId: HomeCubit.get(context).userModel.user.id,
-                tokenId: BottomNavBarCubit.get(context).tokenId);
           }
         } else if (state is BottomNavBarError) {
           if (state.failure == Constants.internetFailure) {

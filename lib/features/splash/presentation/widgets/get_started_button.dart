@@ -19,6 +19,7 @@ class GetStartedButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           SplashCubit.get(context).setIsFirstTimeOpenTheApp();
+          SplashCubit.get(context).setIsFirstTime();
           Navigator.pushReplacementNamed(context, Routes.loginScreen);
         },
         style: ElevatedButton.styleFrom(

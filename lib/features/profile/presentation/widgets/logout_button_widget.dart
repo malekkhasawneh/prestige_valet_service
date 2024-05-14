@@ -20,14 +20,12 @@ class LogoutButtonWidget extends StatelessWidget {
           onPressed: (state is ProfileLoading)
               ? () {}
               : () async {
-           // BottomNavBarCubit.get(context).setIsLogout = true;
-                  await BottomNavBarCubit.get(context)
-                      .updateUserNotificationTokenLogout(
-                        userId: HomeCubit.get(context).userModel.user.id,
-                        tokenId: BottomNavBarCubit.get(context).tokenId,)
-                      .then((_) async => await ProfileCubit.get(context).logout(
-                            userId: HomeCubit.get(context).userModel.user.id),
-                      );
+            BottomNavBarCubit.get(context).isLogout = true;
+                  BottomNavBarCubit.get(context).addNotificationToken(
+                      userId: HomeCubit.get(context).userModel.user.id,
+                      isLogout: true);
+                  await ProfileCubit.get(context)
+                      .logout(userId: HomeCubit.get(context).userModel.user.id);
                 },
           style: ElevatedButton.styleFrom(
               backgroundColor: ColorManager.primaryColor,

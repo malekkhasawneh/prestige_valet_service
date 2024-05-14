@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,11 +17,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    SplashCubit.get(context).isBlocked().then((_) {
-      SplashCubit.get(context).getIsFirstTimeOpenTheApp();
-      SplashCubit.get(context).checkIfUserLogin();
-      SplashCubit.get(context).checkIsUser();
-    });
+    SplashCubit.get(context).getIsFirstTimeOpenTheApp();
+    SplashCubit.get(context).checkIfUserLogin();
+    SplashCubit.get(context).checkIsUser();
+
     super.initState();
   }
 
@@ -30,7 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<SplashCubit,SplashState>(
       listener: (context, state) async {
         if (state is SplashLoaded) {
-          if (!SplashCubit.get(context).isUserBlocked) {
+          if (await SplashCubit.get(context).isFirstTimeOpenTheApp()) {
+            Future.delayed(const Duration(seconds: 3)).then(
+              (_) => Navigator.pushReplacementNamed(
+                context,
+                Routes.welcomeScreen,
+              ),
+            );
+          } else {
             if (SplashCubit.get(context).isFirstTime) {
               Future.delayed(const Duration(seconds: 3)).then(
                 (_) => Navigator.pushReplacementNamed(
