@@ -95,12 +95,13 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
 
   late RetrieveCarModel retrieveCarModel;
 
-  Future<void> addNotificationToken({required int userId}) async {
+  Future<void> addNotificationToken(
+      {required int userId, bool isLogout = false}) async {
     emit(BottomNavBarLoading());
     try {
       final response = await addNotificationTokenUseCase(
           AddNotificationTokenUseCaseParams(
-              userId: userId, token: await getTokenForUser()));
+              userId: userId, token: isLogout ? ' ' : await getTokenForUser()));
       response
           .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
               (success) {

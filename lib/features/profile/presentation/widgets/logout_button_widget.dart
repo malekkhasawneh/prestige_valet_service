@@ -21,6 +21,9 @@ class LogoutButtonWidget extends StatelessWidget {
               ? () {}
               : () async {
             BottomNavBarCubit.get(context).isLogout = true;
+                  BottomNavBarCubit.get(context).addNotificationToken(
+                      userId: HomeCubit.get(context).userModel.user.id,
+                      isLogout: true);
                   await ProfileCubit.get(context)
                       .logout(userId: HomeCubit.get(context).userModel.user.id);
                 },
