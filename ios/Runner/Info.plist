@@ -48,6 +48,7 @@
 	<key>NSCameraUsageDescription</key>
     <string>Camera permission is required for QR code scanning</string>
     <key>CFBundleURLTypes</key>
+
     <array>
     	<dict>
     		<key>CFBundleTypeRole</key>

@@ -144,7 +144,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     required int userId,
     required int tokenId,
   }) async {
-    if(!isLogout){
+
       emit(BottomNavBarLoading());
       try {
         final response = await updateNotificationTokenUseCase(
@@ -165,33 +165,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       } catch (failure) {
         emit(BottomNavBarError(failure: failure.toString()));
       }
-    }
 
-  }
-  Future<void> updateUserNotificationTokenLogout({
-    required int userId,
-    required int tokenId,
-  }) async {
-    emit(BottomNavBarLoading());
-    try {
-      final response = await updateNotificationTokenUseCase(
-          UpdateNotificationTokenUseCaseParams(
-            userId: userId,
-            tokenId: tokenId,
-            token: Constants.userLoggedOut,
-          ));
-      response
-          .fold((failure) => emit(BottomNavBarError(failure: failure.failure)),
-              (success) {
-            userNotificationToken = success.token;
-            tokenId = success.tokenId;
-            log('====================================== in update id ${success.tokenId}');
-            log('====================================== in update token ${success.token}');
-            emit(BottomNavBarLoaded());
-          });
-    } catch (failure) {
-      emit(BottomNavBarError(failure: failure.toString()));
-    }
+
   }
 
   Future<bool> mustResetNotificationToken() async {
