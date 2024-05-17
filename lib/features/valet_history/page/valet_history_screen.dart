@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class ValetHistoryScreen extends StatefulWidget {
 class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
   @override
   void initState() {
-    HomeCubit.get(context).getParkingHistory();
+    HomeCubit.get(context).loopUserPayment();
     super.initState();
   }
 
@@ -96,16 +97,26 @@ class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
                 SizedBox(
                   height: HomeCubit.get(context)
                       .bodyBoxHeight(context, screenHeight),
-                  child: state.paymentHistoryModel.content.isEmpty
+                  child: HomeCubit.get(context).paymentHistoryModel == null ||
+                          HomeCubit.get(context)
+                              .paymentHistoryModel!
+                              .content
+                              .isEmpty
                       ? const Center(
                           child: Text('No history'),
                         )
                       : ListView.builder(
                           padding: EdgeInsets.zero,
-                          itemCount: state.paymentHistoryModel.content.length,
+                          itemCount: HomeCubit.get(context)
+                              .paymentHistoryModel!
+                              .content
+                              .length,
                           itemBuilder: (context, index) {
+                            log('====================================== Here');
                             return HistoryCardWidget(
-                              item: state.paymentHistoryModel.content[index],
+                              item: HomeCubit.get(context)
+                                  .paymentHistoryModel!
+                                  .content[index],
                             );
                           }),
                 ),

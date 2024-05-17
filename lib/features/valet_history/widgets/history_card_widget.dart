@@ -43,7 +43,7 @@ class HistoryCardWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    DateFormat("dd/M/yyyy hh:mm a").format(item.createdOn),
+                    formattedDate(item.createdOn),
                     style: const TextStyle(fontSize: 10),
                   ),
                 ],
@@ -81,5 +81,10 @@ class HistoryCardWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+  String formattedDate(DateTime date) {
+    String locale = Intl.defaultLocale ?? 'en_US';
+    String formattedDate = DateFormat("dd/M/yyyy",locale).add_jm().format(date);
+    return formattedDate;
   }
 }

@@ -33,5 +33,5 @@ abstract class HomeRepository {
   Future<Either<Failures, bool>> checkInternetConnection();
 
   Future<Either<Failures, PaymentHistoryModel>> getParkingHistory(
-      {required int userId});
+      {required int userId,required int pageIndex});
 }

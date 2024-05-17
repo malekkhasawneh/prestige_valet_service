@@ -150,11 +150,11 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<Either<Failures, PaymentHistoryModel>> getParkingHistory(
-      {required int userId}) async {
+      {required int userId,required int pageIndex}) async {
     if (await networkInfo.checkConnection()) {
       try {
         final response =
-            await remoteDataSource.getParkingHistory(userId: userId);
+            await remoteDataSource.getParkingHistory(userId: userId,pageIndex:pageIndex);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));
