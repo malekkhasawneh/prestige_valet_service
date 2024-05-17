@@ -34,7 +34,7 @@ abstract class HomeRemoteDataSource {
 
   Future<bool> checkInternetConnection();
 
-  Future<PaymentHistoryModel> getParkingHistory({required int userId});
+  Future<PaymentHistoryModel> getParkingHistory({required int userId,required int pageIndex});
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -163,10 +163,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<PaymentHistoryModel> getParkingHistory({required int userId}) async {
+  Future<PaymentHistoryModel> getParkingHistory({required int userId,required int pageIndex}) async {
     try {
       Response response =
-          await DioHelper.get(NetworkConstants.getPaymentHistory(userId));
+          await DioHelper.get(NetworkConstants.getPaymentHistory(userId,pageIndex));
       if (response.statusCode == 200) {
         PaymentHistoryModel paymentHistoryModel =
             PaymentHistoryModel.fromJson(response.data);

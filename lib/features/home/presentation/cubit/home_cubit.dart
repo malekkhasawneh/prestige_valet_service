@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
@@ -193,21 +191,38 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> getParkingHistory() async {
+  bool isParkingLoading = false;
+  PaymentHistoryModel? paymentHistoryModel;
+
+  Future<void> getParkingHistory({required int pageIndex}) async {
     emit(GetPaymentHistoryLoading());
+    isParkingLoading = true;
     try {
       final response = await getParkingHistoryUseCase(
-          GetParkingHistoryUseCaseParams(userId: userModel.user.id));
+          GetParkingHistoryUseCaseParams(
+              userId: userModel.user.id, pageIndex: pageIndex));
       response.fold((failure) {
         log('=================================== failure ${failure.failure}');
 
         emit(HomeError(failure: failure.failure));
       }, (success) {
+        if (paymentHistoryModel == null) {
+          paymentHistoryModel = success;
+        } else {
+          paymentHistoryModel!.content.addAll(success.content);
+        }
         emit(GetPaymentHistoryLoaded(paymentHistoryModel: success));
       });
     } catch (failure) {
       log('=================================== failure ${failure.toString()}');
       emit(HomeError(failure: failure.toString()));
+    }
+    isParkingLoading = false;
+  }
+
+  Future<void> loopUserPayment() async {
+    for (int i = 0; i <= 30; i++) {
+      await getParkingHistory(pageIndex: i);
     }
   }
 

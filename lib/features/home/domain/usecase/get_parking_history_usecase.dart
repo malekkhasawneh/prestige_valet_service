@@ -14,15 +14,18 @@ class GetParkingHistoryUseCase
   @override
   Future<Either<Failures, PaymentHistoryModel>> call(
       GetParkingHistoryUseCaseParams params) async {
-    return await repository.getParkingHistory(userId: params.userId);
+    return await repository.getParkingHistory(
+        userId: params.userId, pageIndex: params.pageIndex);
   }
 }
 
 class GetParkingHistoryUseCaseParams extends Equatable {
   final int userId;
+  final int pageIndex;
 
-  const GetParkingHistoryUseCaseParams({required this.userId});
+  const GetParkingHistoryUseCaseParams(
+      {required this.userId, required this.pageIndex});
 
   @override
-  List<Object?> get props => [userId];
+  List<Object?> get props => [userId, pageIndex];
 }

@@ -144,6 +144,16 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
           }
         } else if (state is SendPaymentLoaded) {
           if (state.status) {
+            BottomNavBarCubit.get(context).sendNotification(
+              userId: BottomNavBarCubit.get(context).valetId,
+              title: Strings.notificationTitle(
+                  BottomNavBarCubit.get(context).valetName),
+              body: Strings.payWithCashNotification(
+                  BottomNavBarCubit.get(context).totalPrice.toString(),
+                  BottomNavBarCubit.get(context).currency),
+              notificationType: Constants.cashPaymentValueNotificationAction,
+              notificationReceiver: Constants.toValetNotification,
+            );
             AwesomeDialog(
               context: context,
               animType: AnimType.topSlide,
@@ -304,17 +314,6 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                     elevation: 0.2,
                   ),
                   onPressed: () {
-                    BottomNavBarCubit.get(context).sendNotification(
-                      userId: BottomNavBarCubit.get(context).valetId,
-                      title: Strings.notificationTitle(
-                          BottomNavBarCubit.get(context).valetName),
-                      body: Strings.payWithCashNotification(
-                          BottomNavBarCubit.get(context).totalPrice.toString(),
-                          BottomNavBarCubit.get(context).currency),
-                      notificationType:
-                          Constants.cashPaymentValueNotificationAction,
-                      notificationReceiver: Constants.toValetNotification,
-                    );
                     WalletCubit.get(context).sendPayment(
                         type: 'CASH',
                         amount: BottomNavBarCubit.get(context)
@@ -323,8 +322,13 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                             .toString(),
                         currency: BottomNavBarCubit.get(context)
                             .retrieveCarModel
-                            .currency,
-                        userId: HomeCubit.get(context).userModel.user.id,
+                              .currency
+                              .isEmpty
+                          ? BottomNavBarCubit.get(context).currency
+                          : BottomNavBarCubit.get(context)
+                              .retrieveCarModel
+                              .currency,
+                      userId: HomeCubit.get(context).userModel.user.id,
                         gateId: BottomNavBarCubit.get(context).retrieveCarModel.retrieveAtGate,
                       parkingId: BottomNavBarCubit.get(context)
                           .retrieveCarModel
