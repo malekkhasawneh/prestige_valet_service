@@ -31,9 +31,16 @@
 			<array>
 				<string>prestigeValetService</string>
 				<string>com.googleusercontent.apps.752419261145-2akirpl6p3nsv490ee4t761t6eb676r6</string>
+				<string>fb278136725064559</string>
 			</array>
 		</dict>
 	</array>
+	<key>FacebookAppID</key>
+    <string>278136725064559</string>
+    <key>FacebookClientToken</key>
+    <string>c5e5cda66ec24a885b10886cc93f414e</string>
+    <key>FacebookDisplayName</key>
+    <string>Prestige Valet Service</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
