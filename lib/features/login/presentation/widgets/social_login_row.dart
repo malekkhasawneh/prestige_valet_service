@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
@@ -54,11 +57,21 @@ class SocialLoginRow extends StatelessWidget {
             height: screenHeight * 0.15,
           ),
         ),
-        Image.asset(
-          Images.appleLogo,
-          width: screenWidth * 0.15,
-          height: screenHeight * 0.15,
-        ),
+        Platform.isIOS
+            ? GestureDetector(
+                onTap: () {
+                  SignUpCubit.get(context).setMustCheck = false;
+                  isFromSignUp
+                      ? SignUpCubit.get(context).signUpWithApple()
+                      : LoginCubit.get(context).loginWithApple();
+                },
+                child: Image.asset(
+                  Images.appleLogo,
+                  width: screenWidth * 0.15,
+                  height: screenHeight * 0.15,
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }

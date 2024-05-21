@@ -6,6 +6,7 @@ import 'package:prestige_valet_app/features/login/domain/usecase/login_usecase.d
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_facebook_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_twitter_usecase.dart';
+import 'package:prestige_valet_app/features/login/domain/usecase/ogin_with_apple_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/set_login_flag_usecase.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart';
@@ -19,6 +20,7 @@ Future<void> loginInjection() async {
       setLoginFlagUseCase: sl(),
       loginWithTwitterUseCase: sl(),
       loginWithFacebookUseCase: sl(),
+      loginWithAppleUseCase: sl(),
     ),
   );
 
@@ -28,6 +30,7 @@ Future<void> loginInjection() async {
   sl.registerLazySingleton(() => LoginWithTwitterUseCase(repository: sl()));
   sl.registerLazySingleton(() => LoginWithFacebookUseCase(repository: sl()));
   sl.registerLazySingleton(() => SetLoginFlagUseCase(repository: sl()));
+  sl.registerLazySingleton(() => LoginWithAppleUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<LoginRepository>(
