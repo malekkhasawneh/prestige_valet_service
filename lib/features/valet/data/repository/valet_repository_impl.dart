@@ -8,6 +8,7 @@ import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.d
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/valet_parking_types.dart';
 import 'package:prestige_valet_app/features/valet/domain/repository/valet_repository.dart';
 
 class ValetRepositoryImpl implements ValetRepository {
@@ -19,10 +20,17 @@ class ValetRepositoryImpl implements ValetRepository {
 
   @override
   Future<Either<Failures, ParkedCarsModel>> parkCar(
-      {required int valetId, required bool isGuest}) async {
+      {required int valetId,
+      required int userId,
+      required int parkingTypeId,
+      required bool isGuest}) async {
     if (await networkInfo.checkConnection()) {
       try {
-        final response = await remoteDataSource.parkCar(valetId: valetId,isGuest: isGuest);
+        final response = await remoteDataSource.parkCar(
+            valetId: valetId,
+            userId: userId,
+            parkingTypeId: parkingTypeId,
+            isGuest: isGuest);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));
@@ -129,6 +137,21 @@ class ValetRepositoryImpl implements ValetRepository {
     if (await networkInfo.checkConnection()) {
       try {
         final response = await remoteDataSource.getGuestPrice(valetId);
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failures, List<ValetParkingTypes>>> getValetParkingTypes(
+      int gateId) async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.getValetParkingTypes(gateId);
         return Right(response);
       } on ServerException {
         return const Left(ServerFailure(failure: Constants.serverFailure));

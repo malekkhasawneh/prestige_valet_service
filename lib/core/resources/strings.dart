@@ -168,4 +168,6 @@ class Strings {
   static String inParking = 'In Parking';
   static String retrieved = 'Retrieved';
   static String ok = 'Ok';
+
+  static String selectParingTypeHeader = 'Please select parking type';
 }

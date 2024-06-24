@@ -34,6 +34,7 @@ class ConfirmButtonWidget extends StatelessWidget {
             BottomNavBarCubit.get(context).currency = state.parkedCarsModel.currency;
             BottomNavBarCubit.get(context).valetId = state.parkedCarsModel.valet!.id;
             BottomNavBarCubit.get(context).valetName = state.parkedCarsModel.valet!.firstName;
+
             BottomNavBarCubit.get(context).sendNotification(
                 userId: state.parkedCarsModel.valet!.id.toInt(),
                 title: Strings.notificationTitle(

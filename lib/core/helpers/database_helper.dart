@@ -1,4 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
+import 'dart:developer';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -41,12 +43,20 @@ class DatabaseHelper {
             retrieveCarModel TEXT
           )
         ''');
+        await db.execute('''
+          CREATE TABLE valetParkingHistory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            parkingId TEXT,
+            userId TEXT,
+            valetId TEXT
+          )
+        ''');
       },
       version: 1,
     );
   }
 
- static Future<List<Map<String, dynamic>>> getCards() async {
+  static Future<List<Map<String, dynamic>>> getCards() async {
     final db = await database;
     return await db.query('myCards');
   }
@@ -99,5 +109,48 @@ class DatabaseHelper {
 
   static Future<bool> checkIfTableExist() async {
     return (await getPayment()).isNotEmpty;
+  }
+
+  static Future<List<Map<String, dynamic>>> getCachedValetParking(
+      int valetId) async {
+    final db = await database;
+    try {
+      var tableExists = await db.rawQuery(
+          "SELECT name FROM sqlite_master WHERE type='table' AND name='valetParkingHistory'");
+      if (tableExists.isEmpty) {
+        return [];
+      }
+      var result = await db.rawQuery(
+          "SELECT * FROM `valetParkingHistory` WHERE `valetId` = ?", [valetId]);
+      return result;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  static Future<void> deleteCachedValetParking(
+      int parkingId) async {
+    final db = await database;
+   int result = await db.rawDelete(
+        'DELETE FROM `valetParkingHistory` WHERE `parkingId` = ?',
+        [parkingId]);
+   log('=================================================== result $result');
+  }
+
+  static Future<void> insertCachedValetParking({
+    required String parkingId,
+    required String userId,
+    required String valetId,
+  }) async {
+    final db = await database;
+    await db.insert(
+      'valetParkingHistory',
+      {
+        'parkingId': parkingId,
+        'valetId': valetId,
+        'userId': userId,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }

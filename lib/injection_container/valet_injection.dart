@@ -7,6 +7,7 @@ import 'package:prestige_valet_app/features/valet/domain/usecase/get_cars_queue_
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_guest_price_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_slot_number_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_parking_types_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/set_car_status_as_retrieving_usecase.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
@@ -22,7 +23,7 @@ Future<void> valetInjection() async {
       getValetHistoryUseCase: sl(),
       getSlotNumberUseCase: sl(),
       getCarsQueueUseCase: sl(),
-      setCarStatusAsRetrievingUseCase: sl(), getGuestPriceUseCase: sl(),
+      setCarStatusAsRetrievingUseCase: sl(), getGuestPriceUseCase: sl(), getValetParkingTypes: sl(),
     ),
   );
 
@@ -34,6 +35,7 @@ Future<void> valetInjection() async {
   sl.registerLazySingleton(() => GetSlotNumberUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetCarsQueueUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetGuestPriceUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetValetParkingTypesUseCase(repository: sl()));
   sl.registerLazySingleton(
       () => SetCarStatusAsRetrievingUseCase(repository: sl()));
 

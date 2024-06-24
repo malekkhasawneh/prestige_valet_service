@@ -100,7 +100,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           onWillPop: () async => false,
           child: Scaffold(
             body: Center(
-              child: BottomNavBarCubit.get(context).widgetOptions(
+              child: BottomNavBarCubit.get(context).homeWidgetOptions(
                   context)[BottomNavBarCubit.get(context).getSelectedIndex],
             ),
             bottomNavigationBar: BottomNavigationBar(

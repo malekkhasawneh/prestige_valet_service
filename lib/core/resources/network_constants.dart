@@ -66,6 +66,9 @@ class NetworkConstants {
 
   static String getGuestPrice (int valetId)=>'valet/location/$valetId/price';
 
+  static String parkingTypes(int gateId) =>
+      'location/gates/$gateId/parking-types';
+
   static String setCarStatusAsRetrieving(int valetId, int parkingId) =>
       'valet/Parking/deliver-to-user?valetId=$valetId&parkingId=$parkingId';
 }

@@ -1,18 +1,23 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
+import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
+import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/valet_parking_types.dart';
 import 'package:prestige_valet_app/features/valet/domain/entity/bluetooth_printer_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/entity/tab_entity.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/car_delivered_usecase.dart';
@@ -21,6 +26,7 @@ import 'package:prestige_valet_app/features/valet/domain/usecase/get_cars_queue_
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_guest_price_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_slot_number_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_history_usecase.dart';
+import 'package:prestige_valet_app/features/valet/domain/usecase/get_valet_parking_types_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/park_car_usecase.dart';
 import 'package:prestige_valet_app/features/valet/domain/usecase/set_car_status_as_retrieving_usecase.dart';
 import 'package:prestige_valet_app/image_utils.dart';
@@ -41,6 +47,7 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     required this.getCarsQueueUseCase,
     required this.setCarStatusAsRetrievingUseCase,
     required this.getGuestPriceUseCase,
+    required this.getValetParkingTypes,
   }) : super(ScanQrInitial());
 
   final ParkCarUseCase parkCarUseCase;
@@ -51,13 +58,14 @@ class ScanQrCubit extends Cubit<ScanQrState> {
   final GetCarsQueueUseCase getCarsQueueUseCase;
   final SetCarStatusAsRetrievingUseCase setCarStatusAsRetrievingUseCase;
   final GetGuestPriceUseCase getGuestPriceUseCase;
+  final GetValetParkingTypesUseCase getValetParkingTypes;
   bool connected = false;
   List availableBluetoothDevices = [];
   String connectedDeviceName = '';
   var printerManager = PrinterManager.instance;
   BluetoothPrinter? selectedPrinter;
   int _selectedTabId = 1;
-
+  int selectedParkingId = -1;
   int get getSelectedTabId => _selectedTabId;
 
   set setSelectedTabId(int id) {
@@ -71,21 +79,24 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     TabEntity(id: 2, text: Strings.retrieved),
   ];
 
-  Future<void> parkCar({required int valetId, bool isGuest = false}) async {
+  Future<void> parkCar(
+      {required int valetId,
+      required int userId,
+      required int parkingTypeId,
+      bool isGuest = false}) async {
     emit(ScanQrLoading());
     try {
       final response = await parkCarUseCase(ParkCarUseCaseParams(
         valetId: valetId,
+        userId: userId,
+        parkingTypeId: parkingTypeId,
         isGuest: isGuest,
       ));
       response.fold(
         (failure) {
-          log('=================================== here ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
             (success) {
-          log('=================================== here ${success.id}');
-
           emit(
             ScanQrLoaded(
               parkedCarsModel: success,
@@ -94,8 +105,6 @@ class ScanQrCubit extends Cubit<ScanQrState> {
         },
       );
     } catch (failure) {
-      log('=================================== heresssss ${failure.toString()}');
-
       emit(ScanQrError(failure: failure.toString()));
     }
   }
@@ -195,6 +204,25 @@ class ScanQrCubit extends Cubit<ScanQrState> {
     }
   }
 
+  List<ValetParkingTypes> valetParkingTypesList = [];
+
+  Future<void> getValetParkingHistory(int gateId) async {
+    valetParkingTypesList = [];
+    emit(SetValueLoading());
+    try {
+      final response = await getValetParkingTypes(
+          GetValetParkingTypesUseCaseParams(gateId: gateId));
+      response.fold((failure) {
+        emit(ScanQrError(failure: failure.failure));
+      }, (success) {
+        valetParkingTypesList = success;
+        emit(SetValueLoaded());
+      });
+    } catch (failure) {
+      emit(ScanQrError(failure: failure.toString()));
+    }
+  }
+
   // Future<String> getSlotNumber({
   //   required int valetId,
   // }) async {
@@ -232,18 +260,14 @@ class ScanQrCubit extends Cubit<ScanQrState> {
           GetGuestPriceUseCaseParams(valetId: valetId));
       response.fold(
             (failure) {
-          log('=================================== iissssfailure ${failure.failure}');
           emit(ScanQrError(failure: failure.failure));
         },
             (price) {
               prices = price;
-          log('=================================== iisss $price');
           emit(SetValueLoaded());
         },
       );
     } catch (failure) {
-      log('=================================== iissssError ${failure.toString()}');
-
       emit(ScanQrError(failure: failure.toString()));
     }
     return prices;
@@ -278,6 +302,8 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       emit(ScanQrError(failure: failure.toString()));
     }
   }
+
+  Future<void> getValetCachedPayments() async {}
 
   Future<void> setCarStatusAsRetrieving({
     required int valetId,
@@ -534,4 +560,10 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       return false;
     }
   }
+
+  Future<bool> shouldAcceptPayment(BuildContext context) async {
+    return (await DatabaseHelper.getCachedValetParking(
+        HomeCubit.get(context).userModel.user.id)).isNotEmpty;
+  }
+
 }

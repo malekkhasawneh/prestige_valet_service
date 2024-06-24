@@ -75,15 +75,18 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   String currency = '';
   String valetName = '';
   int valetId = -1;
-  List<Widget> widgetOptions(BuildContext context) => <Widget>[
-    SplashCubit.get(context).isUser
+
+  List<Widget> homeWidgetOptions(BuildContext context) => <Widget>[
+        SplashCubit.get(context).isUser
         ? (HomeCubit.get(context).isUserCarParked &&
         !HomeCubit.get(context).isUserCarInRetrieve)
         ? const CarParkedHomeScreen()
         : (!HomeCubit.get(context).isUserCarParked &&
-                        HomeCubit.get(context).isUserCarInRetrieve)
+                        HomeCubit.get(context).isUserCarInRetrieve &&
+                        !isPaymentRequired)
                     ? const CarRequestScreen()
-                    : isPaymentRequired
+                    : (!HomeCubit.get(context).isUserCarParked &&
+                            isPaymentRequired)
                         ? const CarReadyScreen()
                         : const MainHomeScreen()
             : const ScanQrCodeScreen(),

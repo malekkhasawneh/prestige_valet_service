@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -31,8 +32,14 @@ void main() async {
   );
 }
 
-class PrestigeValetApp extends StatelessWidget {
+class PrestigeValetApp extends StatefulWidget {
   const PrestigeValetApp({super.key});
+
+  @override
+  State<PrestigeValetApp> createState() => _PrestigeValetAppState();
+}
+
+class _PrestigeValetAppState extends State<PrestigeValetApp> {
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +63,7 @@ class PrestigeValetApp extends StatelessWidget {
         BlocProvider<SplashCubit>(create: (_) => di.sl<SplashCubit>()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: true,
         theme: ThemeData(
           scaffoldBackgroundColor: ColorManager.whiteColor,
           fontFamily: Fonts.sourceSansPro,
@@ -67,4 +74,3 @@ class PrestigeValetApp extends StatelessWidget {
     );
   }
 }
-
