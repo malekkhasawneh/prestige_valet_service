@@ -239,13 +239,13 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                                 parkingTypeId:
                                     ScanQrCubit.get(context).selectedParkingId);
                           }
+                        }else {
+                          ScanQrCubit.get(context).parkCar(
+                              valetId: HomeCubit.get(context).userModel.user.id,
+                              userId:
+                              int.parse(result.rawContent.split(',').last),
+                              parkingTypeId: -1);
                         }
-                      } else {
-                        ScanQrCubit.get(context).parkCar(
-                            valetId: HomeCubit.get(context).userModel.user.id,
-                            userId:
-                                int.parse(result.rawContent.split(',').last),
-                            parkingTypeId: -1);
                       }
                     },
                     style: ElevatedButton.styleFrom(

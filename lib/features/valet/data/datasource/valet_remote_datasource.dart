@@ -41,23 +41,29 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
     try {
       await DioHelper.addTokenHeader();
       if (!isGuest) {
-          Response response =
-              await DioHelper.post(NetworkConstants.parkCar, data: {
-            "userId":userId,
-            "valetId": valetId,
-                "parkingTypeId":parkingTypeId,
-          });
-          ParkedCarsModel parkedCarsModel =
+        Map<String, dynamic> bodyMap = parkingTypeId == -1
+            ? {"userId": userId, "valetId": valetId}
+            : {
+                "userId": userId,
+                "valetId": valetId,
+                "parkingTypeId": parkingTypeId,
+              };
+        Response response =
+            await DioHelper.post(NetworkConstants.parkCar, data: bodyMap);
+        ParkedCarsModel parkedCarsModel =
               ParkedCarsModel.fromJson(response.data);
           return parkedCarsModel;
 
       } else {
+        Map<String, dynamic> bodyMap = parkingTypeId == -1
+            ? {"userId": 0, "valetId": valetId}
+            : {
+                "userId": 0,
+                "valetId": valetId,
+                "parkingTypeId": parkingTypeId,
+              };
         Response response =
-            await DioHelper.post(NetworkConstants.parkCar, data: {
-          "userId": 0,
-          "valetId": valetId,
-          "parkingTypeId": parkingTypeId,
-        });
+            await DioHelper.post(NetworkConstants.parkCar, data: bodyMap);
         ParkedCarsModel parkedCarsModel =
             ParkedCarsModel.fromJson(response.data);
         log('=================================================== Executed');
