@@ -560,9 +560,9 @@ class ScanQrCubit extends Cubit<ScanQrState> {
       return false;
     }
   }
-
-  Future<bool> shouldAcceptPayment(BuildContext context) async {
-    return (await DatabaseHelper.getCachedValetParking(
+bool shouldAcceptPayment = false;
+  Future<void> getShouldAcceptPayment(BuildContext context) async {
+    shouldAcceptPayment =  (await DatabaseHelper.getCachedValetParking(
         HomeCubit.get(context).userModel.user.id)).isNotEmpty;
   }
 

@@ -128,13 +128,15 @@ class DatabaseHelper {
     }
   }
 
-  static Future<void> deleteCachedValetParking(
+  static Future<bool> deleteCachedValetParking(
       int parkingId) async {
     final db = await database;
    int result = await db.rawDelete(
         'DELETE FROM `valetParkingHistory` WHERE `parkingId` = ?',
         [parkingId]);
-   log('=================================================== result $result');
+    log('=================================================== result ${result > 0}');
+    return result > 0;
+
   }
 
   static Future<void> insertCachedValetParking({

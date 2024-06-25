@@ -40,7 +40,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     return BlocConsumer<ScanQrCubit, ScanQrState>(
         listener: (context, state) async {
-      if (await ScanQrCubit.get(context).shouldAcceptPayment(context)) {
+      if (ScanQrCubit.get(context).shouldAcceptPayment) {
         AwesomeDialog(
           context: context,
           dismissOnBackKeyPress: false,

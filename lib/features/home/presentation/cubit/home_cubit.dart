@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/data/model/payment_history_model.dart';
@@ -152,12 +154,10 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await getUserHistoryUseCase(
           GetUserHistoryUseCaseParams(userId: userId));
       response.fold((failure) {
-        log('====================================== jhjvddd ${failure.failure}');
         emit(HomeError(failure: failure.failure));
       }, (success) {
         loop:
         for (var status in success.content) {
-          log('====================================== success ${status.parking.parkingStatus}');
           if (status.parking.parkingStatus == Constants.carParked) {
             parkedCarModel = status;
             isUserCarParked = true;
@@ -172,8 +172,6 @@ class HomeCubit extends Cubit<HomeState> {
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
       });
     } catch (failure) {
-      log('====================================== jhjvddd ${failure.toString()}');
-
       emit(HomeError(failure: failure.toString()));
     }
   }
@@ -262,13 +260,16 @@ class HomeCubit extends Cubit<HomeState> {
           dialogType: DialogType.error,
           body: Center(
             child: Text(
-              'Please pay ${history.amount} JOD to valet',
+              Strings.payWithCashNotification(history.amount.toString(),
+                  history.currency, history.parkingId.toString()).split(',').first,
               style: const TextStyle(fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
             ),
           ),
           btnOkOnPress: () async {
-            await DatabaseHelper.deleteCachedValetParking(909);
+            await DatabaseHelper.deleteCachedValetParking(history.parkingId);
+            Navigator.popUntil(context,
+                (route) => route.settings.name == Routes.bottomNvBarScreen);
           },
           btnOkColor: Colors.red,
         ).show();

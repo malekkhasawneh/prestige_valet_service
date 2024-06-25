@@ -75,6 +75,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   String currency = '';
   String valetName = '';
   int valetId = -1;
+  String parkingId = '';
 
   List<Widget> homeWidgetOptions(BuildContext context) => <Widget>[
         SplashCubit.get(context).isUser
@@ -249,7 +250,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         }
       } else if (!SplashCubit.get(context).isUser &&
           message.data[Constants.notificationReceiverType] ==
-              Constants.toValetNotification) {
+              Constants.toValetNotification ) {
         if (Platform.isAndroid) {
           NotificationHelper.sendLocalNotification(
               title: message.notification!.title!,
@@ -265,12 +266,19 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
           title: '${message.notification!.title!}\n ',
           body: Center(
             child: Text(
-              '${message.notification!.body!}\n ',
+              '${message.data[Constants.notificationDataType] ==
+                  Constants.cashPaymentValueNotificationAction?message.notification!.body!.split(',').first:message.notification!.body!}\n ',
               style: const TextStyle(fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
             ),
           ),
-          btnOkOnPress: () {},
+          btnOkOnPress: () async{
+            if(message.data[Constants.notificationDataType] ==
+                Constants.cashPaymentValueNotificationAction){
+              await deleteCheckPendingPayments(
+                  message.notification!.body!.split(',').last);
+            }
+          },
           btnOkColor: Colors.green,
           showCloseIcon: true,
         ).show();
@@ -284,25 +292,28 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
               title: message.notification!.title!,
               body: message.notification!.body!);
         }
-        AwesomeDialog(
-          context: context,
-          dismissOnBackKeyPress: false,
-          dismissOnTouchOutside: false,
-          animType: AnimType.scale,
-          dialogType: DialogType.success,
-          headerAnimationLoop: false,
-          title: '${message.notification!.title!}\n ',
-          body: Center(
-            child: Text(
-              '${message.notification!.body!}\n ',
-              style: const TextStyle(fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          btnOkOnPress: () {},
-          btnOkColor: Colors.green,
-          showCloseIcon: true,
-        ).show();
+        // AwesomeDialog(
+        //   context: context,
+        //   dismissOnBackKeyPress: false,
+        //   dismissOnTouchOutside: false,
+        //   animType: AnimType.scale,
+        //   dialogType: DialogType.success,
+        //   headerAnimationLoop: false,
+        //   title: '${message.notification!.title!}\n ',
+        //   body: Center(
+        //     child: Text(
+        //       '${message.notification!.body!.split(',').first}\n ',
+        //       style: const TextStyle(fontStyle: FontStyle.italic),
+        //       textAlign: TextAlign.center,
+        //     ),
+        //   ),
+        //   btnOkOnPress: () async {
+        //     await deleteCheckPendingPayments(
+        //         message.notification!.body!.split(',').last);
+        //   },
+        //   btnOkColor: Colors.green,
+        //   showCloseIcon: true,
+        // ).show();
       }
       if (message.data[Constants.notificationDataType] ==
           Constants.carParkedNotificationAction) {
@@ -319,6 +330,12 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
         Navigator.pushReplacementNamed(context, Routes.carReadyScreen);
       }
     });
+  }
+
+  Future<void> deleteCheckPendingPayments(String parkingId) async {
+    bool response =
+        await DatabaseHelper.deleteCachedValetParking(int.parse(parkingId));
+    log('======================================= isDeleted $response');
   }
 
   Future<void> onReceiveNotificationListenerOnBackground(BuildContext context) async {

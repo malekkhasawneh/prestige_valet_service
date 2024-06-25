@@ -156,8 +156,8 @@ class Strings {
           String userName, String slotNo, String gateName) =>
       '$userName has requested the retrieval of their car from gate $gateName, key in slot number: $slotNo';
 
-  static payWithCashNotification(String amount,String currency){
-    return 'Please confirm receiving $amount $currency from customer';
+  static payWithCashNotification(String amount,String currency,String parkingId){
+    return 'Please confirm receiving $amount $currency from customer,$parkingId';
   }
 
   static String valetCarWashingRequest(String userName) =>

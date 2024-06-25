@@ -150,7 +150,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
                   BottomNavBarCubit.get(context).valetName),
               body: Strings.payWithCashNotification(
                   BottomNavBarCubit.get(context).totalPrice.toString(),
-                  BottomNavBarCubit.get(context).currency),
+                  BottomNavBarCubit.get(context).currency,BottomNavBarCubit.get(context).parkingId),
               notificationType: Constants.cashPaymentValueNotificationAction,
               notificationReceiver: Constants.toValetNotification,
             );
