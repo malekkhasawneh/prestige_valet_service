@@ -14,6 +14,7 @@ import 'package:prestige_valet_app/features/forget_password/presentation/cubit/f
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
+import 'package:prestige_valet_app/features/proccess_screens/car_ready_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
@@ -63,13 +64,13 @@ class _PrestigeValetAppState extends State<PrestigeValetApp> {
         BlocProvider<SplashCubit>(create: (_) => di.sl<SplashCubit>()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: true,
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: ColorManager.whiteColor,
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const SplashScreen(),
+        home: const CarReadyScreen(),
       ),
     );
   }
