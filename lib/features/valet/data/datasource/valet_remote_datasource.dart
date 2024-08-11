@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
@@ -9,10 +8,11 @@ import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.d
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/valet_parking_types.dart';
 
 abstract class ValetRemoteDataSource {
-  Future<ParkedCarsModel> parkCar(
-      {required int valetId, required bool isGuest});
+  Future<ParkedCarsModel> parkCar({required int valetId, required int userId,
+    required int parkingTypeId, required bool isGuest});
 
   Future<ParkedCarsModel> changeStatusToParked({required int parkingId});
 
@@ -28,39 +28,42 @@ abstract class ValetRemoteDataSource {
       {required int valetId, required int parkingId});
 
   Future<GuestPriceModel> getGuestPrice(int valetId);
+
+  Future<List<ValetParkingTypes>> getValetParkingTypes(int gateId);
 }
 
 class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
   @override
-  Future<ParkedCarsModel> parkCar(
-      {required int valetId, required bool isGuest}) async {
+  Future<ParkedCarsModel> parkCar({required int valetId,
+    required int userId,
+    required int parkingTypeId,
+    required bool isGuest}) async {
     try {
       await DioHelper.addTokenHeader();
       if (!isGuest) {
-        var result = await BarcodeScanner.scan();
-        if (result.rawContent.isNotEmpty) {
-          Response response =
-              await DioHelper.post(NetworkConstants.parkCar, data: {
-            "userId": int.parse(result.rawContent.split(',').last),
-            "valetId": valetId,
-            "carWash": false,
-          });
-          log('=================================================== ${response.data}');
-
-          ParkedCarsModel parkedCarsModel =
-              ParkedCarsModel.fromJson(response.data);
-          log('=================================================== Executed');
-          return parkedCarsModel;
-        } else {
-          throw ServerException();
-        }
-      } else {
+        Map<String, dynamic> bodyMap = parkingTypeId == -1
+            ? {"userId": userId, "valetId": valetId}
+            : {
+                "userId": userId,
+                "valetId": valetId,
+                "parkingTypeId": parkingTypeId,
+              };
         Response response =
-            await DioHelper.post(NetworkConstants.parkCar, data: {
-          "userId": 0,
-          "valetId": valetId,
-          "carWash": false,
-        });
+            await DioHelper.post(NetworkConstants.parkCar, data: bodyMap);
+        ParkedCarsModel parkedCarsModel =
+              ParkedCarsModel.fromJson(response.data);
+          return parkedCarsModel;
+
+      } else {
+        Map<String, dynamic> bodyMap = parkingTypeId == -1
+            ? {"userId": 0, "valetId": valetId}
+            : {
+                "userId": 0,
+                "valetId": valetId,
+                "parkingTypeId": parkingTypeId,
+              };
+        Response response =
+            await DioHelper.post(NetworkConstants.parkCar, data: bodyMap);
         ParkedCarsModel parkedCarsModel =
             ParkedCarsModel.fromJson(response.data);
         log('=================================================== Executed');
@@ -103,7 +106,6 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
       await DioHelper.addTokenHeader();
       Response response = await DioHelper.get(
           NetworkConstants.getValetCarHistory(valetId: valetId));
-      log('=============================================== jjj ${response.data}');
       ValetHistoryModel valetHistoryModel =
       ValetHistoryModel.fromJson(response.data);
       return valetHistoryModel;
@@ -160,6 +162,24 @@ class ValetRemoteDataSourceImpl implements ValetRemoteDataSource {
       log('====================================== ppp ${guestPriceModel.price}');
       log('====================================== ppp ${guestPriceModel.currency}');
       return guestPriceModel;
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<ValetParkingTypes>> getValetParkingTypes(int gateId) async {
+    try {
+      await DioHelper.addTokenHeader();
+      final response =
+          await DioHelper.get(NetworkConstants.parkingTypes(gateId));
+
+      List<dynamic> responseData = response.data;
+      List<ValetParkingTypes> valetParkingTypesList = responseData
+          .map((data) =>
+              ValetParkingTypes.fromJson(data as Map<String, dynamic>))
+          .toList();
+      return valetParkingTypesList;
     } on Exception {
       throw ServerException();
     }

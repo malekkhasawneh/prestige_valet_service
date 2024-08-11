@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,6 +10,7 @@ import 'package:prestige_valet_app/core/resources/cache_constants.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/network_constants.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 abstract class LoginRemoteDataSource {
@@ -22,6 +21,8 @@ abstract class LoginRemoteDataSource {
   Future<UserCredential> signInWithTwitter();
 
   Future<UserCredential> signInWithFacebook();
+
+  Future<UserCredential> signInWithApple();
 }
 
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
@@ -88,5 +89,22 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       loginResult.accessToken!.token,
     );
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
+
+  @override
+  Future<UserCredential> signInWithApple() async {
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+    );
+    final UserCredential authResult =
+        await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    return authResult;
   }
 }

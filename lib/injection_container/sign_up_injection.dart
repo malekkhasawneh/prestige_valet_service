@@ -18,7 +18,7 @@ Future<void> signUpInjection() async {
       setUserModelUseCase: sl(),
       signUpWithTwitterUseCase: sl(),
       signUpWithFacebookUseCase: sl(),
-      activateAccountUseCase: sl(),
+      activateAccountUseCase: sl(), loginWithAppleUseCase: sl(),
     ),
   );
 

@@ -25,7 +25,9 @@ class SignUpModel {
                 profileImg: '',
                 socialProfile: false,
                 role: '',
-                email: '').toJson()),
+                    email: '',
+                    gate: null)
+                .toJson()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,7 +47,7 @@ class User {
   bool socialProfile;
   String role;
   String email;
-
+  Gate? gate;
   User({
     required this.id,
     required this.userId,
@@ -56,6 +58,7 @@ class User {
     required this.socialProfile,
     required this.role,
     required this.email,
+    required this.gate,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -68,6 +71,7 @@ class User {
         socialProfile: json["socialProfile"] ?? false,
         role: json["role"] ?? '',
         email: json["email"] ?? '',
+        gate: json["gate"] == null ? null : Gate.fromJson(json["gate"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,5 +84,22 @@ class User {
     "socialProfile": socialProfile,
     "role": role,
     "email": email,
-  };
+        "gate": gate?.toJson(),
+      };
+}
+
+class Gate {
+  int id;
+
+  Gate({
+    required this.id,
+  });
+
+  factory Gate.fromJson(Map<String, dynamic> json) => Gate(
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+      };
 }

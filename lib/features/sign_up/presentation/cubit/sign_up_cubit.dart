@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_facebook_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_twitter_usecase.dart';
+import 'package:prestige_valet_app/features/login/domain/usecase/ogin_with_apple_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/activate_account_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/domain/usecase/set_user_model_usecase.dart';
@@ -24,6 +25,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     required this.signUpWithTwitterUseCase,
     required this.signUpWithFacebookUseCase,
     required this.activateAccountUseCase,
+    required this.loginWithAppleUseCase,
   }) : super(SignUpInitial());
 
   final SignUpUseCase signUpUseCase;
@@ -31,7 +33,9 @@ class SignUpCubit extends Cubit<SignUpState> {
   final SetUserModelUseCase setUserModelUseCase;
   final LoginWithTwitterUseCase signUpWithTwitterUseCase;
   final LoginWithFacebookUseCase signUpWithFacebookUseCase;
+  final LoginWithAppleUseCase loginWithAppleUseCase;
   final ActivateAccountUseCase activateAccountUseCase;
+
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -150,6 +154,32 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(SignUpLoading());
     try {
       final response = await signUpWithFacebookUseCase(
+        NoParams(),
+      );
+      response.fold((failure) {
+        emit(SignUpError(failure: failure.failure));
+      }, (success) {
+        firstNameController.text = success.user!.displayName!.split(' ').first;
+        lastNameController.text = success.user!.displayName!.split(' ').last;
+        phoneController.text = success.user!.phoneNumber ?? '';
+        emailController.text = success.user!.email ?? '';
+        if (checkIfThereAreAnyMissingDataForSocial()) {
+          setHideNormalField = true;
+          emit(SignUpMissingData());
+        } else {
+          signUp(socialProfile: true, imageUrl: success.user!.photoURL ?? "");
+          emit(SetValueLoaded());
+        }
+      });
+    } catch (failure) {
+      emit(SignUpError(failure: failure.toString()));
+    }
+  }
+
+  Future<void> signUpWithApple() async {
+    emit(SignUpLoading());
+    try {
+      final response = await loginWithAppleUseCase(
         NoParams(),
       );
       response.fold((failure) {

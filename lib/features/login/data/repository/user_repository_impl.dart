@@ -87,4 +87,18 @@ class LoginRepositoryImpl implements LoginRepository {
       return const Left(ServerFailure(failure: Constants.internetFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, UserCredential>> signInWithApple()  async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.signInWithApple();
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(ServerFailure(failure: Constants.internetFailure));
+    }
+  }
 }

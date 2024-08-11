@@ -6,6 +6,7 @@ import 'package:prestige_valet_app/features/login/domain/usecase/login_usecase.d
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_facebook_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_google_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/login_with_twitter_usecase.dart';
+import 'package:prestige_valet_app/features/login/domain/usecase/ogin_with_apple_usecase.dart';
 import 'package:prestige_valet_app/features/login/domain/usecase/set_login_flag_usecase.dart';
 import 'package:prestige_valet_app/features/sign_up/data/model/registration_model.dart';
 
@@ -20,12 +21,14 @@ class LoginCubit extends Cubit<LoginState> {
     required this.loginWithGoogleUseCase,
     required this.loginWithTwitterUseCase,
     required this.loginWithFacebookUseCase,
+    required this.loginWithAppleUseCase,
   }) : super(LoginInitial());
 
   final LoginUseCase loginUseCase;
   final LoginWithGoogleUseCase loginWithGoogleUseCase;
   final LoginWithTwitterUseCase loginWithTwitterUseCase;
   final LoginWithFacebookUseCase loginWithFacebookUseCase;
+  final LoginWithAppleUseCase loginWithAppleUseCase;
   final SetLoginFlagUseCase setLoginFlagUseCase;
 
   TextEditingController emailController = TextEditingController();
@@ -108,6 +111,21 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
     try {
       final response = await loginWithFacebookUseCase(NoParams());
+      response.fold((failure) {
+        emit(LoginError(error: failure.failure));
+      }, (success) async {
+        emailController.text = success.user!.email ?? '';
+        passwordController.text = '';
+        await login();
+      });
+    } catch (error) {
+      emit(LoginError(error: error.toString()));
+    }
+  }
+  Future<void> loginWithApple() async {
+    emit(LoginLoading());
+    try {
+      final response = await loginWithAppleUseCase(NoParams());
       response.fold((failure) {
         emit(LoginError(error: failure.failure));
       }, (success) async {

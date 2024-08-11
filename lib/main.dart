@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,6 +14,7 @@ import 'package:prestige_valet_app/features/forget_password/presentation/cubit/f
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
+import 'package:prestige_valet_app/features/proccess_screens/car_ready_screen.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
@@ -31,8 +33,14 @@ void main() async {
   );
 }
 
-class PrestigeValetApp extends StatelessWidget {
+class PrestigeValetApp extends StatefulWidget {
   const PrestigeValetApp({super.key});
+
+  @override
+  State<PrestigeValetApp> createState() => _PrestigeValetAppState();
+}
+
+class _PrestigeValetAppState extends State<PrestigeValetApp> {
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +70,8 @@ class PrestigeValetApp extends StatelessWidget {
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const SplashScreen(),
+        home: const CarReadyScreen(),
       ),
     );
   }
 }
-

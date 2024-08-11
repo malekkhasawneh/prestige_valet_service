@@ -87,3 +87,13 @@ class GetPaymentHistoryError extends HomeState {
   @override
   List<Object> get props => [failure];
 }
+
+// Confirm payment
+class ConfirmPaymentLoading extends HomeState {
+  @override
+  List<Object> get props => [];
+}
+class ConfirmPaymentLoaded extends HomeState {
+  @override
+  List<Object> get props => [];
+}

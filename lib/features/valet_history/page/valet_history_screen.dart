@@ -20,6 +20,7 @@ class ValetHistoryScreen extends StatefulWidget {
 class _ValetHistoryScreenState extends State<ValetHistoryScreen> {
   @override
   void initState() {
+    HomeCubit.get(context).paymentHistoryModel = null;
     HomeCubit.get(context).loopUserPayment();
     super.initState();
   }

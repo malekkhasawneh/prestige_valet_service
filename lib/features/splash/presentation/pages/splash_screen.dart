@@ -6,6 +6,7 @@ import 'package:prestige_valet_app/core/resources/images.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:prestige_valet_app/features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SplashCubit.get(context).getIsFirstTimeOpenTheApp();
     SplashCubit.get(context).checkIfUserLogin();
     SplashCubit.get(context).checkIsUser();
-
+    ScanQrCubit.get(context).getShouldAcceptPayment(context);
     super.initState();
   }
 

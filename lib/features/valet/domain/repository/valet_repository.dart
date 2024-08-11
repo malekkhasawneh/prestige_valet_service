@@ -4,9 +4,11 @@ import 'package:prestige_valet_app/features/valet/data/model/guest_price_model.d
 import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/retrieve_car_queue_model.dart';
 import 'package:prestige_valet_app/features/valet/data/model/valet_history_model.dart';
+import 'package:prestige_valet_app/features/valet/data/model/valet_parking_types.dart';
 
 abstract class ValetRepository {
-  Future<Either<Failures, ParkedCarsModel>> parkCar({required int valetId, required bool isGuest});
+  Future<Either<Failures, ParkedCarsModel>> parkCar({required int valetId,      required int userId,
+    required int parkingTypeId, required bool isGuest});
   Future<Either<Failures, ParkedCarsModel>> changeStatusToParked({required int parkingId});
 
   Future<Either<Failures, ParkedCarsModel>> carDelivered(
@@ -20,4 +22,5 @@ abstract class ValetRepository {
       {required int valetId, required int parkingId});
   Future<Either<Failures,GuestPriceModel>> getGuestPrice(int valetId);
 
+  Future<Either<Failures, List<ValetParkingTypes>>> getValetParkingTypes(int gateId);
 }

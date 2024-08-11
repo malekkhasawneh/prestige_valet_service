@@ -17,6 +17,7 @@ import 'package:prestige_valet_app/features/profile/presentation/pages/profile_s
 import 'package:prestige_valet_app/features/sign_up/presentation/page/sign_up_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/splash_screen.dart';
 import 'package:prestige_valet_app/features/splash/presentation/pages/welcome_screen.dart';
+import 'package:prestige_valet_app/features/valet/presentation/page/select_gate_type_screen.dart';
 import 'package:prestige_valet_app/features/valet_history/page/valet_history_screen.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
 
@@ -42,6 +43,7 @@ class Routes {
       '/verifyResetPasswordEmailScreen';
   static const String updateYourPasswordScreen = '/updateYourPasswordScreen';
   static const String noInternetScreen = '/noInternetScreen';
+  static const String selectGateTypeScreen = '/selectGateTypeScreen';
 }
 
 class RouteGenerator {
@@ -126,6 +128,11 @@ class RouteGenerator {
             builder: (_) => const UpdateYourPasswordScreen(),
             settings:
                 const RouteSettings(name: Routes.updateYourPasswordScreen));
+      case Routes.selectGateTypeScreen:
+        return MaterialPageRoute(
+            builder: (_) => const SelectGateTypeScreen(),
+            settings: const RouteSettings(name: Routes.selectGateTypeScreen));
+
       case Routes.noInternetScreen:
         return MaterialPageRoute(
             builder: (_) => const NoInternetScreen(),

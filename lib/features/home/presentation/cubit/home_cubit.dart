@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
+import 'package:prestige_valet_app/core/resources/route_manager.dart';
+import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/data/model/payment_history_model.dart';
@@ -150,12 +154,10 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await getUserHistoryUseCase(
           GetUserHistoryUseCaseParams(userId: userId));
       response.fold((failure) {
-        log('====================================== jhjvddd ${failure.failure}');
         emit(HomeError(failure: failure.failure));
       }, (success) {
         loop:
         for (var status in success.content) {
-          log('====================================== success ${status.parking.parkingStatus}');
           if (status.parking.parkingStatus == Constants.carParked) {
             parkedCarModel = status;
             isUserCarParked = true;
@@ -170,8 +172,6 @@ class HomeCubit extends Cubit<HomeState> {
         emit(GetUserHistoryLoaded(parkHistoryModel: success));
       });
     } catch (failure) {
-      log('====================================== jhjvddd ${failure.toString()}');
-
       emit(HomeError(failure: failure.toString()));
     }
   }
@@ -194,13 +194,15 @@ class HomeCubit extends Cubit<HomeState> {
   bool isParkingLoading = false;
   PaymentHistoryModel? paymentHistoryModel;
 
-  Future<void> getParkingHistory({required int pageIndex}) async {
+  Future<void> getParkingHistory(
+      {required int pageIndex, int userId = 0}) async {
     emit(GetPaymentHistoryLoading());
     isParkingLoading = true;
     try {
       final response = await getParkingHistoryUseCase(
           GetParkingHistoryUseCaseParams(
-              userId: userModel.user.id, pageIndex: pageIndex));
+              userId: userId == 0 ? userModel.user.id : userId,
+              pageIndex: pageIndex));
       response.fold((failure) {
         log('=================================== failure ${failure.failure}');
 
@@ -210,6 +212,7 @@ class HomeCubit extends Cubit<HomeState> {
           paymentHistoryModel = success;
         } else {
           paymentHistoryModel!.content.addAll(success.content);
+          log('=================================== done');
         }
         emit(GetPaymentHistoryLoaded(paymentHistoryModel: success));
       });
@@ -220,9 +223,63 @@ class HomeCubit extends Cubit<HomeState> {
     isParkingLoading = false;
   }
 
-  Future<void> loopUserPayment() async {
+  bool _isLoading = false;
+
+  bool get getIsLoading => _isLoading;
+
+  set setIsLoading(bool value) {
+    _isLoading = value;
+    emit(ConfirmPaymentLoading());
+  }
+
+  Future<void> getAndCheckPendingPayments(BuildContext context) async {
+    emit(ConfirmPaymentLoading());
+    List<Map<String, dynamic>> paymentsList =
+        await DatabaseHelper.getCachedValetParking(userModel.user.id);
+    List<int> userIds = [];
+    List<int> parkingIds = [];
+    for (var payment in paymentsList) {
+      parkingIds.add(int.tryParse(payment['parkingId']) ?? 0);
+      userIds.add(int.tryParse(payment['userId']) ?? 0);
+    }
+    Set<int> uniqueUserIdsSet = userIds.toSet();
+    List<int> uniqueUserIds = uniqueUserIdsSet.toList();
+
+    for (var id in uniqueUserIds) {
+      await loopUserPayment(userId: id);
+    }
+    _isLoading = false;
+    emit(ConfirmPaymentLoaded());
+    for (var history in paymentHistoryModel!.content) {
+      if (parkingIds.contains(history.parkingId)) {
+        AwesomeDialog(
+          context: context,
+          dismissOnBackKeyPress: false,
+          dismissOnTouchOutside: false,
+          animType: AnimType.scale,
+          dialogType: DialogType.error,
+          body: Center(
+            child: Text(
+              Strings.payWithCashNotification(history.amount.toString(),
+                  history.currency, history.parkingId.toString()).split(',').first,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          btnOkOnPress: () async {
+            await DatabaseHelper.deleteCachedValetParking(history.parkingId);
+            Navigator.popUntil(context,
+                (route) => route.settings.name == Routes.bottomNvBarScreen);
+          },
+          btnOkColor: Colors.red,
+        ).show();
+      }
+    }
+  }
+
+  Future<void> loopUserPayment({int userId = 0}) async {
     for (int i = 0; i <= 30; i++) {
-      await getParkingHistory(pageIndex: i);
+      await getParkingHistory(pageIndex: i, userId: userId);
     }
   }
 

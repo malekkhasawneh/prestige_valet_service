@@ -13,4 +13,5 @@ abstract class LoginRepository {
   Future<Either<Failures, UserCredential>> signInWithTwitter();
 
   Future<Either<Failures, UserCredential>> signInWithFacebook();
+  Future<Either<Failures, UserCredential>>  signInWithApple();
 }
