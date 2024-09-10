@@ -57,18 +57,21 @@ class NetworkConstants {
   static const String isTokenValid = 'auth/token/validate';
 
   static const String sendPayment = 'payment';
-  static String getPaymentHistory(int userId,int pageIndex) => 'payment/user/$userId?pageSize=10&pageIndex=$pageIndex';
+  static String getPaymentHistory(int userId, int pageIndex) =>
+      'payment/user/$userId?pageSize=10&pageIndex=$pageIndex';
 
   static String getSlotNumber(int valetId) => 'valet/slot?valetId=$valetId';
 
   static String getCarsQueue(int valetId) =>
       'valet/Parking/$valetId/retrieving-queue';
 
-  static String getGuestPrice (int valetId)=>'valet/location/$valetId/price';
+  static String getGuestPrice(int valetId) => 'valet/location/$valetId/price';
 
   static String parkingTypes(int gateId) =>
       'location/gates/$gateId/parking-types';
 
   static String setCarStatusAsRetrieving(int valetId, int parkingId) =>
       'valet/Parking/deliver-to-user?valetId=$valetId&parkingId=$parkingId';
+
+  static const String deleteUserAccount = 'auth/users/current';
 }

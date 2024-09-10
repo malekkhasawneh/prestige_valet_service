@@ -86,7 +86,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
     final LoginResult loginResult = await FacebookAuth.instance.login();
     final OAuthCredential facebookAuthCredential =
         FacebookAuthProvider.credential(
-      loginResult.accessToken!.token,
+      loginResult.accessToken!.tokenString,
     );
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
