@@ -41,7 +41,6 @@ class PrestigeValetApp extends StatefulWidget {
 }
 
 class _PrestigeValetAppState extends State<PrestigeValetApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -70,7 +69,7 @@ class _PrestigeValetAppState extends State<PrestigeValetApp> {
           fontFamily: Fonts.sourceSansPro,
         ),
         onGenerateRoute: RouteGenerator.generateRoute,
-        home: const CarReadyScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

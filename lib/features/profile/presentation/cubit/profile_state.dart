@@ -36,3 +36,9 @@ class ProfileError extends ProfileState {
   @override
   List<Object> get props => [failure];
 }
+
+// Deacivate Account States
+class DeactivateAccountLoading extends ProfileState {
+  @override
+  List<Object> get props => [];
+}

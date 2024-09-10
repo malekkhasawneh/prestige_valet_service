@@ -15,7 +15,7 @@ class DioHelper {
   static final DioHelper _instance = DioHelper._internal();
   static Dio _dio = Dio(
     BaseOptions(
-      baseUrl: NetworkConstants.baseUrl,
+        baseUrl: NetworkConstants.baseUrl,
         receiveTimeout: const Duration(
           seconds: 7,
         ),
@@ -105,6 +105,15 @@ class DioHelper {
       {Map<String, dynamic> data = const {}}) async {
     try {
       final response = await _dio.patch(endpoint, data: data);
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  static Future<Response> delete(String endpoint) async {
+    try {
+      final response = await _dio.delete(endpoint);
       return response.data;
     } catch (e) {
       throw _handleError(e);

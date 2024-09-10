@@ -49,10 +49,13 @@ class Strings {
   static const String learnMore = 'Learn More';
   static const String referTest = 'Refer a friend and earn \$10 each!';
   static const String logout = 'Log Out';
+  static const String deactivateAccount = 'Deactivate Account';
+  static const String deactivateAccountMsg =
+      'This account will be deactivated. For assistance, please contact us at : ';
+  static const String contactUsUrl = 'https://www.prvisoft.com/contact-us';
 
   //Wallet Screen
-  static String walletHiString ()=>
-      'Payment Method';
+  static String walletHiString() => 'Payment Method';
   static const String addPaymentMethod = 'Add a new payment method';
   static const String addNewPaymentMethod = 'Add a new card';
   static const String creditCardOverView = 'Credit card overview';
@@ -102,7 +105,8 @@ class Strings {
   static const String loginTitle = "Log in to your Prestige\nAccount";
   static const String forgetPassword = "Forgot your password?";
   static const String or = "or";
-  static const String loginError = "Incorrect username or password, please try again!";
+  static const String loginError =
+      "Incorrect username or password, please try again!";
 
   // Sign Up Screen
   static const String signUp = "Sign Up";
@@ -156,7 +160,8 @@ class Strings {
           String userName, String slotNo, String gateName) =>
       '$userName has requested the retrieval of their car from gate $gateName, key in slot number: $slotNo';
 
-  static payWithCashNotification(String amount,String currency,String parkingId){
+  static payWithCashNotification(
+      String amount, String currency, String parkingId) {
     return 'Please confirm receiving $amount $currency from customer,$parkingId';
   }
 

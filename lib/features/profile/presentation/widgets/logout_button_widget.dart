@@ -9,18 +9,19 @@ import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_c
 
 class LogoutButtonWidget extends StatelessWidget {
   const LogoutButtonWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
       return SizedBox(
         width: screenWidth * 0.9,
+        height: 45,
         child: ElevatedButton(
-          onPressed: (state is ProfileLoading)
+          onPressed: (state is ProfileLoading ||
+                  state is DeactivateAccountLoading)
               ? () {}
               : () async {
-            BottomNavBarCubit.get(context).isLogout = true;
+                  BottomNavBarCubit.get(context).isLogout = true;
                   BottomNavBarCubit.get(context).addNotificationToken(
                       userId: HomeCubit.get(context).userModel.user.id,
                       isLogout: true);

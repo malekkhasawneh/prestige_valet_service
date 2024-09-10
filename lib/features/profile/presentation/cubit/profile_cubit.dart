@@ -20,8 +20,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   bool isTablet(double screenWidth) => screenWidth > 600;
 
-  Future<void> logout({required int userId}) async {
-    emit(ProfileLoading());
+  Future<void> logout({required int userId, bool isDeactivate = false}) async {
+    isDeactivate ? emit(DeactivateAccountLoading()) : emit(ProfileLoading());
     try {
       final response = await logoutUseCase(LogoutUseCaseParams(userId: userId));
       response.fold(

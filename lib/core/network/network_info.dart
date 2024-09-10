@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -16,8 +14,10 @@ class NetworkInfoImpl implements NetworkInfo {
 
   @override
   Future<bool> checkConnection() async {
-    if (await connectivity.checkConnectivity() == ConnectivityResult.mobile ||
-        await connectivity.checkConnectivity() == ConnectivityResult.wifi) {
+    if ((await connectivity.checkConnectivity())
+            .contains(ConnectivityResult.mobile) ||
+        (await connectivity.checkConnectivity())
+            .contains(ConnectivityResult.wifi)) {
       return await internetConnectionChecker.hasConnection;
     } else {
       return false;
