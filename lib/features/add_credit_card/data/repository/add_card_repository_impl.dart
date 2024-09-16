@@ -3,7 +3,6 @@ import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/errors/failures.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/features/add_credit_card/data/datasource/add_card_local_datasource.dart';
-import 'package:prestige_valet_app/features/add_credit_card/data/model/add_card_model.dart';
 import 'package:prestige_valet_app/features/add_credit_card/domain/repository/add_card_repository.dart';
 
 class AddCardRepositoryImpl implements AddCardRepository {

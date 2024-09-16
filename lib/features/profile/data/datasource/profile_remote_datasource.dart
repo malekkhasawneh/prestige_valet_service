@@ -5,6 +5,7 @@ import 'package:prestige_valet_app/core/resources/network_constants.dart';
 
 abstract class UserProfileRemoteDataSource {
   Future<bool> logout({required int userId});
+  Future<bool> deleteUserAccount();
 }
 
 class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
@@ -14,6 +15,22 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
       await DioHelper.addTokenHeader();
       Response response =
           await DioHelper.post(NetworkConstants.logoutEndPoint(userId));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> deleteUserAccount() async {
+    try {
+      await DioHelper.addTokenHeader();
+      Response response =
+          await DioHelper.post(NetworkConstants.deleteUserAccount);
       if (response.statusCode == 200) {
         return true;
       } else {

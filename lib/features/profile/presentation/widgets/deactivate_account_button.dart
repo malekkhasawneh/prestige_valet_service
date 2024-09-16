@@ -30,26 +30,13 @@ class DeactivateAccountButton extends StatelessWidget {
                         dialogType: DialogType.warning,
                         dismissOnTouchOutside: false,
                         dismissOnBackKeyPress: false,
-                        body: Center(
-                          child: RichText(
+                        body: const Center(
+                          child: Text(
+                            Strings.deleteAccountMsg,
+                            style: TextStyle(
+                              color: ColorManager.blackColor,
+                            ),
                             textAlign: TextAlign.center,
-                            text: TextSpan(
-                                text: Strings.deactivateAccountMsg,
-                                style: const TextStyle(
-                                    color: ColorManager.blackColor,
-                                    fontStyle: FontStyle.italic),
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        await launchUrl(
-                                            Uri.parse(Strings.contactUsUrl));
-                                      },
-                                    text: Strings.contactUsUrl,
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.underline),
-                                  ),
-                                ]),
                           ),
                         ),
                         btnOkOnPress: () async {
@@ -57,9 +44,7 @@ class DeactivateAccountButton extends StatelessWidget {
                           BottomNavBarCubit.get(context).addNotificationToken(
                               userId: HomeCubit.get(context).userModel.user.id,
                               isLogout: true);
-                          await ProfileCubit.get(context).logout(
-                              userId: HomeCubit.get(context).userModel.user.id,
-                              isDeactivate: true);
+                          await ProfileCubit.get(context).deleteUserAccount();
                         },
                         btnCancelOnPress: () {},
                         btnCancelColor: Colors.red,
@@ -79,7 +64,7 @@ class DeactivateAccountButton extends StatelessWidget {
                   ),
                 )
               : const Text(
-                  Strings.deactivateAccount,
+                  Strings.deleteAccount,
                   style: TextStyle(
                       fontFamily: Fonts.sourceSansPro,
                       color: ColorManager.whiteColor,

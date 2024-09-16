@@ -4,7 +4,6 @@ import 'package:prestige_valet_app/core/errors/failures.dart';
 import 'package:prestige_valet_app/core/usecase/usecase.dart';
 import 'package:prestige_valet_app/features/home/data/model/retrieve_car_model.dart';
 import 'package:prestige_valet_app/features/home/domain/repository/home_repository.dart';
-import 'package:prestige_valet_app/features/valet/data/model/parked_cars_model.dart';
 
 class RetrieveCarUseCase
     extends UseCase<RetrieveCarModel, RetrieveCarUseCaseParams> {

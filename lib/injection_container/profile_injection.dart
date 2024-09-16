@@ -3,6 +3,7 @@ import 'package:prestige_valet_app/features/profile/data/datasource/profile_remo
 import 'package:prestige_valet_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:prestige_valet_app/features/profile/domain/repository/profile_repository.dart';
 import 'package:prestige_valet_app/features/profile/domain/usecase/clear_cache_usecase.dart';
+import 'package:prestige_valet_app/features/profile/domain/usecase/delete_user_account_usecase.dart';
 import 'package:prestige_valet_app/features/profile/domain/usecase/logout_usecase.dart';
 import 'package:prestige_valet_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:prestige_valet_app/injection_container/injection.dart';
@@ -10,12 +11,16 @@ import 'package:prestige_valet_app/injection_container/injection.dart';
 Future<void> profileInjection() async {
   // Cubit
   sl.registerFactory(
-    () => ProfileCubit(logoutUseCase: sl(), clearCacheUseCase: sl()),
+    () => ProfileCubit(
+        logoutUseCase: sl(),
+        clearCacheUseCase: sl(),
+        deleteUserAccountUsecase: sl()),
   );
 
   // Use cases
   sl.registerLazySingleton(() => LogoutUseCase(repository: sl()));
   sl.registerLazySingleton(() => ClearCacheUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteUserAccountUsecase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<UserProfileRepository>(
