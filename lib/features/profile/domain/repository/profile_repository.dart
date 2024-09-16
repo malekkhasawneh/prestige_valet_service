@@ -4,4 +4,5 @@ import 'package:prestige_valet_app/core/errors/failures.dart';
 abstract class UserProfileRepository {
   Future<Either<Failures, bool>> logout({required int userId});
   Future<Either<Failures, void>> clearCache();
+  Future<Either<Failures, bool>> deleteUserAccount();
 }

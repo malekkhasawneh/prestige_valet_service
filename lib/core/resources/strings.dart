@@ -49,10 +49,9 @@ class Strings {
   static const String learnMore = 'Learn More';
   static const String referTest = 'Refer a friend and earn \$10 each!';
   static const String logout = 'Log Out';
-  static const String deactivateAccount = 'Deactivate Account';
-  static const String deactivateAccountMsg =
-      'This account will be deactivated. For assistance, please contact us at : ';
-  static const String contactUsUrl = 'https://www.prvisoft.com/contact-us';
+  static const String deleteAccount = 'Delete Account';
+  static const String deleteAccountMsg =
+      'Your account and all your data will be permanently deleted from the app, and you will no longer be able to log in again using this account.';
 
   //Wallet Screen
   static String walletHiString() => 'Payment Method';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/fonts.dart';
-import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/core/resources/strings.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
 
@@ -26,21 +25,19 @@ class ShowYourHistoryWidget extends StatelessWidget {
             HomeCubit.get(context).setIsHistoryPage = true;
           },
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  10,
+                ),
               ),
-            ),
-          backgroundColor: ColorManager.whiteColor,
-            elevation: 0.5
-          ),
+              backgroundColor: ColorManager.whiteColor,
+              elevation: 0.5),
           child: const Text(
             Strings.showYourHistory,
             style: TextStyle(
-              color: ColorManager.blackColor,
-              fontFamily: Fonts.sourceSansPro,
-              fontWeight: FontWeight.bold
-            ),
+                color: ColorManager.blackColor,
+                fontFamily: Fonts.sourceSansPro,
+                fontWeight: FontWeight.bold),
           )),
     );
   }

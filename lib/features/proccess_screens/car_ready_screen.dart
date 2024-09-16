@@ -7,12 +7,10 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfatoorah_flutter/myfatoorah_flutter.dart';
-import 'package:prestige_valet_app/core/helpers/database_helper.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
 import 'package:prestige_valet_app/core/resources/route_manager.dart';
 import 'package:prestige_valet_app/features/bottom_navigation_bar/presentation/cubit/bottom_nav_bar_cubit.dart';
 import 'package:prestige_valet_app/features/home/presentation/cubit/home_cubit.dart';
-import 'package:prestige_valet_app/features/pick_up/presentation/cubit/pick_up_cubit.dart';
 import 'package:prestige_valet_app/features/valet/presentation/cubit/scan_qr_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/cubit/wallet_cubit.dart';
 import 'package:prestige_valet_app/features/wallet/presentation/page/wallet_screen.dart';
@@ -437,7 +435,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
     );
   }
 
-  String? _response = '';
+  String? response = '';
   MFInitiateSessionResponse? session;
 
   List<MFPaymentMethod> paymentMethods = [];
@@ -457,7 +455,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
   initiate() async {
     if (testAPIKey.isEmpty) {
       setState(() {
-        _response =
+        response =
             "Missing API Token Key.. You can get it from here: https://myfatoorah.readme.io/docs/test-token";
       });
       return;
@@ -485,7 +483,7 @@ class _CarReadyScreenState extends State<CarReadyScreen> {
     var json = const JsonEncoder.withIndent('  ').convert(object);
     setState(() {
       debugPrint(json);
-      _response = json;
+      response = json;
     });
   }
 

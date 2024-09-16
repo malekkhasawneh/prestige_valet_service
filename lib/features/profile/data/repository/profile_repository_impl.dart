@@ -41,4 +41,18 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       return const Left(CacheFailure(failure: Constants.cacheFailure));
     }
   }
+
+  @override
+  Future<Either<Failures, bool>> deleteUserAccount() async {
+    if (await networkInfo.checkConnection()) {
+      try {
+        final response = await remoteDataSource.deleteUserAccount();
+        return Right(response);
+      } on ServerException {
+        return const Left(ServerFailure(failure: Constants.serverFailure));
+      }
+    } else {
+      return const Left(InternetFailure(failure: Constants.internetFailure));
+    }
+  }
 }
