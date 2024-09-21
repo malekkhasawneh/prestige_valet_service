@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:prestige_valet_app/core/errors/exceptions.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
@@ -30,8 +32,9 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
     try {
       await DioHelper.addTokenHeader();
       Response response =
-          await DioHelper.post(NetworkConstants.deleteUserAccount);
-      if (response.statusCode == 200) {
+          await DioHelper.delete(NetworkConstants.deleteUserAccount);
+      log('============================================ delete ${response.statusCode}');
+      if (response.statusCode == 204) {
         return true;
       } else {
         return false;

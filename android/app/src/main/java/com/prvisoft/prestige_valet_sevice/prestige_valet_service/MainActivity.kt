@@ -1,4 +1,4 @@
-package com.prvisoft.prestige_valet_sevice.prestige_valet_service
+package com.prvisoft.prestige_valet_sevice
 
 import io.flutter.embedding.android.FlutterActivity
 

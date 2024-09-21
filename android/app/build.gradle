@@ -23,7 +23,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.prvisoft.prestige_valet_sevice.prestige_valet_service"
+    namespace "com.prvisoft.prestige_valet_sevice"
     compileSdkVersion 34
     ndkVersion "25.1.8937393"
 
@@ -41,7 +41,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.prvisoft.prestige_valet_sevice.prestige_valet_service"
+        applicationId "com.prvisoft.prestige_valet_sevice"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
@@ -77,3 +77,4 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.6.0')
     implementation 'com.facebook.android:facebook-login:15.0.1' // Use a specific version instead of latest.release
 }
+
