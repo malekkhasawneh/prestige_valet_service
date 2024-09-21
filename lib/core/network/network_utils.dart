@@ -114,7 +114,7 @@ class DioHelper {
   static Future<Response> delete(String endpoint) async {
     try {
       final response = await _dio.delete(endpoint);
-      return response.data;
+      return response;
     } catch (e) {
       throw _handleError(e);
     }

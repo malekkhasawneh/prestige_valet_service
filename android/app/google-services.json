@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:752419261145:android:5809786fcf07576fe24cc8",
         "android_client_info": {
-          "package_name": "com.prvisoft.prestige_valet_sevice.prestige_valet_service"
+          "package_name": "com.prvisoft.prestige_valet_sevice"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "752419261145-rcvoo5r3kq3l5immg5ott39p3j4hrhpj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.prvisoft.prestige_valet_sevice.prestige_valet_service",
+            "package_name": "com.prvisoft.prestige_valet_sevice",
             "certificate_hash": "b1d662c3038b0cbb0d88acd5ae5cc497258a36f1"
           }
         },
