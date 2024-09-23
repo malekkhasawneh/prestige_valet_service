@@ -48,6 +48,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   sign_in_with_apple: ^6.1.0
   url_launcher: ^6.3.0
+  permission_handler: ^11.3.1
 
 
 

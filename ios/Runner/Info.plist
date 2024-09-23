@@ -43,7 +43,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
     <string>Camera permission is required for QR code scanning</string>
-    <key>CFBundleURLTypes</key>
+    <key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to upload images.</string>
+
+	<key>CFBundleURLTypes</key>
 
     <array>
     	<dict>
