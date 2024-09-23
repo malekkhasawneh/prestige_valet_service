@@ -6,6 +6,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:prestige_valet_app/core/network/network_utils.dart';
 import 'package:prestige_valet_app/core/resources/color_manager.dart';
 import 'package:prestige_valet_app/core/resources/constants.dart';
@@ -148,16 +149,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        XFile? image = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        // ignore: use_build_context_synchronously
-                        EditProfileCubit.get(context).file = File(image!.path);
-                        // ignore: use_build_context_synchronously
-                        await EditProfileCubit.get(context).uploadUserImage(
-                            context: context,
-                            image: File(image.path),
-                            // ignore: use_build_context_synchronously
-                            userId: HomeCubit.get(context).userModel.user.id);
+                     await pickAndUploadImage(context);
                       },
                       child: const Text(
                         Strings.changeProfilePic,
@@ -227,5 +219,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
       }),
     );
+  }
+
+  Future<void> pickAndUploadImage(BuildContext context) async {
+    PermissionStatus status = await Permission.storage.status;
+    if (status.isGranted) {
+      await pickImageAndUpload(context);
+    } else if (status.isDenied || status.isRestricted) {
+      await requestPermissionAndPickImage(context);
+    } else if (status.isPermanentlyDenied) {
+      showPermissionDialog(context);
+    }
+  }
+
+  Future<void> requestPermissionAndPickImage(BuildContext context) async {
+    PermissionStatus status = await Permission.storage.request();
+    if (status.isGranted) {
+      await pickImageAndUpload(context);
+    } else if (status.isPermanentlyDenied) {
+      showPermissionDialog(context);
+    }
+  }
+
+  Future<void> pickImageAndUpload(BuildContext context) async {
+    XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      EditProfileCubit.get(context).file = File(image.path);
+      await EditProfileCubit.get(context).uploadUserImage(
+        context: context,
+        image: File(image.path),
+        userId: HomeCubit.get(context).userModel.user.id,
+      );
+    }
+  }
+
+  void showPermissionDialog(BuildContext context) {
+    AwesomeDialog(
+      dismissOnBackKeyPress: false,
+      dismissOnTouchOutside: false,
+      context: context,
+      dialogType: DialogType.info,
+      title: 'Permission Required',
+      desc: 'We need access to your storage to upload your profile picture.',
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {
+        openAppSettings();
+      },
+    ).show();
   }
 }
