@@ -51,7 +51,7 @@ class Strings {
   static const String logout = 'Log Out';
   static const String deleteAccount = 'Delete Account';
   static const String deleteAccountMsg =
-      'Your account and all your data will be permanently deleted from the app, and you will no longer be able to log in again using this account.';
+      'Your account and all associated data will be permanently deleted. This action cannot be undone.';
 
   //Wallet Screen
   static String walletHiString() => 'Payment Method';
@@ -111,7 +111,7 @@ class Strings {
   static const String signUp = "Sign Up";
   static const String signUpFirstName = "First Name*";
   static const String signUpLastName = "Last Name*";
-  static const String signUpPhoneNumber = "Phone Number*";
+  static const String signUpPhoneNumber = "Phone Number (optional)";
   static const String signUpEmailAddress = "Email Address*";
   static const String signUpPassword = "Password*";
   static const String verifyYourAccount = "Verify Your Account";
