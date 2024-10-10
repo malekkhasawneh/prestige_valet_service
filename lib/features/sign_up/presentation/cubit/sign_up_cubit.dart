@@ -234,7 +234,6 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   bool checkIfThereAreAnyMissingDataForSocial() {
     if (emailController.text.isEmpty ||
-        phoneController.text.isEmpty ||
         firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty) {
       return true;
@@ -245,7 +244,6 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   bool checkIfThereAreAnyMissingData() {
     if (emailController.text.isEmpty ||
-        phoneController.text.isEmpty ||
         firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty ||
         passwordController.text.isEmpty ||

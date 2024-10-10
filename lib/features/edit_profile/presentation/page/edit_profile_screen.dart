@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -37,9 +38,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         HomeCubit.get(context).userModel.user.lastName;
     EditProfileCubit.get(context).email.text =
         HomeCubit.get(context).userModel.user.email;
-    EditProfileCubit.get(context).phoneNumber.text =
-        EditProfileCubit.get(context).filterPhoneNumber(
-            HomeCubit.get(context).userModel.user.phone.split(',').last);
+    if (HomeCubit.get(context).userModel.user.phone.length > 3) {
+      EditProfileCubit.get(context).phoneNumber.text =
+          EditProfileCubit.get(context).filterPhoneNumber(
+              HomeCubit.get(context).userModel.user.phone.split(',').last);
+    }
     EditProfileCubit.get(context).setSelectedCountryKey =
         HomeCubit.get(context).userModel.user.phone.split(',').first;
     EditProfileCubit.get(context).setMustCheck = false;
@@ -67,10 +70,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ),
-            btnOkOnPress: () {},
+            btnOkOnPress: () {
+              Navigator.popUntil(
+                  context, ModalRoute.withName(Routes.editProfileScreen));
+            },
           ).show();
-        }else if(state is EditProfileError){
-          if(state.failure == Constants.internetFailure){
+        } else if (state is EditProfileError) {
+          if (state.failure == Constants.internetFailure) {
             Navigator.pushNamed(context, Routes.noInternetScreen);
           }
         }
@@ -87,9 +93,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 color: ColorManager.blackColor,
               ),
             ),
-            leading: GestureDetector(onTap: (){
-              Navigator.pop(context);
-            },
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
               child: const Icon(
                 Icons.arrow_back,
                 color: ColorManager.blackColor,
@@ -149,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                     await pickAndUploadImage(context);
+                        await pickAndUploadImage(context);
                       },
                       child: const Text(
                         Strings.changeProfilePic,
@@ -183,7 +190,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       title: Strings.phoneNumber,
                       textInputType: TextInputType.number,
                       addPrefixIcon: true,
-                      mustCheck: EditProfileCubit.get(context).mustCheck,
+                      mustCheck: false,
                       onlyNumbers: true,
                       selectedCountryKey:
                           EditProfileCubit.get(context).getSelectedCountryKey,
