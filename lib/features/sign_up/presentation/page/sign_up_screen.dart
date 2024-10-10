@@ -140,7 +140,7 @@ class SignUpScreen extends StatelessWidget {
                   title: '',
                   hintText: Strings.signUpPhoneNumber,
                   textInputType: TextInputType.number,
-                  mustCheck: SignUpCubit.get(context).mustCheck,
+                  mustCheck:false,
                   onlyNumbers: true,
                   addPrefixIcon: true,
                   maxLength: 10,

@@ -86,7 +86,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   bool checkIfThereAreEmptyValue() {
     return firstName.text.isEmpty ||
         lastName.text.isEmpty ||
-        phoneNumber.text.isEmpty ||
         email.text.isEmpty ||
         !checkEmailValidity();
   }

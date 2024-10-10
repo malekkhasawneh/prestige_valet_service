@@ -17,7 +17,7 @@ class DioHelper {
     BaseOptions(
         baseUrl: NetworkConstants.baseUrl,
         receiveTimeout: const Duration(
-          seconds: 7,
+          minutes: 3,
         ),
         validateStatus: (status) {
           return status! >= 200 && status <= 401;
@@ -27,7 +27,7 @@ class DioHelper {
   static Dio dio = Dio(
     BaseOptions(
         receiveTimeout: const Duration(
-          seconds: 7,
+          minutes: 3,
         ),
         validateStatus: (status) {
           return status! >= 200 && status <= 401;
@@ -49,7 +49,7 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
           receiveTimeout: const Duration(
-            seconds: 7,
+            minutes: 3,
           ),
           headers: {
             'Authorization':
@@ -67,7 +67,7 @@ class DioHelper {
       BaseOptions(
           baseUrl: NetworkConstants.baseUrl,
           receiveTimeout: const Duration(
-            seconds: 7,
+            minutes: 3,
           ),
           headers: {
             'Authorization':
