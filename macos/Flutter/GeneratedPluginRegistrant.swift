@@ -19,7 +19,7 @@ import path_provider_foundation
 import rive_common
 import shared_preferences_foundation
 import sign_in_with_apple
-import sqflite
+import sqflite_darwin
 import twitter_login
 import url_launcher_macos
 
